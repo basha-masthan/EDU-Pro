@@ -1,0 +1,29 @@
+.profile-button-container {
+  position: relative; /* Needed for positioning dropdown */
+}
+
+.profile-button {
+  /* Style the button as desired (font, color, etc.) */
+  padding: 5px 10px;
+  cursor: pointer; /* Indicate interactivity on hover */
+}
+
+.profile-dropdown {
+  position: absolute;
+  top: 100%; /* Positioned below the button */
+  left: 0; /* Align to left of button */
+  background-color: #fff; /* Background color for dropdown */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Optional shadow */
+  display: none; /* Initially hidden */
+  padding: 10px;
+}
+
+.profile-button-container:hover .profile-dropdown {
+  display: block; /* Show dropdown on hover */
+}
+
+.profile-dropdown a {
+  /* Style the links as desired (font, color, etc.) */
+  display: block;
+  margin-bottom: 5px;
+}

@@ -1,0 +1,158 @@
+.p1
+{   
+    width: 100vw;height: auto;
+    background-color: black;
+    /* background-image: url("images/img10.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; */
+}
+#text
+{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 80px;
+}
+h2
+{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 60px;
+}
+#b1{
+    display: flex;
+    /* height: 50vh; */
+    width: 50vw;
+    flex-direction: column;
+    /* justify-content:; */
+    align-items:flex-start;
+    margin-left: 8%;
+    /* margin-top: 1%; */
+}
+#text1
+{
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 60px;
+    /* margin-left: 15%; */
+    margin-top: 2%;
+}
+#menu
+{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items: center;
+    margin-left: 10%;
+    margin-right: 10%;
+
+}
+.r1
+{
+    text-align: center;
+    padding: 8px;
+    
+}
+#form
+{
+    background-color:rgb(44, 63, 63);
+    opacity: 0.7;
+    margin-left: 20%;
+    margin-right: 20%;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 3%;
+    padding-bottom: 3%;
+}
+
+.radiobtn
+{
+    align-items: center;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+#bg1
+{
+    background-image: url("images/bg2.jpg");
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center center;
+    background-attachment: fixed;
+
+}
+#bg2
+
+{
+    background-image: url("images/bg3.jpg");
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center center;
+    background-attachment: fixed;
+
+}
+#bb
+{
+    background-color: rgb(45, 45, 60);
+    opacity: 0.7;
+    margin-right: 25%;
+    margin-left: 33%;
+    width: 40vw;
+    height: 75vh;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 3%;
+    border-radius: 5%;
+}
+#bg4
+{
+    background-image: url("images/bg5.avif");
+}
+#para
+{
+    margin-top: 7%;
+}
+#para1
+{
+    margin-top: 4%;
+    font-size: 20px;
+    font-style: italic;
+    text-align: justify;
+}
+#bg5
+{
+    background-image: url("images/bg4.jpg");
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center center;
+    background-attachment: fixed;
+}
+#icon
+{
+    margin-top: 3%;
+    align-items: center;
+    margin-left: 10%;
+    color: aliceblue;
+    font-size: 25px;
+    
+}
+#para2
+{   
+    margin-top: 3%;
+    font-size: 20px;
+    font-style: italic;
+    text-align:center;
+    color: aliceblue;
+}
+#contact
+{
+    background-color: rgb(43, 63, 64);
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 2%;
+    padding-bottom: 3%;
+    opacity: 0.5;
+    border-radius: 10%;
+}
+#bg6
+{
+    background-repeat: no-repeat;
+    background-size: cover;
+}

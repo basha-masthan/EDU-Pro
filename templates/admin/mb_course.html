@@ -1,0 +1,29 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "css/bm.css" %}">
+    <script src="{% static "js/bm.js" %}"></script>
+</head>
+<body>
+    
+
+
+<table class="container col-5 table table-hover table-bordered">
+    
+    <tr class="table-primary">
+        <td>Course Name</td>
+        <td>Price</td>
+    </tr>
+    {% for c in course %}
+    <tr>
+        <td>{{c.name}} </td>
+        <td>{{c.price}} </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+</html>

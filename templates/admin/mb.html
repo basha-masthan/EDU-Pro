@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static "css/bm.css" %}">
+    <script src="{% static "js/bm.js" %}"></script>
+</head>
+<body>
+    {% b %}
+    <div class="box">
+        <div class="navbar container alert alert-info">
+            <div class="logo">Admin Panel</div>
+            <div class="end">
+                <a class="nav-link btn" href="/logout/">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <table class='table'>
+            <tr>
+                <th>Name</th>
+                <th>Mail</th>
+                <th>Education</th>
+                <th>Gender</th>
+            </tr>
+        {% for usr in users %}
+          
+            <tr>
+                <td>{{usr.fname}} {{usr.lname}}</td>
+                <td>{{usr.email}} </td>
+                <td>{{usr.edu}} </td>
+                <td>{{usr.gender}} </td>
+            </tr>
+
+        {% endfor %}
+            
+        </table>
+    </div>
+</body>
+</html>

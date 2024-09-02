@@ -1,0 +1,42 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'bm.css' %}">
+    <script src="{% static 'bm.js' %}"></script>
+    <!-- Option 1: Include in HTML -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+</head>
+<body id="bg5">
+    <div class="container">
+        <h1 class="text-center text-white mt-3">Contact Us</h1>
+        <p id="para2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum suscipit, ipsam possimus voluptate quaerat inventore quidem rem quod sequi libero doloribus id aliquid ipsum sint atque magnam adipisci sit. Autem.</p>
+        <div class="row" id="icon">
+            <div class="col-6">
+                <i class="bi-envelope"> https://www.gmail.com</i><br>
+                <i class="bi-facebook "> https://www.facebook.com</i><br>   
+                <i class="bi-twitter"> https://www.twitter.com</i><br>
+                <i class="bi-instagram"> https://www.bi-instagram.com</i><br>
+                <i class="bi-linkedin"> https://www.bi-linkedin.com</i><br>
+                <i class="bi-github"> https://www.github.com</i><br>
+                <i class="bi-youtube"> https://www.youtube.com</i><br>
+            </div>
+            <div class="col-6" id="contact">
+                <form>
+                    <div class="form-group">
+                        <h1 class="text-center">Contact</h1>                   
+                        <input type="text" class="form-control mt-3" id="exampleFormControlInput1" placeholder="Full Name">
+                        <input type="text" class="form-control mt-4" id="exampleFormControlInput1" placeholder="Email">
+                        <textarea class="form-control mt-4" id="exampleFormControlTextarea1" rows="3" placeholder="Enter the message"></textarea>
+                        <button type="submit" class="btn btn-info w-100 mt-5">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

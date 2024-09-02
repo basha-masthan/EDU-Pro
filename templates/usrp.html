@@ -1,0 +1,133 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDU - Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
+    <style>
+      body{
+        /* background-color: red; */
+        background-image: url('{% static "img/usrp-bg2.jpg" %}');
+        background-position: center center;
+        background-size: cover;
+        /* background-blend-mode:color-dodge; */
+      }
+      .dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+}
+
+
+    </style>
+  </head>
+<body>
+  <div class="box">
+    <div class="nav container p-2 alert alert-primary opacity-25">
+      <div class="col">
+        <div class="logo">
+          <h2 class="text-dark fw-bold">EDU Pro Solutions</h2>
+        </div>
+      </div>
+      <div class="float-end row">
+        <div class="col">
+          <form action="/usredit/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="usermail" value="{{user.email}}">
+            <input type="submit" class="btn btn-info" name="" id="" value="USER">
+            
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+            
+          </form>
+        </div>
+        <div class="col"><form action="/logout/" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="usermail" value="{{user.email}}">
+          <input class="px-4 mt-1 bg-white border border-white btn" type="submit" value="Logout" >
+          <!-- <div class="px-4 mt-1 bg-white border border-white btn" type="submit" >Logout</div> -->
+        </form></div>
+      </div>
+    </div>
+
+    <div class="b1 bg-dark p-3 text-white opacity-50 container">
+      <h1 class="navbar-brand  text-center alert">Welcome Mr.{{user.fname}} {{user.lname}}</h1>
+     
+      <div class="bb2 float-end">
+        <div class="text-white bg-primary">
+          <form action="/cart/" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="user_id" value="{{user.email}}">
+            <input type="submit" class="btn btn-primary" value="Add Course +">
+          </form>
+        </div>
+      </div>
+
+      <!-- Course Card of USER -->
+  
+        
+      <div  class="bb1 btn col-4 shadow alert border bg-white text-dark text-center m-auto" style="height: 20pc;">
+        
+          <form  action="/delcard/" method="post" >
+            {% csrf_token %}
+            <input type="hidden" name="cname" value="{{course.name}}">
+            <input  type="submit" class="btn btn-danger float-start" value="Remove">
+          </form>
+     
+        <div class="txt"><p class="text-center alert p-4 mt-5 display-6">{{course.name}}</p></div>
+        <div class="img"></div>
+
+        <form  action="/payment/" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="course" value="{{course.name}}">
+          <input  type="submit" class="btn btn-primary" value="Go to Course">
+        </form>
+
+
+
+        <!-- <div class="info"><p>{{course.info}}</p></div>
+        <div class="price"><p>{{course.price}} </p></div> -->
+      </div>
+
+      <!-- Add Course -->
+
+
+      <script>
+        function payment(){
+          window.location.href = "/payment/";
+        } 
+      </script>
+    </div>
+  </div>
+</body>
+</html>

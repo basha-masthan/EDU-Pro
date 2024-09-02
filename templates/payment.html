@@ -1,0 +1,47 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDU - Payments</title>
+    <link rel="stylesheet" href="{% static "css/bm.css" %}">
+    <script src="{% static "js/bm.js" %}"></script>
+</head>
+<body>
+    
+
+    <div class="container border align-content-center" style="height: 80vh; margin-top: 5%;">
+        <div class="row m-auto" >
+            <div class="col-lg-4 text-center align-content-center align-content-center alert alert-info" style="height: 25pc;">
+                
+                <form action="/usrgd/">
+                    <h1><span class="fw-bolder">{{course}}</span> Basic Plan</h1>
+                    Free Trail At Starts from 0/- <br>
+                    Basic Information <br>
+                    Includes Specified Mock tests <br>
+                    <input type="submit" class="btn btn-primary alert alert-dark mt-5 border-1 shadow" value="Enter into the Course">
+                </form>
+            
+            </div>
+            
+            <div class="col"></div>
+            <div class="col-lg-4 align-content-center alert alert-danger bg-info text-center" style="height: 25pc;">
+            <form action="">
+                <h1><span class="fw-bolder">{{course}}</span> Premium Plan</h1>
+                <span class="fw-bold">Premium starts from 299/- <br></span>
+                <span class="p-2 ">
+                Includes Unlimited Mock tests <br>
+                Unlimited Video Lectures <br>
+                Unlimited Quizzes <br>
+                Unlimited Notes <br>
+                Unlimited Projects <br>
+                </span>
+                <input type="submit" class="btn btn-secondary alert alert-info mt-5 shadow" value="Proceed toPayment">
+            </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

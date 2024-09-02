@@ -1,0 +1,34 @@
+{% extends "ind1.html" %}
+
+{% block show %}{% endblock show %}
+{% block cart %}
+<div class="bb1 m-2 row align-content-center justify-content-center" >
+    <h1 class="navbar-brand  text-center alert">Welcome Mr.{{user.fname}} {{user.lname}}</h1>
+    <h3 class="text-center">{{msg}}</h3>
+    {% for itm in itms %}
+    <div id="RG" class="box border m-2" style="width: 20pc;height: 30pc;">
+        <div class="txt">
+
+
+            <h1 class="text-white text-center alert">{{itm.name}}</h1>
+        </div>
+        <div class="img m-auto" style="height:15pc;">
+            <img src="{{Baseimg}}/{{itm.img}}" alt="" class="m-auto" srcset="" style="width:80%;margin: auto;">
+        </div>
+        <div class="info" style="height: 8.5vh;">
+            <p class="text-white text-center">{{itm.info}}</p>
+        </div>
+        <div class="b text-center">
+            <form action="/cartadd/" method="POST" ">
+                {% csrf_token %}
+                <input type="hidden" name="usrid" value="{{user.id}}" id="">
+                <input type="hidden" name="cname" value="{{itm.name}}" name="id">
+                <input type="submit" class="btn btn-primary" value="{{itm.price}}" name="price" ">
+            </form>
+        </div>
+    </div>
+    
+    {% endfor %}
+</div>
+
+{% endblock cart %}

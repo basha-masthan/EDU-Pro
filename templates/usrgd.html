@@ -1,0 +1,76 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EDU - USER Ground</title>
+    <link rel="stylesheet" href="{% static "css/bm.css" %}">
+    <script src="{% static "js/bm.js" %}"></script>
+</head>
+<body>
+    <div class="Mpage">
+        <top>
+            <div class="container  mt-3 ">    
+                <nav class="navbar navbar-light alert col bg-light">
+                    <a class="navbar-brand" href="#">
+                        <img src="https://d33wubrfki0l68.cloudfront.net/a72c5225705ff43d8db342283e13069b8f9d916a/3aa6a/img/logo.png" alt="" width="100px">
+                    </a>
+                    <div class="links">
+                        <ul class="navbar-nav flex-row">
+                            <li class="nav-item">
+                                <a class="nav-link p-md-3" href="about.html">About</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-md-3" href="contact.html">Contact</a>
+                            </li>
+                            <li class="nav-item">
+                                <!-- <a class="nav-link p-md-3" href="/login/">Login</a> -->
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link p-md-3" href="/logout/">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <!-- wellcome  -->
+            </div>
+        </top>
+       <div class="p1">
+        <div class="p1 container">
+            <div class=" dropdown float-end ">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+                    Course 
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                </ul>
+            </div>
+            <h1 class="navbar-brand  text-center alert">Welcome Mr. {{user.fname}} {{user.lname}}</h1>
+            <!-- <br><br> -->
+        </div>
+        <div class="container-fliud col-lg-11 border m-auto">
+            <div class="cors-t border" style="width: 200px;height: 250px;">
+                <h3 class="text-uppercase mt-3 bg-light p-4 text-center">{{course}} </h3>    
+                <div class="tasks">
+                    <table class="table text-center table-hover table-bordered">
+                        <tr class="">
+                            <td class="btn w-100">Module 1</td>
+                        </tr>
+                        <tr>
+                            <td class="btn w-100">Module 2</td>
+                        </tr>
+                        <tr>
+                            <td class="btn w-100">Module 3</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+       </div>
+    </div>
+</body>
+</html>

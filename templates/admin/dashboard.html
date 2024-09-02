@@ -1,0 +1,55 @@
+{% load static  %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{% static "css/bm.css" %}">
+    <script src="{% static "js/bm.js" %}"></script>
+</head>
+<body>
+    {% block admin_head %}
+    <div class="Mpage">
+        <div class="nav">
+            <div class="container-fluid col-8">
+                <h2 class="alert text-center alert-dismissible alert-info mt-3">Admin Dashboard</h2>
+            </div>
+        </div>
+       
+        <div class="container">
+            <div class="row text-center">
+                <div class="col-5 text-center h-50" >
+                    <h1>Users</h1>
+                      <h2>Total Users: <span class="badge bg-info"> </span></h2>
+
+                </div>
+                
+                <div class="col-5 text-center">
+                    <h1>Users</h1>
+                </div>
+            </div>
+        </div>
+       
+       
+       
+       
+       
+        <!-- <div class="container status row m-auto text-center" style="margin-top: 10%;">
+            <div class="userstatus me-5 border" style="width: 350px;height: 200px;">
+                <p class="display-5 text-center mt-5" style="display: flex;align-content:center;justify-content: center; width: 100%;">User Data</p>
+                <form action="/mb/users/" class="text-center">
+                    <input type="submit" class="btn btn-primary  alert alert-info"  value="Check Data">
+                </form>
+            </div>
+            <div class="userstatus me-5 border" style="width: 350px;height: 200px;">
+                <p class="display-5 text-center mt-5" style="display: flex;align-content:center;justify-content: center; width: 100%;">Course Data</p>
+                <form action="/mb/course/" class="text-center">
+                    <input type="submit" class="btn btn-primary  alert alert-info"  value="Check Data">
+                </form>
+            </div> -->
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

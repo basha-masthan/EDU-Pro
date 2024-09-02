@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - User data</title>
+    <link rel="stylesheet" href="{% static "css/bm.css" %}">
+    <script src="{% static "js/bm.js" %}"></script>
+</head>
+<body>
+    
+    <div class="contaoner-fluid mt-3">
+        <table class="container table table-striped table-responsive text-center">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Gender</th>
+              <th>Education</th>
+              <th>Course</th>
+              <th>Address</th>
+              <th>Action</th>  
+            </tr>
+          </thead>
+          <tbody>
+              
+              {% for usr in users %}
+            <tr>
+                <td>{{usr.fname}} {{usr.lname}}</td>
+                <td>{{usr.gender}}</td>
+                <td>{{usr.edu}}</td>
+                <td>{{usr.cors}}</td>
+                <td>{{usr.address}}</td>
+           
+                
+                <td class="col"> 
+                    <input type="submit" class="btn btn-info" name="operation" id="" value="View Profile">
+                </td>
+            </tr>
+            {% endfor %}
+            
+          </tbody>
+        </table>
+    </div>
+
+
+</body>
+</html>
