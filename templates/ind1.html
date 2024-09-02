@@ -32,12 +32,20 @@
         nav{
             position: sticky; 
         }
+        #f1{
+            font-size:25px;
+        }
+        #f2{
+            font-family: 'Times New Roman', Times, serif;
+            font-weight:lighter;
+            font-size: 70px;
+        }
     </style>
 </head>
 <body>
     <div class="container col-10 mt-2">
     {% block show %}
-    <nav class="navbar navbar-expand-lg alert alert-info  opacity-50">
+    <nav class="navbar navbar-expand-lg alert alert-info  opacity-30">
         <div class="logo col">
             <a class="navbar-brand" href="#" >
                 <img src="https://d33wubrfki0l68.cloudfront.net/a72c5225705ff43d8db342283e13069b8f9d916a/3aa6a/img/logo.png" alt="" width="100px">
@@ -50,19 +58,19 @@
         <div class="links col-xl align-content-end justify-content-end collapse navbar-collapse" id="menu">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Home</a>
+                    <a class="nav-link" id="f1" href="/">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/about/">About</a>
+                    <a class="nav-link" id="f1" href="/about/">About</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/contact/">Contact</a>
+                    <a class="nav-link" id="f1" href="/register/">Register</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/login/">Login</a>
+                    <a class="nav-link" id="f1" href="/login/">Login</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/register/">Register</a>
+                    <a class="nav-link" id="f1" href="/contact/">Contact</a>
                 </li>
             </ul>
         </div>
@@ -71,8 +79,8 @@
 <div class="p01">
     <div class="bb01 container" style="height: 50vh;">
        <div class="row">
-        <div class="txt col-md-4 text-center" style="height: 20pc;width: 20pc;display: flex;align-content:center;">
-            <h1 class="text-white align-content-center justify-content-center"><span class="display-1">EDU</span><br> Pro Solutions</h1>
+        <div class="txt col-md-4 text-center" style="height: 20pc;width: 17pc;margin-left: 28px;margin-top: 3%; display: flex;align-content:center;">
+            <h1 id="f2" class="text-white align-content-center justify-content-center"><span >EDU</span><br> Pro Solutions</h1>
         </div>
         <div class="posters col-md-9 ">
             <!-- Carousel -->
@@ -89,13 +97,13 @@
 <!-- The slideshow/carousel -->
 <div class="carousel-inner text-center" style="height: 25pc;">
   <div class="carousel-item active">
-    <img src="{% static "img/cc3.jpg" %}" alt="Los Angeles" class="d-block" style="width: 100%;">
+    <img src="{% static "img/cc3.jpg" %}" alt="Los Angeles" class="d-block w-100" style="width: 100%;">
   </div>
   <div class="carousel-item">
-    <img src="{% static "img/ccpy1.jpg" %}" alt="Chicago" class="d-block text-center m-auto h-75" style="width:96%;">
+    <img src="{% static "img/ccpy1.jpg" %}" alt="Chicago" class="d-block text-center m-auto w-100" style="width:96%;">
   </div>
   <div class="carousel-item">
-    <img src="{% static "img/ccjava.png" %}" alt="Chicago" class="d-block text-center m-auto h-75" style="width:95%;">
+    <img src="{% static "img/ccjava.png" %}" alt="Chicago" class="d-block text-center m-auto h-75 w-100" style="width:95%; margin-left: 20%;">
   </div>
   <div class="carousel-item">
     <img src="{% static "img/cc1.avif" %}" alt="New York" class="d-block" style="width:100%;padding: ">

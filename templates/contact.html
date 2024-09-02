@@ -4,19 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Edu-Pro</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'bm.css' %}">
-    <script src="{% static 'bm.js' %}"></script>
     <!-- Option 1: Include in HTML -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 </head>
+<style>
+    #bg5
+{
+    background-image: url("{% static 'img/con.jpg'%}");
+    background-repeat: no-repeat;
+    background-size: cover; 
+    background-position: center center;
+    background-attachment: fixed;
+}
+</style>
 <body id="bg5">
     <div class="container">
-        <h1 class="text-center text-white mt-3">Contact Us</h1>
-        <p id="para2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum suscipit, ipsam possimus voluptate quaerat inventore quidem rem quod sequi libero doloribus id aliquid ipsum sint atque magnam adipisci sit. Autem.</p>
+        <h1 class="text-center text-white mt-3" style="font-family: 'Times New Roman', Times, serif; font-size: 50px; margin-top: 2%;">Contact Us</h1>
+        <p id="para2" style="font-size: 20px;">A Contact Us page is one of the most valuable pages of your website. It allows prospects and customers to reach out to you for queries, support, or general feedback. Contact Us pages should be easy to navigate, offer multiple contact methods and have a personal touch.</p>
         <div class="row" id="icon">
-            <div class="col-6">
+            <div class="col-5">
                 <i class="bi-envelope"> https://www.gmail.com</i><br>
                 <i class="bi-facebook "> https://www.facebook.com</i><br>   
                 <i class="bi-twitter"> https://www.twitter.com</i><br>
@@ -25,7 +33,7 @@
                 <i class="bi-github"> https://www.github.com</i><br>
                 <i class="bi-youtube"> https://www.youtube.com</i><br>
             </div>
-            <div class="col-6" id="contact">
+            <div class="col-5" id="contact">
                 <form>
                     <div class="form-group">
                         <h1 class="text-center">Contact</h1>                   
@@ -35,8 +43,11 @@
                         <button type="submit" class="btn btn-info w-100 mt-5">Submit</button>
                     </div>
                 </form>
+                
             </div>
+
         </div>
+        
     </div>
 </body>
 </html>

@@ -7,42 +7,45 @@
     <title>EDU - Login</title>
     <link rel="stylesheet" href="{% static "css/bm.css" %}">
     <script src="{% static "js/bm.js" %}"></script>
-    <style>
-        body{
-            /* background-image: url('https://imgs.search.brave.com/LL5bbITFm9uxtw7JXvUjtWq4wFk4HX9eu-y0mdsh4RM/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQ4/MDY3NDEwNy9waG90/by8zZC1yZW5kZXJp/bmctdXNlci1hY2Nv/dW50LXByb3RlY3Rp/b24tb25saW5lLXBh/eW1lbnRzLWFuZC1i/YW5raW5nLXNlY3Vy/ZS53ZWJwP2I9MSZz/PTYxMng2MTImdz0w/Jms9MjAmYz15aE04/YVJzTzBobFhxYW9t/cy12UnVidC1TRXVP/aFdhWjVkbm91TlhM/Y3JZPQ'); */
-            background-repeat: no-repeat;
-            background-position: center;background-size: cover;
-        }
-    </style>
 </head>
+<style>
+    body{
+        background-image: url("{% static 'img/log2.jpg'%}");
+        background-repeat: no-repeat;
+        background-size: cover; 
+        background-position: center center;
+        background-attachment: fixed;
+    }
+    #r1
+    {
+        background-color:rgb(49, 79, 105);
+        opacity: 0.9;
+        padding: 10px;
+        border-radius: 8px;
+    }
+</style>
 <body>
     <div class="box">
-        
-        <h3><a href="/" class="p-2 m-3">
-        <span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
-                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
-              </svg>
-        </span>    
-        </a> </h3>
-        <h2 class="text-center alert alert-info container ">Login</h2>
+        <h3 class="mt-4"><a href="/">HOME</a> </h3>
+        <h2 class="text-center alert alert-info container col-6 ">Login Page</h2>
         <!-- <p class="text-center">{{msg}}</p> -->
-        <div class="container col-md-8">                
+        <div class="container col-4 mt-5" id="r1">                
             <form action="/login/" method="post" >
                 {% csrf_token %}
-                {{msg}}
                 <input class="form-control mb-3" type="text" name="username"  placeholder="USERNAME" id="" required>
                 <input class="form-control mb-3" type="password" name="pswd" id="" placeholder="PASSWORD" required>
                 
                 <div class="container col-5 m-auto text-center">
-                    <button type="submit" class="col-8 btn btn-primary">Login</button>
+                    <input type="submit" onclick="" class="col-6 btn btn-primary text-center" value="Login">                
                 </div>
+             
             </form>
         </div>
 
     </div>
-
+   
     <script>
+        
     </script>
 </body>
 </html>
