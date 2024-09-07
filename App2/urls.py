@@ -6,6 +6,7 @@ urlpatterns = [
     path('about/',about),
     path('usredit/',usredit),
     path('contact/',contact),
+    path('msg/',msg),
     path('otp/',uotp),
     path('register/',register),
     path('usrpage/',usrpage),
@@ -20,6 +21,6 @@ urlpatterns = [
     path('delcard/',delcard),
     path('usrgd/',usrgd),
     path('mb/',adminpage),
-    path('mb/course/',mb_course),
     path('mb/users/',mb_users),
+    path('mb/courses/',mb_course),
 ]

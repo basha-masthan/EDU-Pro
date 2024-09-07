@@ -3,18 +3,15 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
-from .models import Course,usrData,cart
+from .models import *
 import random
 from django.contrib.auth import logout
 
 
-
-    # My OTP Code 
-
+ 
 import random
 import smtplib
 from email.message import EmailMessage
-
 otp_list=[]
 
  
@@ -32,6 +29,16 @@ def about(request):
 
 def contact(request):
     return render(request, 'contact.html')
+
+def msg(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        msg = request.POST.get('msg')
+        m=Contact_data(fullname=name,email=email,msg=msg)
+        m.save()
+        return redirect('/login/')
+    return render(request,'contact.html',{'msg':"Email already Exists!",})
 
 def usrpage(request):
     usercourse = cart.objects.all()
@@ -60,20 +67,8 @@ def login(request):
  
     try:
         usr = usrData.objects.get(usr=request.POST.get('username'),pswd=request.POST.get('pswd'))
-        request.session['usr']=usr.usr
-        otp_list.clear()
-        otp = random.randint(10000,99999)
-        otp_list.append(otp)
-        server = smtplib.SMTP('smtp.gmail.com',587)
-        server.starttls()
-        server.login('bashamasthan31@gmail.com','dygq eorh yspf jhbx')
-        msg = EmailMessage()
-        msg['From'] = 'EDU Pro Solutions'
-        msg['Subject'] = 'Registration OTP Code'
-        msg.set_content(f"Your One Time Password is: {otp} \n Thank you for Choosing Our Platform to Improve Your Knowledge")
-        msg['To'] = usr.email
-        server.send_message(msg)
-        print(otp)
+        request.session['usr']=usr.usr   
+
         return redirect('/otp/')
     except Exception as e:
         pass
@@ -82,19 +77,36 @@ def login(request):
 
 
 def uotp(request):
-    print("Uotp Function")
-    return render(request,'log_auth.html')
+    usr = request.session['usr']
+    r = usrData.objects.get(usr=usr)
+    otp_list.clear()
+    otp = random.randint(10000,99999)
+    otp_list.append(otp)
+    server = smtplib.SMTP('smtp.gmail.com',587)
+    server.starttls()
+    server.login('bashamasthan31@gmail.com','dygq eorh yspf jhbx')  # Change the details...
+    msg = EmailMessage()
+    msg['From'] = 'EDU Pro Solutions'
+    msg['Subject'] = 'Registration OTP Code'
+    msg.set_content(f"Your One Time Password is: {otp} \n Thank you for Choosing Our Platform to Improve Your Knowledge")
+    msg['To'] = r.email
+    server.send_message(msg) 
+
+    print(otp)
+    return render(request,'log_auth.html') 
 
 def Auth_otp(request):
     otp=otp_list[0]
     
     if request.method=="POST":
         otp_entered = request.POST.get('uotp')
-        if int(otp_entered)==int(otp):
-            return redirect('/usrp/')
+        if int(otp_entered)==int(otp):                          
+            return redirect('/usrp')
         else:
-            return render(request,'log_auth.html',{'msg2':"Incorrect OTP"})
+            return render(request,'log_auth.html',{'msg2':"Invalid OTP"})
     return redirect('/login/')
+
+
 def usrp(request):
     user = request.session['usr']
     usrs = usrData.objects.get(usr=user)
@@ -179,7 +191,7 @@ def usrgd(request):
     usrs = usrData.objects.get(usr=user)
     r=Course.objects.get(name=usrs.cors)
     rr = r.name
-    return render(request,'usrgd.html',{'user':usrs,'course': rr})
+    return render(request,'usrgd.html',{'user':usrs,'course': r})
 
 def delcard(request):
     carts = cart.objects.get(course=request.POST.get('cname'))

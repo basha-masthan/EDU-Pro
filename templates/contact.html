@@ -34,12 +34,13 @@
                 <i class="bi-youtube"> https://www.youtube.com</i><br>
             </div>
             <div class="col-5" id="contact">
-                <form>
+                <form action="/msg/" method="post">
+                    {% csrf_token %}
                     <div class="form-group">
                         <h1 class="text-center">Contact</h1>                   
-                        <input type="text" class="form-control mt-3" id="exampleFormControlInput1" placeholder="Full Name">
-                        <input type="text" class="form-control mt-4" id="exampleFormControlInput1" placeholder="Email">
-                        <textarea class="form-control mt-4" id="exampleFormControlTextarea1" rows="3" placeholder="Enter the message"></textarea>
+                        <input type="text" class="form-control mt-3" id="exampleFormControlInput1" placeholder="Full Name" name="name">
+                        <input type="text" class="form-control mt-4" id="exampleFormControlInput1" placeholder="Email" name="email">
+                        <textarea class="form-control mt-4" id="exampleFormControlTextarea1" rows="3" placeholder="Enter the message" name="msg"></textarea>
                         <button type="submit" class="btn btn-info w-100 mt-5">Submit</button>
                     </div>
                 </form>

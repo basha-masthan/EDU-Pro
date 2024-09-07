@@ -5,6 +5,7 @@ import random
 class Course(models.Model):
     name = models.CharField(primary_key=True, max_length=30)
     img = models.ImageField()
+    d_img = models.ImageField()
     info = models.CharField(max_length=100)
     price = models.IntegerField()
 
@@ -31,3 +32,8 @@ class cart(models.Model):
     usr= models.CharField(max_length=30)
     course = models.CharField(max_length=30)
     
+
+class Contact_data(models.Model):
+    email = models.EmailField(max_length=30,unique=True,primary_key=True)
+    fullname = models.CharField(max_length=50)
+    msg = models.CharField(max_length=200)

@@ -44,28 +44,7 @@
             <input type="submit" class="btn btn-info" name="" id="" value="USER">
             
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
 
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
 
 
             
@@ -96,7 +75,7 @@
       <!-- Course Card of USER -->
   
         
-      <div  class="bb1 btn col-4 shadow alert border bg-white text-dark text-center m-auto" style="height: 20pc;">
+      <div  class="bb1 btn col-4 shadow alert border bg-white text-dark text-center m-auto" style="height: 25pc;">
         
           <form  action="/delcard/" method="post" >
             {% csrf_token %}
@@ -107,10 +86,16 @@
         <div class="txt"><p class="text-center alert p-4 mt-5 display-6">{{course.name}}</p></div>
         <div class="img"></div>
 
+        <form  action="/usrgd/" method="post">
+          {% csrf_token %}
+          <input type="hidden" name="course" value="{{course.name}}">
+          <input  type="submit" class="alert alert-primary btn btn-primary" value="Go to Course">
+        </form>
+        <br>
         <form  action="/payment/" method="post">
           {% csrf_token %}
           <input type="hidden" name="course" value="{{course.name}}">
-          <input  type="submit" class="btn btn-primary" value="Go to Course">
+          <input  type="submit" class="btn alert alert-dark btn-outline-info" value="Make Payment">
         </form>
 
 

@@ -9,7 +9,6 @@
     <script src="{% static "js/bm.js" %}"></script>
 </head>
 <body>
-    {% block admin_head %}
     <div class="Mpage">
         <div class="nav">
             <div class="container-fluid col-8">
@@ -19,14 +18,12 @@
        
         <div class="container">
             <div class="row text-center">
-                <div class="col-5 text-center h-50" >
-                    <h1>Users</h1>
-                      <h2>Total Users: <span class="badge bg-info"> </span></h2>
-
+                <div class="col-5 btn btn-info alert alert-danger text-center mt-5 p-5 h-50 border" onclick="users()">
+                    <h1>User Data</h1>
                 </div>
-                
-                <div class="col-5 text-center">
-                    <h1>Users</h1>
+                <div class="col-1"></div>
+                <div class="col-5 btn btn-primary alert alert-dark text-center mt-5 p-5 h-50 border" onclick="cors()">
+                    <h1>Course Data</h1>
                 </div>
             </div>
         </div>
@@ -50,6 +47,17 @@
             </div> -->
         </div>
     </div>
-    {% endblock %}
+    
+
+    <script>
+        // navigate to 
+        function users() {
+            window.location.href = "/mb/users/";
+        }
+        function cors() {
+            window.location.href = "/mb/courses/";
+        }
+    </script>
+
 </body>
 </html>

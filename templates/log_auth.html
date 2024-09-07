@@ -7,6 +7,26 @@
     <title>Auth OTP</title>
     <link rel="stylesheet" href="{% static "css/bm.css" %}">
     <script src="{% static "js/bm.js" %}"></script>
+    <style>
+        body{
+            width: 100vw;height: 100vh;
+            background-image: url('https://imageio.forbes.com/specials-images/imageserve/6166e001835457e3717987e6/0x0.jpg?format=jpg&height=900&width=1600&fit=bounds') ;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+        #inp1{
+            padding: 10px;border-radius: 10px;width: 80%;
+        }
+        .otpx{
+            opacity: 0.7;border-radius: 10px;
+            box-shadow: 0px 0px 50px white;
+            background-color: black;
+            border: 1px solid black;
+            position:absolute;
+            top: 35%;left: 10%;
+        }
+    </style>
 </head>
 <body>
     <h3><a href="/" class="p-2 m-3">
@@ -16,15 +36,21 @@
               </svg>
         </span>    
         </a> </h3>
-    <div class="otpx col mt-5">
-        <form action="/Auth_otp/" method="post" class=" text-center">
-            {% csrf_token %}
-            <input type="hidden" name="username" value="{{username}}">
-            {{msg2}}
-            <input type="text" class="col-5 text-center m-3 form-input" value="" name="uotp" placeholder="Enter OTP"><br>
-            <input type="submit"  class="m-3 col-5 btn btn-primary text-center" value="Login"> 
-            <input type="reset" class="btn btn-secondary" value="Resend OTP">               
-    </form>
-    </div>
+        <div class=" row col">
+            <div class="col-1"></div>
+            <div class="otpx col-5 mt-5">
+                <div class="col"><h3 class="text-center text-white fw-bold p-2 text-decoration-underline">OTP Validation</h3></div>
+            <form action="/Auth_otp/" method="post" class=" text-center">
+                {% csrf_token %}
+                <input type="hidden" name="username" value="{{username}}">
+                <p class="text-white">{{msg2}}</p>
+                <input id="inp1" type="text" class="col-5 text-center m-3 form-input" value="" name="uotp" placeholder="Enter OTP"><br>
+                <input type="submit"  class="m-3 col-5 btn btn-primary text-center" value="Login"> 
+                <a href="/otp/">
+                    <div class="btn btn-primary">Re Send OTP</div>
+                </a>
+        </form>
+        </div>
+        </div>
 </body>
 </html>

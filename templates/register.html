@@ -8,14 +8,40 @@
     <link rel="stylesheet" href="{% static "css/bm.css" %}">
     <script src="{% static "js/bm.js" %}"></script>
     <style>
+        body{
+            background-image: url('https://wallpapercave.com/wp/wp7639045.jpg');
+            background-position: center;
+            background-size: cover;
+        }
+        label{
+            color: white;float: inline-end;
+            font-weight: bold;
+            text-shadow: 2px 2px 10px black;
+        }
+        input{
+            opacity: 0.8;
+            outline-offset: none;
+        }
         input{
             outline: hidden;
+        }
+        #h1top{
+            text-shadow: 2px 2px 2px white,-2px -2px 2px white,4px 4px 5px red;
+            /* text-shadow: -2px -2px white; */
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <div class="box">
-        <h1 class="alert text-center">New User Registration </h1>
+    <h3><a href="/" class="p-2 m-3 btn btn-info" >
+        <span>
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" class="bi bi-house" viewBox="0 0 16 16">
+                <path d="M8.707 1.5a1 1 0 0 0-1.414 0L.646 8.146a.5.5 0 0 0 .708.708L2 8.207V13.5A1.5 1.5 0 0 0 3.5 15h9a1.5 1.5 0 0 0 1.5-1.5V8.207l.646.647a.5.5 0 0 0 .708-.708L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293zM13 7.207V13.5a.5.5 0 0 1-.5.5h-9a.5.5 0 0 1-.5-.5V7.207l5-5z"/>
+              </svg>
+        </span>    
+        </a> </h3>
+    <div class="box" style="margin-top: -3.5%;">
+        <h1 class="alert text-center" id="h1top">New User Registration </h1>
         <form method="post" action="/usrpage/">
             {% csrf_token %}
             <div class="container">
