@@ -254,5 +254,7 @@ def viewusers(request):
     users=usrData.objects.all()
     return render(request,'admin/mb_user.html',{"users":users})
 
-
+def msgs(request):
+    ms = Contact_data.objects.all()
+    return render(request,'admin/usr_msg.html',{'msgs': ms})
 

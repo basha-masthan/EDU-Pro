@@ -9,9 +9,9 @@
     <script src="{% static "js/bm.js" %}"></script>
 </head>
 <body>
-    
+    <h2 class="col-5 m-auto text-center alert alert-light bg-info fw-bold mt-3">USERS FROM DATABASE </h2>
     <div class="contaoner-fluid mt-3">
-        <table class="container table table-striped table-responsive text-center">
+        <table class="container table  table-striped table-responsive text-center">
           <thead>
             <tr>
               <th>Name</th>
@@ -35,6 +35,7 @@
                 
                 <td class="col"> 
                     <input type="submit" class="btn btn-info" name="operation" id="" value="View Profile">
+                    <input type="submit" class="btn btn-danger" name="operation" id="" value="Delete">
                 </td>
             </tr>
             {% endfor %}

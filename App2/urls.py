@@ -23,4 +23,5 @@ urlpatterns = [
     path('mb/',adminpage),
     path('mb/users/',mb_users),
     path('mb/courses/',mb_course),
+    path('mb/msg/',msgs),
 ]

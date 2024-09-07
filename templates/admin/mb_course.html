@@ -1,4 +1,5 @@
 {% load static  %}
+{% static "img" as Baseimg %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,21 +10,38 @@
     <script src="{% static "js/bm.js" %}"></script>
 </head>
 <body>
+    <h2 class="col-5 text-center alert alert-info m-auto mt-3">COURSE DATA FROM DB</h2>
+<div class="container mt-5">
+    <table class="container table table-hover table-bordered">
     
+        <tr class="table-primary">
+            <td>Course Name</td>
+            <td>Image</td>
+            <td>Poster</td>
+            <td>Price</td>
+            <td>Action</td>
+        </tr>
+        {% for c in course %}
+        <tr>
+            <td class="col-3">{{c.name}} </td>
+            <td>
+                <img src="{{Baseimg}}/{{c.img}} " alt="" width="5%">
+            </td>
+            <td>
+                <img src="{{Baseimg}}/{{c.d_img}} " alt="" width="15%">
+            </td>
+            <td class="col-1">{{c.price}} </td>
+            <td class="col-1 text-center">
+                <form action="" >
+                    <input type="hidden" name="id" value="{{c.id}}">
+                    <input type="submit" value="Delete" class="btn btn-danger">
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 
 
-<table class="container col-5 table table-hover table-bordered">
-    
-    <tr class="table-primary">
-        <td>Course Name</td>
-        <td>Price</td>
-    </tr>
-    {% for c in course %}
-    <tr>
-        <td>{{c.name}} </td>
-        <td>{{c.price}} </td>
-    </tr>
-    {% endfor %}
-</table>
 </body>
 </html>

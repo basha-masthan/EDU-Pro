@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Messages</title>
+    <link rel="stylesheet" href="{% static "css/bm.css" %}">
+    <script src="{% static "js/bm.js" %}"></script>
+</head>
+<body>
+    <div class="container">
+        <table class="table table-bordered table-hover table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Message</th>
+            </tr>
+            {% for msg in msgs %}
+              <tr>
+                <td>{{msg.fullname}} </td>
+                <td>{{msg.email}} </td>
+                <td>{{msg.msg}} </td>
+              </tr>
+            {% endfor %}
+        </table>
+    </div>
+</body>
+</html>
