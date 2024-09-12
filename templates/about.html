@@ -1,87 +1,85 @@
-<!-- about.html -->
+
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>About Us - EDU Pro Solutions</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <meta charset ="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <style>
+        /* styles.css */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+.navbar {
+    background-color: #333;
+    color: #fff;
+}
+
+.navbar-brand {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.nav-link {
+    color: #fff;
+}
+
+.nav-link:hover {
+    color: #ccc;
+}
+
+.about-section {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.about-section img {
+    width: 100
+    </style>
 </head>
-<style>
-     body{
-            background-image: url("{% static 'img/abv.jpg' %}");
-            background-size: cover;
-            background-position:  center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
-        }
-</style>
 <body>
-    <div class="container">
-        <h1 class="text-center" style="color: aliceblue; font-size: 60px; font-family:'Times New Roman', Times, serif; margin-top: 3%;">About Us</h1>
-        <p class="text-center" style="color: aliceblue; font-size: 40px; font-style: italic; margin-top: 1%;">Meet the team behind EDU Pro Solutions</p>
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/">EDU Pro Solutions</a>
+        </div>
+    </nav>
+
+    <!-- ABOUT SECTION -->
+    <div class="container mt-5">
         <div class="row">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="{% static 'img/t1.webp'%}" alt="" class="card-img-top">
-                    <div class="card-body">
-                        <h4 class="card-title" style="text-align: center;">John Doe</h4>
-                        <p class="card-text" style="text-align: center; font-style:italic; font-size: 20px;">Founder & CEO</p>
-                        <p class="card-text">John is the founder and CEO of EDU Pro Solutions. He has a passion for education and technology.</p>
-                    </div>
-                </div>
+            <div class="col-sm-2">
+                <img src="{% static "img/about_img.png" %}" alt="Your Image" class="img-fluid">
             </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="{% static 'img/t2.jpg'%}" alt="Team Member 2" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title" style="text-align: center;">Jane Smith</h5>
-                        <p class="card-text" style="text-align: center; font-style:italic; font-size: 20px;">CTO</p>
-                        <p class="card-text">Jane is the CTO of EDU Pro Solutions. She has extensive experience in software development and architecture.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="{% static 'img/t3.avif'%}" alt="Team Member 3" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title" style="text-align: center;">Bob Johnson</h5>
-                        <p class="card-text" style="text-align: center; font-style:italic; font-size: 20px;">Marketing Manager</p>
-                        <p class="card-text">Bob is the marketing manager of EDU Pro Solutions. He has a background in marketing and sales.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card" style="margin-top: 2%;">
-                    <img src="{% static 'img/t4.jpeg'%}" alt="Team Member 4" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title" style="text-align: center;">Alice Brown</h5>
-                        <p class="card-text" style="text-align: center; font-style:italic; font-size: 20px;">Course Creator</p>
-                        <p class="card-text">Alice is a course creator at EDU Pro Solutions. She has expertise in programming and education.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card" style="margin-top: 2%;">
-                    <img src="{% static 'img/t5.avif'%}" alt="Team Member 5" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title" style="text-align: center;">Mike Davis</h5>
-                        <p class="card-text" style="text-align: center; font-style:italic; font-size: 20px;">Designer</p>
-                        <p class="card-text">Mike is the designer at EDU Pro Solutions. He has a passion for user experience and design.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card" style="margin-top: 2%;">
-                    <img src="{% static 'img/t5.avif'%}" alt="Team Member 5" class="card-img-top">
-                    <div class="card-body">
-                        <h5 class="card-title" style="text-align: center;">Mike Davis</h5>
-                        <p class="card-text" style="text-align: center; font-style:italic; font-size: 20px;">Designer</p>
-                        <p class="card-text">Mike is the designer at EDU Pro Solutions. He has a passion for user experience and design.</p>
-                    </div>
-                </div>
+            <div class="col-sm-8">
+                <h2>About Us</h2>
+                <p>We are a team of passionate programmers dedicated to providing high-quality courses in programming languages such as Python, Java, and more. Our mission is to empower individuals with the skills they need to succeed in the tech industry.</p>
+                <p>Our story began with a simple idea: to make learning programming accessible to everyone. We believe that everyone deserves the opportunity to learn and grow, regardless of their background or experience level. With this vision in mind, we created a platform that offers engaging, interactive, and easy-to-follow courses that cater to different learning styles and needs.</p>
+                <h3>Our Values</h3>
+                <ul>
+                    <li><strong>Quality</strong>: We strive to provide high-quality courses that meet the highest standards of excellence.</li>
+                    <li><strong>Accessibility</strong>: We believe that learning should be accessible to everyone, regardless of their background or experience level.</li>
+                    <li><strong>Innovation</strong>: We continuously innovate and improve our courses to ensure that they remain relevant and effective.</li>
+                    <li><strong>Community</strong>: We foster a community of learners who support and encourage each other to achieve their goals.</li>
+                </ul>
+                <h3>Our Goals</h3>
+                <ul>
+                    <li><strong>Empower 10,000 learners</strong>: We aim to empower 10,000 learners with the skills they need to succeed in the tech industry within the next 2 years.</li>
+                    <li><strong>Expand our course offerings</strong>: We plan to expand our course offerings to include more programming languages and topics, ensuring that our learners have access to a wide range of skills and knowledge.</li>
+                    <li><strong>Build a community of learners</strong>: We aim to build a community of learners who support and encourage each other to achieve their goals.</li>
+                </ul>
             </div>
         </div>
-        <!-- <p class="text-center" style="margin-top: 2%; font-size: 30px; font-style: italic; color: cadetblue;">Designed by Django</p> -->
     </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
