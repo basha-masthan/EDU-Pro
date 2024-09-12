@@ -9,11 +9,11 @@ https://docs.djangoproject.com/en/5.0/howto/deployment/asgi/
 
 import os
 
-from django.core.asgi import get_asgi_application
+# from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proj1.settings')
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'proj1.settings')
 
-application = get_asgi_application()
+# application = get_asgi_application()
 
-# api/settings.py
-WSGI_APPLICATION = 'api.wsgi.app'
+# # api/settings.py
+# WSGI_APPLICATION = 'api.wsgi.app'
