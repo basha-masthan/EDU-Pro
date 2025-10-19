@@ -1,0 +1,250 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard - FUTURE BOUND TECH{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Welcome Section -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h2 class="mb-1">Welcome back, {{ user.first_name|default:user.username }}!</h2>
+                            <p class="text-muted mb-0">Continue your learning journey</p>
+                        </div>
+                        <div class="text-end">
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-calendar-event text-primary me-2 fs-4"></i>
+                                <div>
+                                    <small class="text-muted d-block">Last Login</small>
+                                    <span class="fw-bold">{{ user.last_login|date:"M d, Y" }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-book text-primary fs-1 mb-2"></i>
+                    <h4 class="mb-1">{{ enrollments.count }}</h4>
+                    <small class="text-muted">Enrolled Courses</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-check-circle text-success fs-1 mb-2"></i>
+                    <h4 class="mb-1">{{ enrollments|length }}</h4>
+                    <small class="text-muted">Courses in Progress</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-trophy text-warning fs-1 mb-2"></i>
+                    <h4 class="mb-1">{{ completed_count }}</h4>
+                    <small class="text-muted">Completed Courses</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card border-0 shadow-sm text-center">
+                <div class="card-body">
+                    <i class="bi bi-clock text-info fs-1 mb-2"></i>
+                    <h4 class="mb-1">{{ total_count }}</h4>
+                    <small class="text-muted">Total Courses</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- My Courses -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h3 class="mb-0">My Courses</h3>
+                <a href="{% url 'course_list' %}" class="btn btn-outline-primary">
+                    <i class="bi bi-plus-circle me-2"></i>Browse More Courses
+                </a>
+            </div>
+
+            {% if enrollments %}
+            <div class="row g-4">
+                {% for enrollment in enrollments %}
+                <div class="col-lg-6 col-xl-4">
+                    <div class="card h-100 border-0 shadow-sm hover-card">
+                        {% if enrollment.course.thumbnail %}
+                        <img src="{{ enrollment.course.thumbnail.url }}" class="card-img-top" alt="{{ enrollment.course.title }}" style="height: 180px; object-fit: cover;">
+                        {% else %}
+                        <div class="bg-primary text-white d-flex align-items-center justify-content-center" style="height: 180px;">
+                            <i class="bi bi-book display-4"></i>
+                        </div>
+                        {% endif %}
+
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <span class="badge bg-{{ enrollment.status|lower }}-subtle text-{{ enrollment.status|lower }}">
+                                    {{ enrollment.get_status_display }}
+                                </span>
+                                <small class="text-muted">{{ enrollment.enrollment_date|date:"M d, Y" }}</small>
+                            </div>
+
+                            <h5 class="card-title fw-bold mb-2">{{ enrollment.course.title }}</h5>
+                            <p class="card-text text-muted small mb-3">{{ enrollment.course.short_description }}</p>
+
+                            <!-- Progress Bar -->
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <small class="text-muted">Progress</small>
+                                    <small class="fw-bold">{{ enrollment.progress_percentage }}%</small>
+                                </div>
+                                <div class="progress" style="height: 8px;">
+                                    <div class="progress-bar bg-primary" role="progressbar"
+                                         style="--progress: {{ enrollment.progress_percentage }}%;"
+                                         aria-valuenow="{{ enrollment.progress_percentage }}"
+                                         aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">
+                                    <i class="bi bi-clock me-1"></i>{{ enrollment.course.duration_hours }} hours
+                                </small>
+                                <span class="badge bg-secondary">{{ enrollment.course.level|title }}</span>
+                            </div>
+                        </div>
+
+                        <div class="card-footer bg-transparent border-0">
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'course_progress' enrollment.id %}" class="btn btn-primary btn-sm">
+                                    <i class="bi bi-play-circle me-1"></i>Continue Learning
+                                </a>
+                                {% if enrollment.status == 'completed' %}
+                                <button class="btn btn-success btn-sm" disabled>
+                                    <i class="bi bi-check-circle me-1"></i>Completed
+                                </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <!-- No courses enrolled -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center py-5">
+                    <i class="bi bi-book display-4 text-muted mb-3"></i>
+                    <h4 class="text-muted mb-3">No courses enrolled yet</h4>
+                    <p class="text-muted mb-4">Start your learning journey by enrolling in a course</p>
+                    <a href="{% url 'course_list' %}" class="btn btn-primary btn-lg">
+                        <i class="bi bi-search me-2"></i>Browse Available Courses
+                    </a>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    {% if enrollments %}
+    <div class="row">
+        <div class="col">
+            <h4 class="mb-3">Recent Activity</h4>
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        {% for enrollment in enrollments|slice:":5" %}
+                        <div class="list-group-item border-0 px-0">
+                            <div class="d-flex align-items-center">
+                                <div class="flex-shrink-0 me-3">
+                                    {% if enrollment.course.thumbnail %}
+                                    <img src="{{ enrollment.course.thumbnail.url }}" alt="{{ enrollment.course.title }}"
+                                         class="rounded" style="width: 50px; height: 50px; object-fit: cover;">
+                                    {% else %}
+                                    <div class="bg-primary text-white rounded d-flex align-items-center justify-content-center"
+                                         style="width: 50px; height: 50px;">
+                                        <i class="bi bi-book"></i>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1">{{ enrollment.course.title }}</h6>
+                                    <small class="text-muted">
+                                        Enrolled on {{ enrollment.enrollment_date|date:"M d, Y" }} •
+                                        {{ enrollment.progress_percentage }}% complete
+                                    </small>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <a href="{% url 'course_progress' enrollment.id %}" class="btn btn-sm btn-outline-primary">
+                                        Continue
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.bg-enrolled-subtle {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+.text-enrolled {
+    color: #0d6efd !important;
+}
+
+.bg-in_progress-subtle {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.text-in_progress {
+    color: #ffc107 !important;
+}
+
+.bg-completed-subtle {
+    background-color: rgba(25, 135, 84, 0.1) !important;
+}
+
+.text-completed {
+    color: #198754 !important;
+}
+
+.bg-cancelled-subtle {
+    background-color: rgba(220, 53, 69, 0.1) !important;
+}
+
+.text-cancelled {
+    color: #dc3545 !important;
+}
+</style>
+{% endblock %}

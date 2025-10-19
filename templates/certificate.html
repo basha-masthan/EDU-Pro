@@ -1,0 +1,399 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Certificate - {{ enrollment.course.title }}{% endblock %}
+
+{% block content %}
+<div class="certificate-container">
+    <div class="certificate-wrapper">
+        <!-- Certificate Header -->
+        <div class="certificate-header">
+            <div class="logo-section">
+                <div class="logo-placeholder">
+                    <h2 class="brand-text">FUTURE BOUND TECH</h2>
+                    <p class="tagline">Advancing Technology Education</p>
+                </div>
+            </div>
+            <div class="certificate-title">
+                <h1>CERTIFICATE</h1>
+                <h3>OF COMPLETION</h3>
+            </div>
+        </div>
+
+        <!-- Certificate Body -->
+        <div class="certificate-body">
+            <div class="certificate-content">
+                <p class="certifies-text">This is to certify that</p>
+
+                <div class="student-name">
+                    <h2>{{ enrollment.user.get_full_name|default:enrollment.user.username }}</h2>
+                </div>
+
+                <p class="has-completed-text">
+                    has successfully completed the course
+                </p>
+
+                <div class="course-name">
+                    <h3>"{{ enrollment.course.title }}"</h3>
+                </div>
+
+                <div class="course-details">
+                    <p class="course-description">
+                        {{ enrollment.course.short_description }}
+                    </p>
+                    <div class="course-meta">
+                        <span class="meta-item">
+                            <strong>Category:</strong> {{ enrollment.course.category|title }}
+                        </span>
+                        <span class="meta-item">
+                            <strong>Level:</strong> {{ enrollment.course.level|title }}
+                        </span>
+                        <span class="meta-item">
+                            <strong>Duration:</strong> {{ enrollment.course.duration_hours }} hours
+                        </span>
+                    </div>
+                </div>
+
+                <div class="completion-details">
+                    <p class="completion-text">
+                        Completed on {{ enrollment.completion_date|date:"F d, Y" }}
+                    </p>
+                    <p class="score-text">
+                        Final Score: {{ enrollment.progress_percentage }}%
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Certificate Footer -->
+        <div class="certificate-footer">
+            <div class="signatures">
+                <div class="signature-block">
+                    <div class="signature-line"></div>
+                    <p class="signature-title">CEO</p>
+                    <p class="signature-name">[CEO Name]</p>
+                </div>
+                <div class="signature-block">
+                    <div class="signature-line"></div>
+                    <p class="signature-title">Program Manager</p>
+                    <p class="signature-name">[Program Manager Name]</p>
+                </div>
+            </div>
+
+            <div class="certificate-footer-text">
+                <p>Certificate ID: {{ enrollment.id|stringformat:"06d" }}</p>
+                <p>Issued by FUTURE BOUND TECH • {{ enrollment.completion_date|date:"M d, Y" }}</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="certificate-actions">
+        <button onclick="window.print()" class="btn btn-primary">
+            <i class="bi bi-printer me-2"></i>Print Certificate
+        </button>
+        <button onclick="downloadCertificate()" class="btn btn-success">
+            <i class="bi bi-download me-2"></i>Download PDF
+        </button>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">
+            <i class="bi bi-house me-2"></i>Back to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.certificate-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.certificate-wrapper {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 3px solid #2c3e50;
+    border-radius: 15px;
+    padding: 40px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    font-family: 'Times New Roman', serif;
+}
+
+.certificate-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, #3498db, #e74c3c, #f39c12, #27ae60);
+    border-radius: 18px;
+    z-index: -1;
+    opacity: 0.3;
+}
+
+/* Header */
+.certificate-header {
+    text-align: center;
+    margin-bottom: 40px;
+    border-bottom: 2px solid #2c3e50;
+    padding-bottom: 30px;
+}
+
+.logo-placeholder {
+    margin-bottom: 20px;
+}
+
+.brand-text {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.tagline {
+    color: #7f8c8d;
+    font-size: 1rem;
+    margin: 5px 0 0 0;
+    font-style: italic;
+}
+
+.certificate-title h1 {
+    color: #2c3e50;
+    font-size: 3rem;
+    margin: 10px 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+.certificate-title h3 {
+    color: #e74c3c;
+    font-size: 1.5rem;
+    margin: 0;
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+/* Body */
+.certificate-body {
+    text-align: center;
+    margin: 40px 0;
+}
+
+.certifies-text {
+    font-size: 1.2rem;
+    color: #34495e;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.student-name {
+    margin: 30px 0;
+}
+
+.student-name h2 {
+    color: #2c3e50;
+    font-size: 2.5rem;
+    margin: 0;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 2px solid #3498db;
+    display: inline-block;
+    padding-bottom: 10px;
+}
+
+.has-completed-text {
+    font-size: 1.1rem;
+    color: #34495e;
+    margin: 20px 0;
+}
+
+.course-name {
+    margin: 30px 0;
+}
+
+.course-name h3 {
+    color: #27ae60;
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.course-details {
+    margin: 30px 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.course-description {
+    color: #34495e;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.course-meta {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.meta-item {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+}
+
+.completion-details {
+    margin: 30px 0;
+}
+
+.completion-text,
+.score-text {
+    color: #34495e;
+    font-size: 1rem;
+    margin: 5px 0;
+}
+
+/* Footer */
+.certificate-footer {
+    margin-top: 50px;
+    border-top: 2px solid #2c3e50;
+    padding-top: 30px;
+}
+
+.signatures {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.signature-block {
+    text-align: center;
+    flex: 1;
+}
+
+.signature-line {
+    width: 200px;
+    height: 2px;
+    background-color: #2c3e50;
+    margin: 0 auto 10px auto;
+}
+
+.signature-title {
+    color: #34495e;
+    font-size: 0.9rem;
+    margin: 5px 0;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.signature-name {
+    color: #7f8c8d;
+    font-size: 0.9rem;
+    margin: 0;
+    font-style: italic;
+}
+
+.certificate-footer-text {
+    text-align: center;
+    color: #7f8c8d;
+    font-size: 0.8rem;
+}
+
+.certificate-footer-text p {
+    margin: 5px 0;
+}
+
+/* Actions */
+.certificate-actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.certificate-actions .btn {
+    margin: 0 10px 10px 0;
+}
+
+/* Print Styles */
+@media print {
+    .certificate-actions {
+        display: none;
+    }
+
+    .certificate-wrapper {
+        box-shadow: none;
+        border: 2px solid #000;
+    }
+
+    .certificate-wrapper::before {
+        display: none;
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .certificate-wrapper {
+        padding: 20px;
+    }
+
+    .brand-text {
+        font-size: 2rem;
+    }
+
+    .certificate-title h1 {
+        font-size: 2.5rem;
+    }
+
+    .student-name h2 {
+        font-size: 2rem;
+    }
+
+    .signatures {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .course-meta {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function downloadCertificate() {
+    // This would integrate with a PDF generation library
+    // For now, we'll use the browser's print to PDF functionality
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+        <head>
+            <title>Certificate - {{ enrollment.course.title }}</title>
+            <style>
+                body { font-family: Arial, sans-serif; }
+                .certificate { max-width: 800px; margin: 0 auto; padding: 20px; }
+            </style>
+        </head>
+        <body>
+            <div class="certificate">
+                ${document.querySelector('.certificate-wrapper').innerHTML}
+            </div>
+        </body>
+        </html>
+    `);
+    printWindow.document.close();
+    printWindow.print();
+}
+</script>
+{% endblock %}

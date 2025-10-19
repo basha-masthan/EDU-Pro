@@ -1,0 +1,248 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Home - EDU Pro{% endblock %}
+
+{% block content %}
+<!-- Hero Section - Cyberpunk 2050 -->
+<section class="hero-section position-relative overflow-hidden">
+    <div class="parallax-bg"></div>
+    <div class="container position-relative">
+        <div class="row align-items-center min-vh-100">
+            <div class="col-lg-6">
+                <h1 class="glitch mb-4" data-text="EDU Pro">EDU Pro</h1>
+                <h2 class="neon-glow text-uppercase mb-4">Learn. Grow. Succeed.</h2>
+                <p class="lead mb-4 cyber-text">
+                    Join EDU Pro for comprehensive online courses, internships, and
+                    certification programs designed to accelerate your career in technology.
+                </p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{% url 'course_list' %}" class="btn btn-custom btn-lg cyber-btn">
+                        <i class="bi bi-cpu me-2"></i>Access Matrix
+                    </a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-danger-custom btn-lg cyber-btn">
+                        <i class="bi bi-lightning-charge me-2"></i>Initialize Neural Link
+                    </a>
+                    {% endif %}
+                </div>
+                <div class="mt-4">
+                    <small class="neon-purple">🚀 Future-Ready Learning Platform</small>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <div class="cyber-card p-4">
+                    <div class="neural-network-animation">
+                        <i class="bi bi-cpu display-1 neon-glow mb-3"></i>
+                        <div class="neural-dots">
+                            <span class="neural-dot"></span>
+                            <span class="neural-dot"></span>
+                            <span class="neural-dot"></span>
+                        </div>
+                    </div>
+                    <h4 class="neon-pink">AI Learning Engine</h4>
+                    <p class="text-light">Quantum processing active</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section - Neural Implants -->
+<section class="py-5 position-relative">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col">
+                <h2 class="neon-glow fw-bold">Why Choose FUTURE BOUND TECH?</h2>
+                <p class="text-light cyber-text">Comprehensive learning solutions for aspiring tech professionals</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="cyber-card h-100 text-center scroll-animate">
+                    <i class="bi bi-laptop display-4 neon-glow mb-3"></i>
+                    <h5 class="card-title fw-bold neon-purple">Online Courses</h5>
+                    <p class="card-text text-light">Access high-quality courses from industry experts with flexible learning schedules.</p>
+                    <div class="mt-3">
+                        <small class="neon-pink">📚 Expert-Led Content</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="cyber-card h-100 text-center scroll-animate">
+                    <i class="bi bi-briefcase display-4 neon-pink mb-3"></i>
+                    <h5 class="card-title fw-bold neon-glow">Internships</h5>
+                    <p class="card-text text-light">Gain real-world experience through our structured internship programs.</p>
+                    <div class="mt-3">
+                        <small class="neon-purple">💼 Hands-on Experience</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="cyber-card h-100 text-center scroll-animate">
+                    <i class="bi bi-award display-4 neon-purple mb-3"></i>
+                    <h5 class="card-title fw-bold neon-pink">Certifications</h5>
+                    <p class="card-text text-light">Earn recognized certificates to showcase your skills to employers.</p>
+                    <div class="mt-3">
+                        <small class="neon-glow">🏆 Industry Recognized</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Courses - Quantum Database -->
+<section class="py-5 position-relative">
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col">
+                <h2 class="neon-glow fw-bold">Featured Courses</h2>
+                <p class="text-light cyber-text">Start your learning journey with our most popular courses</p>
+            </div>
+            <div class="col-auto">
+                <a href="{% url 'course_list' %}" class="btn btn-custom cyber-btn">View All Courses</a>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for course in courses %}
+            <div class="col-lg-4 col-md-6">
+                <div class="cyber-card h-100 hover-card scroll-animate">
+                    {% if course.thumbnail %}
+                    <img src="{{ course.thumbnail.url }}" class="card-img-top course-image" alt="{{ course.title }}">
+                    {% else %}
+                    <div class="bg-dark text-cyan d-flex align-items-center justify-content-center course-image">
+                        <i class="bi bi-cpu display-4 neon-glow"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-free-subtle text-free neon-glow">{{ course.course_type|title }}</span>
+                            <span class="badge bg-secondary neon-purple">{{ course.level|title }}</span>
+                        </div>
+                        <h5 class="card-title fw-bold text-light">{{ course.title }}</h5>
+                        <p class="card-text text-light">{{ course.short_description }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="neon-pink fw-bold">
+                                {% if course.course_type == 'free' %}
+                                Free
+                                {% else %}
+                                ₹{{ course.price }}
+                                {% endif %}
+                            </span>
+                            <small class="text-cyan">{{ course.duration_hours }} hours</small>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent border-0">
+                        <a href="{% url 'course_detail' course.pk %}" class="btn btn-custom w-100 cyber-btn">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-book display-4 neon-glow mb-3"></i>
+                <h4 class="text-light">No courses available yet</h4>
+                <p class="text-light cyber-text">Check back soon for exciting new courses!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section - System Metrics -->
+<section class="py-5 position-relative">
+    <div class="container">
+        <div class="row text-center g-4">
+            <div class="col-md-3">
+                <div class="cyber-card p-4">
+                    <h3 class="display-4 fw-bold neon-glow">500+</h3>
+                    <p class="mb-0 text-light">Students Enrolled</p>
+                    <small class="neon-purple">👥 Growing Community</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="cyber-card p-4">
+                    <h3 class="display-4 fw-bold neon-pink">50+</h3>
+                    <p class="mb-0 text-light">Courses Available</p>
+                    <small class="neon-glow">📚 Diverse Topics</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="cyber-card p-4">
+                    <h3 class="display-4 fw-bold neon-purple">95%</h3>
+                    <p class="mb-0 text-light">Success Rate</p>
+                    <small class="neon-pink">🎯 Proven Results</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="cyber-card p-4">
+                    <h3 class="display-4 fw-bold neon-glow">24/7</h3>
+                    <p class="mb-0 text-light">Support Available</p>
+                    <small class="neon-purple">💬 Always Here</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section - Final Protocol -->
+<section class="py-5 position-relative">
+    <div class="container text-center">
+        <h2 class="neon-glow fw-bold mb-4">Ready to Start Your Tech Journey?</h2>
+        <p class="lead text-light mb-4 cyber-text">Join thousands of students who are already learning with EDU Pro</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            {% if user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="btn btn-custom btn-lg cyber-btn">
+                <i class="bi bi-speedometer2 me-2"></i>Go to Dashboard
+            </a>
+            {% else %}
+            <a href="{% url 'register' %}" class="btn btn-danger-custom btn-lg cyber-btn">
+                <i class="bi bi-person-plus me-2"></i>Join Now - It's Free
+            </a>
+            <a href="{% url 'course_list' %}" class="btn btn-custom btn-lg cyber-btn">
+                <i class="bi bi-search me-2"></i>Browse Courses
+            </a>
+            {% endif %}
+        </div>
+        <div class="mt-4">
+            <small class="neon-purple">🚀 Future-Ready Learning Platform</small>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+}
+
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15) !important;
+}
+
+.bg-free-subtle {
+    background-color: rgba(25, 135, 84, 0.1) !important;
+}
+
+.text-free {
+    color: #198754 !important;
+}
+
+.bg-premium-subtle {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.text-premium {
+    color: #ffc107 !important;
+}
+</style>
+{% endblock %}

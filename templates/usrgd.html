@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EDU - USER Ground</title>
     <link rel="stylesheet" href="{% static "css/bm.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="{% static "js/bm.js" %}"></script>
     <style>
         .cl {
@@ -77,48 +78,60 @@
             <h1 class="navbar-brand  text-center alert">Welcome Mr. {{user.fname}} {{user.lname}}</h1>
             <!-- <br><br> -->
         </div>
-        <div class="container-fliud col-lg-11 border m-auto" style="display: flex;">
-            <div class="cors-t border" style="width: 200px;height: 250px;">
-                <h3 class="text-uppercase mt-3 bg-light p-4 text-center">{{course.name}} </h3>    
-                <div class="tasks">
-                    <table class="table text-center table-hover table-bordered">
-                        <tr class="">
-                            <td class="btn w-100">Module 1</td>
-                        </tr>
-                        <tr>
-                            <td class="btn w-100">Module 2</td>
-                        </tr>
-                        <tr>
-                            <td class="btn w-100">Module 3</td>
-                        </tr>
-                    </table>
+        <div class="container-fluid course-card p-4">
+            <div class="row">
+                <div class="col-lg-4 col-md-12 mb-4">
+                    <div class="course-sidebar">
+                        <h3 class="text-uppercase text-white text-center mb-4">{{course.name}}</h3>
+                        <div class="tasks">
+                            <button class="module-btn w-100 mb-2">Module 1</button>
+                            <button class="module-btn w-100 mb-2">Module 2</button>
+                            <button class="module-btn w-100 mb-2">Module 3</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-8 col-md-12">
+                    <div class="course-main">
+                        <div class="text-center mb-4">
+                            <img src="{{Baseimg}}/{{course.d_img}}" alt="{{course.name}}" class="course-image img-fluid">
+                        </div>
+                        <div class="row text-center">
+                            <div class="col-md-2 col-6 mb-2">
+                                <a class="nav-link text-decoration-none" href="#">
+                                    <i class="fas fa-info-circle fa-2x text-primary mb-2"></i>
+                                    <br>Description
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6 mb-2">
+                                <a class="nav-link text-decoration-none" href="#">
+                                    <i class="fas fa-book fa-2x text-success mb-2"></i>
+                                    <br>Syllabus
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6 mb-2">
+                                <a class="nav-link text-decoration-none" href="#">
+                                    <i class="fas fa-tasks fa-2x text-warning mb-2"></i>
+                                    <br>Assignments
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6 mb-2">
+                                <a class="nav-link text-decoration-none" href="#">
+                                    <i class="fas fa-comments fa-2x text-info mb-2"></i>
+                                    <br>Forums
+                                </a>
+                            </div>
+                            <div class="col-md-2 col-6 mb-2">
+                                <a class="nav-link text-decoration-none" href="#">
+                                    <i class="fas fa-clipboard-check fa-2x text-danger mb-2"></i>
+                                    <br>Tests
+                                </a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="box container-fluid">
-                <div class="img text-center" style="width: 100%;height: 100%;">
-                    <img src="{{Baseimg}}/{{course.d_img}}" alt="python" width="50%">
-                    <div class="links text-center">
-                        <ul class="navbar-nav text-center float-end flex-row">
-                        <li class="nav-item">
-                            <a class="nav-link p-md-3" href="#">Course Description</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link p-md-3" href="#">Syllabus</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link p-md-3" href="#">Assignments</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link p-md-3" href="#">Discussion Forums</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link p-md-3" href="#">Tests</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            </div>
+        </div>
             
         </div>
         <!-- p1 end -->

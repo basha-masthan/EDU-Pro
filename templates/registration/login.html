@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login - FUTURE BOUND TECH{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary text-center">
+                    <h4 class="neon-glow mb-0">Welcome Back</h4>
+                    <p class="text-light cyber-text mt-2">Sign in to your account</p>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-custom">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+
+                    <div class="text-center">
+                        <p class="text-light mb-2">Don't have an account?</p>
+                        <a href="{% url 'register' %}" class="btn btn-outline-light">
+                            <i class="bi bi-person-plus me-2"></i>Create Account
+                        </a>
+                    </div>
+
+                    <div class="text-center mt-3">
+                        <a href="{% url 'password_reset' %}" class="text-primary text-decoration-none">
+                            <small>Forgot your password?</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Demo Credentials -->
+            <div class="cyber-card mt-4">
+                <div class="card-body">
+                    <h6 class="text-light mb-3">Demo Credentials</h6>
+                    <div class="row">
+                        <div class="col-6">
+                            <small class="text-light d-block">Admin:</small>
+                            <code class="text-primary">admin@example.com</code><br>
+                            <code class="text-primary">admin123</code>
+                        </div>
+                        <div class="col-6">
+                            <small class="text-light d-block">Student:</small>
+                            <code class="text-primary">student@example.com</code><br>
+                            <code class="text-primary">student123</code>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.card-header {
+    background: rgba(26, 26, 46, 0.9) !important;
+}
+
+.form-control {
+    background: rgba(30, 30, 30, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.form-control:focus {
+    background: rgba(30, 30, 30, 0.9);
+    border-color: #007bff;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-label {
+    color: #ffffff;
+}
+</style>
+{% endblock %}

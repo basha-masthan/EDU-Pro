@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create Quiz - EDU Pro{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex align-items-center">
+                <a href="{% url 'admin_course_detail' course.id %}" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-arrow-left"></i> Back to Course
+                </a>
+                <div>
+                    <h1 class="neon-glow mb-2">Create Quiz</h1>
+                    <p class="text-light cyber-text">Add a quiz to {{ module.title }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h5 class="mb-0 neon-purple">Quiz Information</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ quiz_form|crispy }}
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{% url 'admin_course_detail' course.id %}" class="btn btn-outline-secondary me-2">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-custom cyber-btn">
+                                <i class="bi bi-check-circle me-2"></i>Create Quiz
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Module Info -->
+            <div class="cyber-card mb-4">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-glow">Module: {{ module.title }}</h6>
+                </div>
+                <div class="card-body">
+                    <p class="text-light mb-2"><strong>Course:</strong> {{ course.title }}</p>
+                    <p class="text-light mb-2"><strong>Tasks:</strong> {{ module.tasks.count }}</p>
+                    <p class="text-light mb-0"><strong>Order:</strong> {{ module.order }}</p>
+                </div>
+            </div>
+
+            <!-- Quiz Tips -->
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-pink">Quiz Guidelines</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="text-light small mb-0">
+                        <li>Set reasonable time limits</li>
+                        <li>Use 70% as standard passing score</li>
+                        <li>Create clear, unambiguous questions</li>
+                        <li>Provide helpful explanations</li>
+                        <li>Test actual learning outcomes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

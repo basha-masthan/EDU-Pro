@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Register - FUTURE BOUND TECH{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary text-center">
+                    <h4 class="neon-glow mb-0">Join FUTURE BOUND TECH</h4>
+                    <p class="text-light cyber-text mt-2">Create your account to start learning</p>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.first_name|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.email|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.phone|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.college|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.education|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.state|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                {{ form.username|as_crispy_field }}
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                {{ form.password1|as_crispy_field }}
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            {{ form.password2|as_crispy_field }}
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-custom">
+                                <i class="bi bi-person-plus me-2"></i>Create Account
+                            </button>
+                        </div>
+                    </form>
+
+                    <hr class="my-4" style="border-color: rgba(255,255,255,0.1);">
+
+                    <div class="text-center">
+                        <p class="text-light mb-2">Already have an account?</p>
+                        <a href="{% url 'login' %}" class="btn btn-outline-light">
+                            <i class="bi bi-box-arrow-in-right me-2"></i>Sign In
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Benefits -->
+            <div class="cyber-card mt-4">
+                <div class="card-body">
+                    <h6 class="text-light mb-3">Why Register?</h6>
+                    <div class="row text-center">
+                        <div class="col-4">
+                            <i class="bi bi-book text-primary fs-3 mb-2"></i>
+                            <small class="text-light d-block">Free Courses</small>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-trophy text-warning fs-3 mb-2"></i>
+                            <small class="text-light d-block">Certificates</small>
+                        </div>
+                        <div class="col-4">
+                            <i class="bi bi-graph-up text-success fs-3 mb-2"></i>
+                            <small class="text-light d-block">Track Progress</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.card-header {
+    background: rgba(26, 26, 46, 0.9) !important;
+}
+
+.form-control {
+    background: rgba(30, 30, 30, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.form-control:focus {
+    background: rgba(30, 30, 30, 0.9);
+    border-color: #007bff;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.form-label {
+    color: #ffffff;
+}
+
+.form-select {
+    background: rgba(30, 30, 30, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.form-select:focus {
+    background: rgba(30, 30, 30, 0.9);
+    border-color: #007bff;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-select option {
+    background: #1e1e1e;
+    color: #ffffff;
+}
+</style>
+{% endblock %}

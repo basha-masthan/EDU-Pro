@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create Task - EDU Pro{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex align-items-center">
+                <a href="{% url 'admin_course_detail' course.id %}" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-arrow-left"></i> Back to Course
+                </a>
+                <div>
+                    <h1 class="neon-glow mb-2">Create Task</h1>
+                    <p class="text-light cyber-text">Add a new task to {{ module.title }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h5 class="mb-0 neon-pink">Task Information</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ task_form|crispy }}
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{% url 'admin_course_detail' course.id %}" class="btn btn-outline-secondary me-2">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-custom cyber-btn">
+                                <i class="bi bi-check-circle me-2"></i>Create Task
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Module Info -->
+            <div class="cyber-card mb-4">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-glow">Module: {{ module.title }}</h6>
+                </div>
+                <div class="card-body">
+                    <p class="text-light mb-2"><strong>Course:</strong> {{ course.title }}</p>
+                    <p class="text-light mb-2"><strong>Order:</strong> {{ module.order }}</p>
+                    <p class="text-light mb-0"><strong>Tasks:</strong> {{ module.tasks.count }}</p>
+                </div>
+            </div>
+
+            <!-- Task Types Guide -->
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-purple">Task Types</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <strong class="text-cyan">Reading:</strong>
+                        <br><small class="text-light">Text content or PDF files</small>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-cyan">Video:</strong>
+                        <br><small class="text-light">YouTube/Vimeo video links</small>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-cyan">Coding:</strong>
+                        <br><small class="text-light">Online IDE exercises</small>
+                    </div>
+                    <div class="mb-3">
+                        <strong class="text-cyan">Upload:</strong>
+                        <br><small class="text-light">File submission tasks</small>
+                    </div>
+                    <div class="mb-0">
+                        <strong class="text-cyan">Quiz:</strong>
+                        <br><small class="text-light">Multiple choice questions</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

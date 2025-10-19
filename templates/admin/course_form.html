@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ title|default:"Course Form" }} - EDU Pro{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex align-items-center">
+                <a href="{% url 'admin_course_management' %}" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-arrow-left"></i> Back to Dashboard
+                </a>
+                <div>
+                    <h1 class="neon-glow mb-2">{{ title|default:"Course Form" }}</h1>
+                    <p class="text-light cyber-text">Configure course details and settings</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h5 class="mb-0 neon-glow">Course Information</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ course_form|crispy }}
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{% url 'admin_course_management' %}" class="btn btn-outline-secondary me-2">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-custom cyber-btn">
+                                <i class="bi bi-check-circle me-2"></i>Save Course
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Quick Stats -->
+            {% if course %}
+            <div class="cyber-card mb-4">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-purple">Course Statistics</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Modules</small>
+                        <span class="neon-glow fw-bold">{{ course.get_total_modules }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Tasks</small>
+                        <span class="neon-pink fw-bold">{{ course.get_total_lessons }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Enrollments</small>
+                        <span class="neon-purple fw-bold">{{ course.enrollments.count }}</span>
+                    </div>
+                    <div class="mb-0">
+                        <small class="text-muted d-block">Created</small>
+                        <span class="text-cyan">{{ course.created_at|date:"M d, Y" }}</span>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- Quick Actions -->
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-glow">Quick Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        {% if course %}
+                        <a href="{% url 'admin_course_detail' course.id %}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-eye me-2"></i>View Course
+                        </a>
+                        <a href="{% url 'course_detail' course.id %}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-globe me-2"></i>Public View
+                        </a>
+                        {% endif %}
+                        <a href="{% url 'admin_course_management' %}" class="btn btn-outline-info btn-sm">
+                            <i class="bi bi-list me-2"></i>All Courses
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.form-control, .form-select {
+    background-color: rgba(33, 37, 41, 0.8) !important;
+    border: 1px solid rgba(0, 255, 255, 0.3) !important;
+    color: #fff !important;
+}
+
+.form-control:focus, .form-select:focus {
+    background-color: rgba(33, 37, 41, 0.9) !important;
+    border-color: #00ffff !important;
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 255, 0.25) !important;
+}
+
+.form-label {
+    color: #00ffff !important;
+    font-weight: 500;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+</style>
+{% endblock %}

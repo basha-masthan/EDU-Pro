@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Course Management - EDU Pro{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="neon-glow mb-2">Course Management</h1>
+                    <p class="text-light cyber-text">Manage courses, modules, tasks, and quizzes</p>
+                </div>
+                <a href="{% url 'admin_course_create' %}" class="btn btn-custom cyber-btn">
+                    <i class="bi bi-plus-circle me-2"></i>Create New Course
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="cyber-card p-4 text-center">
+                <h3 class="display-4 fw-bold neon-glow">{{ total_courses }}</h3>
+                <p class="mb-0 text-light">Total Courses</p>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="cyber-card p-4 text-center">
+                <h3 class="display-4 fw-bold neon-pink">{{ active_courses }}</h3>
+                <p class="mb-0 text-light">Active Courses</p>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="cyber-card p-4 text-center">
+                <h3 class="display-4 fw-bold neon-purple">{{ inactive_courses }}</h3>
+                <p class="mb-0 text-light">Inactive Courses</p>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="cyber-card p-4 text-center">
+                <h3 class="display-4 fw-bold neon-glow">∞</h3>
+                <p class="mb-0 text-light">Learning Paths</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Courses List -->
+    <div class="row">
+        <div class="col">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h5 class="mb-0 neon-glow">All Courses</h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if courses %}
+                    <div class="list-group list-group-flush">
+                        {% for course in courses %}
+                        <div class="list-group-item bg-transparent border-secondary">
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center">
+                                        {% if course.thumbnail %}
+                                        <img src="{{ course.thumbnail.url }}" alt="{{ course.title }}"
+                                             class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                                        {% else %}
+                                        <div class="bg-secondary rounded me-3 d-flex align-items-center justify-content-center"
+                                             style="width: 60px; height: 60px;">
+                                            <i class="bi bi-book text-light"></i>
+                                        </div>
+                                        {% endif %}
+                                        <div>
+                                            <h6 class="mb-1 text-light">{{ course.title }}</h6>
+                                            <small class="text-cyan">{{ course.category|title }} • {{ course.level|title }}</small>
+                                            <br>
+                                            <small class="text-muted">{{ course.get_total_modules }} modules • {{ course.get_total_lessons }} lessons</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <span class="badge bg-{{ course.course_type|lower }}-subtle text-{{ course.course_type|lower }}">
+                                        {{ course.course_type|title }}
+                                    </span>
+                                    {% if course.is_active %}
+                                    <span class="badge bg-success ms-2">Active</span>
+                                    {% else %}
+                                    <span class="badge bg-secondary ms-2">Inactive</span>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-3 text-end">
+                                    <div class="btn-group">
+                                        <a href="{% url 'admin_course_detail' course.id %}"
+                                           class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i> View
+                                        </a>
+                                        <a href="{% url 'admin_course_edit' course.id %}"
+                                           class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-pencil"></i> Edit
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-book display-4 text-muted mb-3"></i>
+                        <h4 class="text-light">No courses yet</h4>
+                        <p class="text-muted">Create your first course to get started</p>
+                        <a href="{% url 'admin_course_create' %}" class="btn btn-custom cyber-btn">
+                            <i class="bi bi-plus-circle me-2"></i>Create First Course
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.list-group-item:hover {
+    background-color: rgba(0, 255, 255, 0.05) !important;
+}
+
+.btn-group .btn {
+    margin-right: 5px;
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
+}
+</style>
+{% endblock %}

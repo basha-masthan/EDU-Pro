@@ -1,0 +1,259 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ course.title }} - Course Details{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="d-flex align-items-center">
+                    <a href="{% url 'admin_course_management' %}" class="btn btn-outline-secondary me-3">
+                        <i class="bi bi-arrow-left"></i> Back to Dashboard
+                    </a>
+                    <div>
+                        <h1 class="neon-glow mb-2">{{ course.title }}</h1>
+                        <p class="text-light cyber-text">{{ course.category|title }} • {{ course.level|title }}</p>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <a href="{% url 'admin_course_edit' course.id %}" class="btn btn-outline-primary">
+                        <i class="bi bi-pencil me-2"></i>Edit Course
+                    </a>
+                    <a href="{% url 'course_detail' course.id %}" class="btn btn-outline-secondary">
+                        <i class="bi bi-eye me-2"></i>Public View
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Overview -->
+    <div class="row mb-4">
+        <div class="col-lg-8">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h5 class="mb-0 neon-glow">Course Overview</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="neon-purple">Basic Information</h6>
+                            <p class="text-light mb-2"><strong>Type:</strong> {{ course.course_type|title }}</p>
+                            <p class="text-light mb-2"><strong>Price:</strong>
+                                {% if course.course_type == 'free' %}
+                                Free
+                                {% else %}
+                                ₹{{ course.price }}
+                                {% endif %}
+                            </p>
+                            <p class="text-light mb-2"><strong>Duration:</strong> {{ course.duration_hours }} hours</p>
+                            <p class="text-light mb-2"><strong>Instructor:</strong> {{ course.instructor }}</p>
+                            <p class="text-light mb-0"><strong>Status:</strong>
+                                {% if course.is_active %}
+                                <span class="badge bg-success">Active</span>
+                                {% else %}
+                                <span class="badge bg-secondary">Inactive</span>
+                                {% endif %}
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="neon-pink">Statistics</h6>
+                            <p class="text-light mb-2"><strong>Modules:</strong> {{ total_modules }}</p>
+                            <p class="text-light mb-2"><strong>Tasks:</strong> {{ total_tasks }}</p>
+                            <p class="text-light mb-2"><strong>Enrollments:</strong> {{ total_enrollments }}</p>
+                            <p class="text-light mb-0"><strong>Created:</strong> {{ course.created_at|date:"M d, Y" }}</p>
+                        </div>
+                    </div>
+                    {% if course.description %}
+                    <hr class="border-secondary">
+                    <h6 class="neon-glow">Description</h6>
+                    <p class="text-light">{{ course.description }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Quick Actions -->
+            <div class="cyber-card mb-4">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-purple">Quick Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'admin_module_create' course.id %}" class="btn btn-custom cyber-btn">
+                            <i class="bi bi-plus-circle me-2"></i>Add Module
+                        </a>
+                        <button class="btn btn-outline-warning" onclick="toggleCourseStatus('{{ course.id }}')">
+                            <i class="bi bi-toggle-{{ course.is_active|yesno:'on,off' }} me-2"></i>
+                            {{ course.is_active|yesno:'Deactivate,Activate' }} Course
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thumbnail -->
+            {% if course.thumbnail %}
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-glow">Course Thumbnail</h6>
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ course.thumbnail.url }}" alt="{{ course.title }}"
+                         class="img-fluid rounded" style="max-height: 200px;">
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Modules and Tasks -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 neon-pink">Modules & Tasks</h5>
+                    <a href="{% url 'admin_module_create' course.id %}" class="btn btn-sm btn-custom">
+                        <i class="bi bi-plus-circle me-2"></i>Add Module
+                    </a>
+                </div>
+                <div class="card-body">
+                    {% if modules %}
+                    <div class="accordion" id="modulesAccordion">
+                        {% for module in modules %}
+                        <div class="accordion-item bg-transparent border-secondary">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button bg-dark border-secondary text-light collapsed"
+                                        type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#module{{ module.id }}">
+                                    <div class="d-flex align-items-center w-100">
+                                        <i class="bi bi-folder me-2 text-primary"></i>
+                                        <span class="fw-bold">{{ module.title }}</span>
+                                        <small class="text-muted ms-auto">{{ module.tasks.count }} tasks</small>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="module{{ module.id }}" class="accordion-collapse collapse"
+                                 data-bs-parent="#modulesAccordion">
+                                <div class="accordion-body bg-dark border-secondary">
+                                    {% if module.tasks.all %}
+                                    <div class="list-group list-group-flush">
+                                        {% for task in module.tasks.all %}
+                                        <div class="list-group-item bg-transparent border-secondary text-light">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <strong>{{ task.title }}</strong>
+                                                    <br>
+                                                    <small class="text-cyan">{{ task.task_type|title }} • {{ task.duration_minutes }} min</small>
+                                                </div>
+                                                <div>
+                                                    {% if task.is_required %}
+                                                    <span class="badge bg-danger">Required</span>
+                                                    {% else %}
+                                                    <span class="badge bg-secondary">Optional</span>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                    <p class="text-muted mb-0">No tasks in this module yet.</p>
+                                    {% endif %}
+
+                                    <!-- Module Actions -->
+                                    <div class="mt-3 d-flex gap-2">
+                                        <a href="{% url 'admin_task_create' module.id %}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-plus-circle me-2"></i>Add Task
+                                        </a>
+                                        {% if not module.quiz %}
+                                        <a href="{% url 'admin_quiz_create' module.id %}" class="btn btn-sm btn-outline-success">
+                                            <i class="bi bi-question-circle me-2"></i>Add Quiz
+                                        </a>
+                                        {% else %}
+                                        <a href="{% url 'admin_quiz_questions' module.quiz.id %}" class="btn btn-sm btn-outline-info">
+                                            <i class="bi bi-pencil me-2"></i>Edit Quiz
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-folder display-4 text-muted mb-3"></i>
+                        <h4 class="text-light">No modules yet</h4>
+                        <p class="text-muted">Create modules to organize your course content</p>
+                        <a href="{% url 'admin_module_create' course.id %}" class="btn btn-custom cyber-btn">
+                            <i class="bi bi-plus-circle me-2"></i>Create First Module
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Discussions -->
+    {% if discussions %}
+    <div class="row">
+        <div class="col">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h5 class="mb-0 neon-purple">Recent Discussions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        {% for discussion in discussions %}
+                        <div class="list-group-item bg-transparent border-secondary text-light">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">{{ discussion.title }}</h6>
+                                    <p class="mb-1 text-muted">{{ discussion.content|truncatechars:100 }}</p>
+                                    <small class="text-cyan">
+                                        By {{ discussion.user.username }} • {{ discussion.created_at|date:"M d, Y" }}
+                                    </small>
+                                </div>
+                                <div class="text-end">
+                                    <span class="badge bg-primary">{{ discussion.replies.count }} replies</span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleCourseStatus(courseId) {
+    if (confirm('Are you sure you want to change the course status?')) {
+        fetch('/admin/courses/' + courseId + '/toggle-status/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                'Content-Type': 'application/json',
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error updating course status');
+            }
+        });
+    }
+}
+</script>
+{% endblock %}

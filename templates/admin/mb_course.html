@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="{% static "css/bm.css" %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <script src="{% static "js/bm.js" %}"></script>
 </head>
 <body>
@@ -15,34 +16,42 @@
     <h4 class="text-center alert">Add a new Course Hear
         <a href="">Add course</a>
     </h4>
-    <table class="container table table-hover table-bordered">
-    
-        <tr class="table-primary">
-            <td>Course Name</td>
-            <td>Image</td>
-            <td>Poster</td>
-            <td>Price</td>
-            <td>Action</td>
-        </tr>
-        {% for c in course %}
-        <tr>
-            <td class="col-3">{{c.name}} </td>
-            <td>
-                <img src="{{Baseimg}}/{{c.img}} " alt="" width="5%">
-            </td>
-            <td>
-                <img src="{{Baseimg}}/{{c.d_img}} " alt="" width="15%">
-            </td>
-            <td class="col-1">{{c.price}} </td>
-            <td class="col-1 text-center">
-                <form action="" >
-                    <input type="hidden" name="id" value="{{c.id}}">
-                    <input type="submit" value="Delete" class="btn btn-danger">
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+    <div class="admin-table table-responsive">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Image</th>
+                    <th>Poster</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in course %}
+                <tr>
+                    <td class="fw-bold">{{c.name}}</td>
+                    <td>
+                        <img src="{{Baseimg}}/{{c.img}}" alt="Course Image" class="img-thumbnail" style="width: 60px; height: 60px; object-fit: cover;">
+                    </td>
+                    <td>
+                        <img src="{{Baseimg}}/{{c.d_img}}" alt="Poster Image" class="img-thumbnail" style="width: 80px; height: 60px; object-fit: cover;">
+                    </td>
+                    <td class="text-success fw-bold">${{c.price}}</td>
+                    <td>
+                        <form action="" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{c.id}}">
+                            <button type="submit" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 
 

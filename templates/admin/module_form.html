@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create Module - EDU Pro{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex align-items-center">
+                <a href="{% url 'admin_course_detail' course.id %}" class="btn btn-outline-secondary me-3">
+                    <i class="bi bi-arrow-left"></i> Back to Course
+                </a>
+                <div>
+                    <h1 class="neon-glow mb-2">Create Module</h1>
+                    <p class="text-light cyber-text">Add a new module to {{ course.title }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Form -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h5 class="mb-0 neon-purple">Module Information</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ module_form|crispy }}
+
+                        <div class="d-flex justify-content-end mt-4">
+                            <a href="{% url 'admin_course_detail' course.id %}" class="btn btn-outline-secondary me-2">
+                                Cancel
+                            </a>
+                            <button type="submit" class="btn btn-custom cyber-btn">
+                                <i class="bi bi-check-circle me-2"></i>Create Module
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <!-- Course Info -->
+            <div class="cyber-card mb-4">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-glow">Course: {{ course.title }}</h6>
+                </div>
+                <div class="card-body">
+                    <p class="text-light mb-2"><strong>Category:</strong> {{ course.category|title }}</p>
+                    <p class="text-light mb-2"><strong>Level:</strong> {{ course.level|title }}</p>
+                    <p class="text-light mb-0"><strong>Modules:</strong> {{ course.get_total_modules }}</p>
+                </div>
+            </div>
+
+            <!-- Module Tips -->
+            <div class="cyber-card">
+                <div class="card-header bg-dark border-bottom border-secondary">
+                    <h6 class="mb-0 neon-pink">Module Tips</h6>
+                </div>
+                <div class="card-body">
+                    <ul class="text-light small mb-0">
+                        <li>Use clear, descriptive titles</li>
+                        <li>Order modules logically</li>
+                        <li>Keep descriptions concise</li>
+                        <li>Mark as inactive to hide temporarily</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

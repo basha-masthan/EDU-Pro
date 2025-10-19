@@ -1,58 +1,336 @@
 
-#icon
-{
-    margin-top: 3%;
-    align-items: center;
-    margin-left: 10%;
-    color: aliceblue;
-    font-size: 25px;
-    
-}
-#para2
-{   
-    margin-top: 3%;
-    font-size: 20px;
-    font-style: italic;
-    text-align:center;
-    color: aliceblue;
-}
-/* #contact
-{
-    margin-left:5%;
-    background-color: rgb(36, 114, 120);
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 2%;
-    padding-bottom: 3%;
-    opacity: 0.9;
-    border-radius: 5%;
-} */
-#bg2
+/* Professional Theme - Clean and Pleasant Design */
 
-{
-    background-image: url("img/log1.jpg");
-    background-repeat: no-repeat;
-    background-size: cover; 
-    background-position: center center;
+/* Low Light Professional Background */
+body {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
     background-attachment: fixed;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+}
 
+/* Clean Text Effects */
+.neon-glow {
+    font-weight: bold;
+    color: #007bff;
 }
-#bb
-{
-    background-color: rgb(45, 45, 60);
-    opacity: 0.7;
-    margin-right: 25%;
-    margin-left: 33%;
-    width: 40vw;
-    height: 75vh;
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 3%;
-    border-radius: 5%;
+
+.neon-purple {
+    font-weight: bold;
+    color: #6f42c1;
 }
-.radiobtn
-{
-    align-items: center;
-    margin-left: 5%;
-    margin-right: 5%;
+
+.neon-pink {
+    font-weight: bold;
+    color: #e83e8c;
+}
+
+/* Course card styles - Low Light Professional */
+.course-card {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.course-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    border-color: rgba(0, 123, 255, 0.5);
+    background: rgba(35, 35, 35, 0.9);
+}
+
+.course-sidebar {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.course-main {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.module-btn {
+    background: #007bff;
+    border: 1px solid #007bff;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    width: 100%;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.module-btn:hover {
+    background: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.course-image {
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+    max-width: 100%;
+    height: auto;
+    border: 1px solid rgba(255, 0, 255, 0.3);
+}
+
+.progress-bar-custom {
+    background: linear-gradient(90deg, #00ffff, #ff00ff, #ff1493);
+    background-size: 300% 300%;
+    animation: progressGlow 2s ease infinite;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+@keyframes progressGlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+}
+
+.btn-custom {
+    background: #28a745;
+    border: 1px solid #28a745;
+    border-radius: 25px;
+    color: white;
+    padding: 12px 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-custom:hover {
+    background: #218838;
+    border-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.btn-danger-custom {
+    background: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 25px;
+    color: white;
+    padding: 10px 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.btn-danger-custom:hover {
+    background: #c82333;
+    border-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Admin table improvements - Low Light Professional */
+.admin-table {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.admin-table th {
+    background: rgba(42, 42, 42, 0.9);
+    color: #ffffff;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.admin-table td {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    color: #ffffff;
+}
+
+.admin-table tr:nth-child(even) {
+    background: rgba(37, 37, 37, 0.8);
+}
+
+.admin-table tr:hover {
+    background: rgba(51, 51, 51, 0.9);
+    transition: all 0.3s ease;
+}
+
+/* Clean animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.scroll-animate {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Dark heading effect */
+.glitch {
+    position: relative;
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* Low light card effects */
+.cyber-card {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.cyber-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    background: rgba(35, 35, 35, 0.9);
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .course-sidebar {
+        margin-bottom: 20px;
+    }
+
+    .course-main {
+        padding: 15px;
+    }
+
+    .glitch {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .course-card {
+        margin: 10px;
+    }
+
+    .module-btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .btn-custom {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+
+    .glitch {
+        font-size: 1.5rem;
+    }
+}
+
+/* Dark JavaScript Animations */
+.cyber-js {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark loading dots animation */
+.neural-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.neural-dot {
+    width: 8px;
+    height: 8px;
+    background: #ffffff;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.neural-dot:nth-child(2) { animation-delay: 0.3s; }
+.neural-dot:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Dark text effect */
+.cyber-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+/* Clean button effects */
+.cyber-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.cyber-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Dark subtle pattern background */
+.pattern-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+    background: linear-gradient(45deg, #333333 25%, transparent 25%),
+                linear-gradient(-45deg, #333333 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #333333 75%),
+                linear-gradient(-45deg, transparent 75%, #333333 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    opacity: 0.05;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .glitch {
+        font-size: 1.8rem;
+    }
+
+    .neural-dots {
+        gap: 8px;
+    }
+
+    .neural-dot {
+        width: 6px;
+        height: 6px;
+    }
 }

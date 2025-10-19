@@ -1,0 +1,276 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ course.title }} - Progress{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Course Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <nav aria-label="breadcrumb" class="mb-2">
+                                <ol class="breadcrumb mb-2">
+                                    <li class="breadcrumb-item"><a href="{% url 'dashboard' %}">Dashboard</a></li>
+                                    <li class="breadcrumb-item active">{{ course.title }}</li>
+                                </ol>
+                            </nav>
+                            <h2 class="mb-2">{{ course.title }}</h2>
+                            <p class="text-muted mb-3">{{ course.description }}</p>
+                            <div class="d-flex align-items-center gap-3">
+                                <span class="badge bg-{{ enrollment.status|lower }}-subtle text-{{ enrollment.status|lower }}">
+                                    {{ enrollment.get_status_display }}
+                                </span>
+                                <small class="text-muted">
+                                    <i class="bi bi-calendar me-1"></i>Enrolled: {{ enrollment.enrollment_date|date:"M d, Y" }}
+                                </small>
+                                {% if enrollment.completion_date %}
+                                <small class="text-muted">
+                                    <i class="bi bi-trophy me-1"></i>Completed: {{ enrollment.completion_date|date:"M d, Y" }}
+                                </small>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-4 text-end">
+                            <div class="progress-circle mb-2" data-progress="{{ enrollment.progress_percentage }}" style="--progress: {{ enrollment.progress_percentage }}%;">
+                                <span class="progress-text">{{ enrollment.progress_percentage }}%</span>
+                            </div>
+                            <small class="text-muted">Overall Progress</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Course Content -->
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Modules and Lessons -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Course Content</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="accordion" id="courseAccordion">
+                        {% for module in modules %}
+                        <div class="accordion-item border-0">
+                            <h2 class="accordion-header">
+                                <button class="accordion-button {% if not forloop.first %}collapsed{% endif %}"
+                                        type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#module{{ module.id }}" aria-expanded="{% if forloop.first %}true{% else %}false{% endif %}">
+                                    <div class="d-flex align-items-center w-100">
+                                        <i class="bi bi-folder me-2 text-primary"></i>
+                                        <span class="fw-bold">{{ module.title }}</span>
+                                        <small class="text-muted ms-auto">{{ module.get_lesson_count }} lessons</small>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div id="module{{ module.id }}"
+                                 class="accordion-collapse collapse {% if forloop.first %}show{% endif %}"
+                                 data-bs-parent="#courseAccordion">
+                                <div class="accordion-body p-0">
+                                    <div class="list-group list-group-flush">
+                                        {% for lesson in module.lessons.all %}
+                                        {% with progress_records|dictsort:"lesson.id"|get:forloop.parentloop.counter0 as lesson_progress %}
+                                        <div class="list-group-item border-0 px-4 py-3">
+                                            <div class="d-flex align-items-center">
+                                                <div class="flex-shrink-0 me-3">
+                                                    {% if lesson_progress and lesson_progress.is_completed %}
+                                                    <i class="bi bi-check-circle-fill text-success fs-5"></i>
+                                                    {% else %}
+                                                    <i class="bi bi-circle text-muted fs-5"></i>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="flex-grow-1">
+                                                    <h6 class="mb-1">{{ lesson.title }}</h6>
+                                                    <small class="text-muted">
+                                                        {% if lesson.content_type == 'video' %}
+                                                        <i class="bi bi-play-circle me-1"></i>Video
+                                                        {% elif lesson.content_type == 'text' %}
+                                                        <i class="bi bi-file-text me-1"></i>Reading
+                                                        {% elif lesson.content_type == 'quiz' %}
+                                                        <i class="bi bi-question-circle me-1"></i>Quiz
+                                                        {% else %}
+                                                        <i class="bi bi-file-earmark me-1"></i>{{ lesson.content_type|title }}
+                                                        {% endif %}
+                                                        • {{ lesson.duration_minutes }} min
+                                                        {% if lesson_progress and lesson_progress.completed_at %}
+                                                        • Completed {{ lesson_progress.completed_at|date:"M d, Y" }}
+                                                        {% endif %}
+                                                    </small>
+                                                </div>
+                                                <div class="flex-shrink-0">
+                                                    {% if lesson_progress and lesson_progress.is_completed %}
+                                                    <span class="badge bg-success">Completed</span>
+                                                    {% else %}
+                                                    <a href="{% url 'lesson_view' enrollment.id lesson.id %}"
+                                                       class="btn btn-primary btn-sm">
+                                                        {% if lesson_progress %}
+                                                        Continue
+                                                        {% else %}
+                                                        Start
+                                                        {% endif %}
+                                                    </a>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endwith %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Course Info -->
+            <div class="card border-0 shadow-sm mb-4">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0">Course Information</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Instructor</small>
+                        <span class="fw-bold">{{ course.instructor }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Duration</small>
+                        <span class="fw-bold">{{ course.duration_hours }} hours</span>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Level</small>
+                        <span class="badge bg-secondary">{{ course.level|title }}</span>
+                    </div>
+                    <div class="mb-3">
+                        <small class="text-muted d-block">Category</small>
+                        <span class="fw-bold">{{ course.category }}</span>
+                    </div>
+                    {% if course.prerequisites %}
+                    <div class="mb-0">
+                        <small class="text-muted d-block">Prerequisites</small>
+                        <span class="small">{{ course.prerequisites }}</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-light">
+                    <h6 class="mb-0">Quick Actions</h6>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'course_detail' course.id %}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-info-circle me-2"></i>Course Details
+                        </a>
+                        <button class="btn btn-outline-secondary btn-sm" onclick="window.print()">
+                            <i class="bi bi-printer me-2"></i>Print Progress
+                        </button>
+                        {% if enrollment.status == 'completed' %}
+                        <button class="btn btn-success btn-sm" disabled>
+                            <i class="bi bi-trophy me-2"></i>Certificate Available
+                        </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.progress-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: conic-gradient(#0d6efd var(--progress), #e9ecef 0%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.progress-text {
+    color: #0d6efd;
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #f8f9fa;
+    color: #0d6efd;
+}
+
+.accordion-button:focus {
+    box-shadow: none;
+}
+
+.list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.bg-enrolled-subtle {
+    background-color: rgba(13, 110, 253, 0.1) !important;
+}
+
+.text-enrolled {
+    color: #0d6efd !important;
+}
+
+.bg-in_progress-subtle {
+    background-color: rgba(255, 193, 7, 0.1) !important;
+}
+
+.text-in_progress {
+    color: #ffc107 !important;
+}
+
+.bg-completed-subtle {
+    background-color: rgba(25, 135, 84, 0.1) !important;
+}
+
+.text-completed {
+    color: #198754 !important;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mark lesson complete via AJAX
+    document.querySelectorAll('.mark-complete-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            const enrollmentId = this.dataset.enrollmentId;
+            const lessonId = this.dataset.lessonId;
+
+            fetch(`/api/mark-lesson-complete/${enrollmentId}/${lessonId}/`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    location.reload();
+                }
+            });
+        });
+    });
+});
+</script>
+{% endblock %}
