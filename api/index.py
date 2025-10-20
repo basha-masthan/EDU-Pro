@@ -1,8 +1,5 @@
 import os
 import sys
-import django
-from django.core.wsgi import get_wsgi_application
-from django.conf import settings
 
 # Add the project directory to the Python path
 sys.path.insert(0, os.path.dirname(__file__))
@@ -17,6 +14,10 @@ try:
 except ImportError:
     pass
 
+import django
+from django.core.wsgi import get_wsgi_application
+from django.conf import settings
+
 django.setup()
 
 # Import the WSGI application
@@ -26,10 +27,10 @@ def handler(event, context):
     """
     Vercel serverless function handler for Django application.
     """
-    from django.core.handlers.wsgi import WSGIHandler
-    from io import BytesIO
-
     try:
+        from django.core.handlers.wsgi import WSGIHandler
+        from io import BytesIO
+
         # Extract request data from Vercel event
         method = event.get('httpMethod', 'GET')
         path = event.get('path', '/')
@@ -85,9 +86,11 @@ def handler(event, context):
         return response_data
 
     except Exception as e:
-        # Return error response
+        import traceback
+        error_details = traceback.format_exc()
+        # Return error response with full traceback
         return {
             'statusCode': 500,
             'headers': {'Content-Type': 'application/json'},
-            'body': f'{{"error": "{str(e)}"}}'
+            'body': f'{{"error": "{str(e)}", "traceback": "{error_details}"}}'
         }
