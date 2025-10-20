@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Edit User - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin_course_management' %}" class="text-cyan">Admin Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_user_management' %}" class="text-cyan">User Management</a></li>
+            <li class="breadcrumb-item active text-light">Edit User</li>
+        </ol>
+    </nav>
+
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="cyber-card p-4">
+                <h1 class="neon-glow mb-2">Edit User: {{ user.username }}</h1>
+                <p class="text-light">Modify user details and permissions</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Form -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="cyber-card p-4">
+                <h4 class="neon-glow mb-4">User Information</h4>
+                <form method="post">
+                    {% csrf_token %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="username" class="form-label text-cyan">Username</label>
+                            <input type="text" class="form-control cyber-input" id="username" value="{{ user.username }}" readonly>
+                            <small class="text-muted">Username cannot be changed</small>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label text-cyan">Email</label>
+                            <input type="email" class="form-control cyber-input" id="email" name="email" value="{{ user.email }}" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="first_name" class="form-label text-cyan">First Name</label>
+                            <input type="text" class="form-control cyber-input" id="first_name" name="first_name" value="{{ user.first_name }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="last_name" class="form-label text-cyan">Last Name</label>
+                            <input type="text" class="form-control cyber-input" id="last_name" name="last_name" value="{{ user.last_name }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label text-cyan">Phone</label>
+                            <input type="text" class="form-control cyber-input" id="phone" name="phone" value="{{ profile.phone|default:'' }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="college" class="form-label text-cyan">College</label>
+                            <input type="text" class="form-control cyber-input" id="college" name="college" value="{{ profile.college|default:'' }}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="education" class="form-label text-cyan">Education</label>
+                            <select class="form-control cyber-input" id="education" name="education">
+                                <option value="">Select Education</option>
+                                <option value="undergraduate" {% if profile.education == 'undergraduate' %}selected{% endif %}>Undergraduate</option>
+                                <option value="graduate" {% if profile.education == 'graduate' %}selected{% endif %}>Graduate</option>
+                                <option value="postgraduate" {% if profile.education == 'postgraduate' %}selected{% endif %}>Postgraduate</option>
+                                <option value="others" {% if profile.education == 'others' %}selected{% endif %}>Others</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="state" class="form-label text-cyan">State</label>
+                            <select class="form-control cyber-input" id="state" name="state">
+                                <option value="">Select State</option>
+                                <option value="andhra_pradesh" {% if profile.state == 'andhra_pradesh' %}selected{% endif %}>Andhra Pradesh</option>
+                                <option value="telangana" {% if profile.state == 'telangana' %}selected{% endif %}>Telangana</option>
+                                <option value="tamil_nadu" {% if profile.state == 'tamil_nadu' %}selected{% endif %}>Tamil Nadu</option>
+                                <option value="karnataka" {% if profile.state == 'karnataka' %}selected{% endif %}>Karnataka</option>
+                                <option value="maharashtra" {% if profile.state == 'maharashtra' %}selected{% endif %}>Maharashtra</option>
+                                <option value="others" {% if profile.state == 'others' %}selected{% endif %}>Others</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="is_staff" name="is_staff" {% if user.is_staff %}checked{% endif %}>
+                            <label class="form-check-label text-light" for="is_staff">
+                                Staff Status (Can access admin)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="is_superuser" name="is_superuser" {% if user.is_superuser %}checked{% endif %}>
+                            <label class="form-check-label text-light" for="is_superuser">
+                                Superuser Status (Full admin access)
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-custom cyber-btn">
+                            <i class="bi bi-check-circle me-2"></i>Update User
+                        </button>
+                        <a href="{% url 'admin_user_management' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-2"></i>Back to User Management
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- User Stats Sidebar -->
+        <div class="col-lg-4">
+            <div class="cyber-card p-4 mb-4">
+                <h5 class="neon-glow mb-3">User Statistics</h5>
+                <div class="mb-3">
+                    <small class="text-cyan d-block">Date Joined</small>
+                    <span class="text-light">{{ user.date_joined|date:"M d, Y" }}</span>
+                </div>
+                <div class="mb-3">
+                    <small class="text-cyan d-block">Last Login</small>
+                    <span class="text-light">{% if user.last_login %}{{ user.last_login|date:"M d, Y H:i" }}{% else %}Never{% endif %}</span>
+                </div>
+                <div class="mb-3">
+                    <small class="text-cyan d-block">Account Status</small>
+                    <span class="badge bg-{% if user.is_active %}success{% else %}danger{% endif %}">
+                        {% if user.is_active %}Active{% else %}Inactive{% endif %}
+                    </span>
+                </div>
+                <div class="mb-0">
+                    <small class="text-cyan d-block">User Role</small>
+                    <span class="text-light">
+                        {% if user.is_superuser %}Superuser{% elif user.is_staff %}Staff{% else %}Regular User{% endif %}
+                    </span>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="cyber-card p-4">
+                <h5 class="neon-glow mb-3">Quick Actions</h5>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'admin_user_enrollments' user.id %}" class="btn btn-outline-info btn-sm">
+                        <i class="bi bi-book me-2"></i>Manage Enrollments
+                    </a>
+                    <button class="btn btn-outline-warning btn-sm" onclick="toggleUserStatus({{ user.id }})">
+                        <i class="bi bi-toggle-{% if user.is_active %}on{% else %}off{% endif %} me-2"></i>
+                        {% if user.is_active %}Deactivate{% else %}Activate{% endif %} User
+                    </button>
+                    <button class="btn btn-outline-danger btn-sm" onclick="deleteUser({{ user.id }}, '{{ user.username }}')">
+                        <i class="bi bi-trash me-2"></i>Delete User
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.cyber-card {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    color: #00ffff;
+}
+
+.cyber-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.cyber-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #00ffff;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 255, 0.25);
+}
+
+.cyber-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.btn-custom {
+    background: linear-gradient(135deg, #00ffff, #0080ff);
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background: linear-gradient(135deg, #0080ff, #004080);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
+.text-light {
+    color: #ffffff !important;
+}
+
+.text-cyan {
+    color: #00ffff !important;
+}
+
+.form-check-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-check-input:checked {
+    background-color: #00ffff;
+    border-color: #00ffff;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function toggleUserStatus(userId) {
+    if (confirm('Are you sure you want to toggle this user\'s active status?')) {
+        fetch(`/admin_dashboard/users/${userId}/toggle/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: JSON.stringify({ activate: false }) // This will be handled by the view
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error updating user status');
+            console.error(error);
+        });
+    }
+}
+
+function deleteUser(userId, username) {
+    if (confirm(`Are you sure you want to delete user "${username}"? This action cannot be undone.`)) {
+        fetch(`/admin_dashboard/users/${userId}/delete/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                window.location.href = '{% url "admin_user_management" %}';
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error deleting user');
+            console.error(error);
+        });
+    }
+}
+</script>
+{% endblock %}

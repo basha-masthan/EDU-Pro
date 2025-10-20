@@ -1,64 +1,296 @@
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edu-Pro</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <!-- Option 1: Include in HTML -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-</head>
+
+{% block title %}Contact Us - FUTURE BOUND TECH{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <div class="cyber-card p-5 mb-4">
+                <h1 class="neon-glow display-4 mb-4">Contact Us</h1>
+                <p class="text-light lead mb-0">Get in touch with our team. We're here to help you succeed in your tech journey.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="row mb-5">
+        <!-- Contact Info -->
+        <div class="col-lg-6 mb-4">
+            <div class="cyber-card p-4 h-100">
+                <h3 class="neon-glow mb-4">Get In Touch</h3>
+                <p class="text-light mb-4">
+                    At <strong>FUTURE BOUND TECH</strong>, we're committed to providing exceptional service and support to our valued learners. Our team of experts is dedicated to helping you achieve your goals, whether you're a beginner or an experienced programmer. With our cutting-edge technology and innovative approach, we offer a range of services designed to empower you with the skills and knowledge you need to succeed in the tech industry.
+                </p>
+                <p class="text-light mb-4">
+                    Have a question, need assistance, or just want to say hello? We're here to listen and help. We value your feedback and look forward to hearing from you. Please don't hesitate to contact us using the form, and we'll get back to you promptly. We're committed to responding to your messages as soon as possible, usually within 24 hours. Your satisfaction is our top priority.
+                </p>
+
+                <!-- Contact Information -->
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-envelope-fill text-cyan fs-4 me-3"></i>
+                            <div>
+                                <h6 class="text-light mb-1">Email</h6>
+                                <a href="mailto:info@futureboundtech.com" class="text-cyan text-decoration-none">info@futureboundtech.com</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-telephone-fill text-cyan fs-4 me-3"></i>
+                            <div>
+                                <h6 class="text-light mb-1">Phone</h6>
+                                <a href="tel:+91-XXXXXXXXXX" class="text-cyan text-decoration-none">+91-XXXXXXXXXX</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <div class="d-flex align-items-center mb-3">
+                            <i class="bi bi-geo-alt-fill text-cyan fs-4 me-3"></i>
+                            <div>
+                                <h6 class="text-light mb-1">Location</h6>
+                                <p class="text-light mb-0">Your Location, India</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Media Links -->
+                <div class="mt-4">
+                    <h5 class="text-light mb-3">Follow Us</h5>
+                    <div class="d-flex gap-3 flex-wrap">
+                        <a href="mailto:info@futureboundtech.com" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-envelope me-2"></i>Email
+                        </a>
+                        <a href="https://www.facebook.com/futureboundtech" target="_blank" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-facebook me-2"></i>Facebook
+                        </a>
+                        <a href="https://www.twitter.com/futureboundtech" target="_blank" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-twitter me-2"></i>Twitter
+                        </a>
+                        <a href="https://www.instagram.com/futureboundtech" target="_blank" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-instagram me-2"></i>Instagram
+                        </a>
+                        <a href="https://www.linkedin.com/company/futureboundtech" target="_blank" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-linkedin me-2"></i>LinkedIn
+                        </a>
+                        <a href="https://www.github.com/futureboundtech" target="_blank" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-github me-2"></i>GitHub
+                        </a>
+                        <a href="https://www.youtube.com/@futureboundtech" target="_blank" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-youtube me-2"></i>YouTube
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-6">
+            <div class="cyber-card p-4">
+                <h3 class="neon-glow mb-4">Send us a Message</h3>
+
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <form action="{% url 'contact' %}" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="id_name" class="form-label text-light">Full Name</label>
+                        <input type="text" class="form-control cyber-input" id="id_name" name="name" placeholder="Enter your full name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_email" class="form-label text-light">Email Address</label>
+                        <input type="email" class="form-control cyber-input" id="id_email" name="email" placeholder="Enter your email address" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="id_subject" class="form-label text-light">Subject (Optional)</label>
+                        <input type="text" class="form-control cyber-input" id="id_subject" name="subject" placeholder="What's this about?">
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="id_message" class="form-label text-light">Message</label>
+                        <textarea class="form-control cyber-input" id="id_message" name="message" rows="5" placeholder="Tell us how we can help you..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-custom cyber-btn w-100 btn-lg">
+                        <i class="bi bi-send me-2"></i>Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="cyber-card p-4">
+                <h3 class="neon-glow text-center mb-5">Frequently Asked Questions</h3>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <h5 class="text-cyan mb-3">
+                                <i class="bi bi-question-circle me-2"></i>How do I enroll in a course?
+                            </h5>
+                            <p class="text-light">Simply browse our courses, click on the course you're interested in, and click the "Enroll Now" button. For premium courses, you'll need to complete the payment process.</p>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="text-cyan mb-3">
+                                <i class="bi bi-question-circle me-2"></i>Are the courses self-paced?
+                            </h5>
+                            <p class="text-light">Yes! All our courses are self-paced, allowing you to learn at your own speed and schedule that fits your lifestyle.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <h5 class="text-cyan mb-3">
+                                <i class="bi bi-question-circle me-2"></i>Do I get a certificate?
+                            </h5>
+                            <p class="text-light">Yes, upon successful completion of any course, you'll receive a certificate that you can add to your resume or LinkedIn profile.</p>
+                        </div>
+                        <div class="mb-4">
+                            <h5 class="text-cyan mb-3">
+                                <i class="bi bi-question-circle me-2"></i>What if I need help?
+                            </h5>
+                            <p class="text-light">Our support team is here to help! You can contact us through this form, and we'll respond within 24 hours.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="cyber-card p-4">
+                <h3 class="neon-glow mb-4">Ready to Start Learning?</h3>
+                <p class="text-light mb-4">Join our community of tech enthusiasts and take the first step towards your dream career.</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{% url 'course_list' %}" class="btn btn-custom cyber-btn btn-lg">
+                        <i class="bi bi-search me-2"></i>Browse Courses
+                    </a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Join Our Community
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
 <style>
-    body{
-        color: black;
+.cyber-card {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    color: #00ffff;
+}
+
+.text-light {
+    color: #ffffff !important;
+}
+
+.text-cyan {
+    color: #00ffff !important;
+}
+
+.cyber-input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-radius: 8px;
+    padding: 0.75rem;
+}
+
+.cyber-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #00ffff;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 255, 0.25);
+}
+
+.cyber-input::placeholder {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.btn-custom {
+    background: linear-gradient(135deg, #00ffff, #0080ff);
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background: linear-gradient(135deg, #0080ff, #004080);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
+.btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.display-4 {
+    font-size: 3.5rem;
+}
+
+.alert {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem;
     }
-    #bg5
-{
-    background-image: url("{% static 'img/con.jpg'%}");
-    background-repeat: no-repeat;
-    background-size: cover; 
-    background-position: center center;
-    background-attachment: fixed;
+
+    .lead {
+        font-size: 1.1rem;
+    }
+
+    .cyber-card {
+        padding: 2rem 1rem;
+    }
+
+    .d-flex.gap-3 {
+        gap: 0.5rem !important;
+    }
+
+    .btn-sm {
+        font-size: 0.8rem;
+        padding: 0.375rem 0.75rem;
+    }
 }
 </style>
-<body id="bg5" style="color: black;">
-    <div class="container">
-        <h1 class="text-center text-dark mt-3" style="font-family: 'Times New Roman', Times, serif; font-size: 50px; margin-top: 2%;">Contact Us</h1>
-        <p id="para2" style="font-size: 20px;" class="text-dark">
-            At <b>EDU Pro Solutions</b>, we're committed to providing exceptional service and support to our valued customers. Our team of experts is dedicated to helping you achieve your goals, whether you're a beginner or an experienced programmer. With our cutting-edge technology and innovative approach, we offer a range of services designed to empower you with the skills and knowledge you need to succeed in the tech industry.
-<br><br>
-Have a question, need assistance, or just want to say hello? We're here to listen and help. We value your feedback and look forward to hearing from you. Please don't hesitate to contact us using the form below, and we'll get back to you promptly. We're committed to responding to your messages as soon as possible, usually within 24 hours. Your satisfaction is our top priority, and we're dedicated to providing you with an exceptional experience.
-
-
-
-        </p>
-        <div class="row" id="icon">
-            <div class="col-5 text-dark" >
-                <i class="bi-envelope"> https://www.gmail.com</i><br>
-                <i class="bi-facebook "> https://www.facebook.com</i><br>   
-                <i class="bi-twitter"> https://www.twitter.com</i><br>
-                <i class="bi-instagram"> https://www.bi-instagram.com</i><br>
-                <i class="bi-linkedin"> https://www.bi-linkedin.com</i><br>
-                <i class="bi-github"> https://www.github.com</i><br>
-                <i class="bi-youtube"> https://www.youtube.com</i><br>
-            </div>
-            <div class="col-5" id="contact">
-                <form action="/msg/" method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <h1 class="text-center">Contact</h1>                   
-                        <input type="text" class="form-control mt-3" id="exampleFormControlInput1" placeholder="Full Name" name="name">
-                        <input type="text" class="form-control mt-4" id="exampleFormControlInput1" placeholder="Email" name="email">
-                        <textarea class="form-control mt-4" id="exampleFormControlTextarea1" rows="3" placeholder="Enter the message" name="msg"></textarea>
-                        <button type="submit" class="btn btn-info w-100 mt-5">Submit</button>
-                    </div>
-                </form>
-                
-            </div>
-
-        </div>
-        
-    </div>
-</body>
-</html>
+{% endblock %}

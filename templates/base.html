@@ -14,9 +14,9 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     {% block extra_head %}{% endblock %}
 </head>
-<body class="bg-light">
+<body>
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{% url 'home' %}">
                 <i class="bi bi-rocket-takeoff me-2"></i>
@@ -80,7 +80,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-light py-4 mt-5">
+    <footer class="bg-dark text-white py-4 mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
@@ -90,9 +90,9 @@
                 <div class="col-md-4">
                     <h6>Quick Links</h6>
                     <ul class="list-unstyled">
-                        <li><a href="{% url 'course_list' %}" class="text-light text-decoration-none">Courses</a></li>
-                        <li><a href="{% url 'about' %}" class="text-light text-decoration-none">About Us</a></li>
-                        <li><a href="{% url 'contact' %}" class="text-light text-decoration-none">Contact</a></li>
+                        <li><a href="{% url 'course_list' %}" class="text-white text-decoration-none">Courses</a></li>
+                        <li><a href="{% url 'about' %}" class="text-white text-decoration-none">About Us</a></li>
+                        <li><a href="{% url 'contact' %}" class="text-white text-decoration-none">Contact</a></li>
                     </ul>
                 </div>
                 <div class="col-md-4">

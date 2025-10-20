@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Home - EDU Pro{% endblock %}
+{% block title %}Home - FUTURE BOUND TECH{% endblock %}
 
 {% block content %}
 <!-- Hero Section - Cyberpunk 2050 -->
@@ -10,10 +10,10 @@
     <div class="container position-relative">
         <div class="row align-items-center min-vh-100">
             <div class="col-lg-6">
-                <h1 class="glitch mb-4" data-text="EDU Pro">EDU Pro</h1>
+                <h1 class="glitch mb-4" data-text="FUTURE BOUND TECH">EDU TECH - FBT</h1>
                 <h2 class="neon-glow text-uppercase mb-4">Learn. Grow. Succeed.</h2>
                 <p class="lead mb-4 cyber-text">
-                    Join EDU Pro for comprehensive online courses, internships, and
+                    Join FUTURE BOUND TECH for comprehensive online courses, internships, and
                     certification programs designed to accelerate your career in technology.
                 </p>
                 <div class="d-flex gap-3 flex-wrap">
@@ -54,7 +54,7 @@
         <div class="row text-center mb-5">
             <div class="col">
                 <h2 class="neon-glow fw-bold">Why Choose FUTURE BOUND TECH?</h2>
-                <p class="text-light cyber-text">Comprehensive learning solutions for aspiring tech professionals</p>
+                <p class="text-light cyber-text">Empowering students with cutting-edge technology education and real-world skills</p>
             </div>
         </div>
         <div class="row g-4">
@@ -101,7 +101,7 @@
                 <p class="text-light cyber-text">Start your learning journey with our most popular courses</p>
             </div>
             <div class="col-auto">
-                <a href="{% url 'course_list' %}" class="btn btn-custom cyber-btn">View All Courses</a>
+                <a href="{% url 'course_list' %}" class="btn btn-custom cyber-btn">Browse All Courses</a>
             </div>
         </div>
         <div class="row g-4">
@@ -109,14 +109,14 @@
             <div class="col-lg-4 col-md-6">
                 <div class="cyber-card h-100 hover-card scroll-animate">
                     {% if course.thumbnail %}
-                    <img src="{{ course.thumbnail.url }}" class="card-img-top course-image" alt="{{ course.title }}">
+                    <img src="{{ course.thumbnail.url }}" class="card-img-top course-image" alt="{{ course.title }}" loading="lazy">
                     {% else %}
                     <div class="bg-dark text-cyan d-flex align-items-center justify-content-center course-image">
                         <i class="bi bi-cpu display-4 neon-glow"></i>
                     </div>
                     {% endif %}
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
+                    <div class="card-body p-3">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
                             <span class="badge bg-free-subtle text-free neon-glow">{{ course.course_type|title }}</span>
                             <span class="badge bg-secondary neon-purple">{{ course.level|title }}</span>
                         </div>
@@ -133,7 +133,7 @@
                             <small class="text-cyan">{{ course.duration_hours }} hours</small>
                         </div>
                     </div>
-                    <div class="card-footer bg-transparent border-0">
+                    <div class="card-footer bg-transparent border-0 p-3">
                         <a href="{% url 'course_detail' course.pk %}" class="btn btn-custom w-100 cyber-btn">View Details</a>
                     </div>
                 </div>
@@ -189,7 +189,7 @@
 <section class="py-5 position-relative">
     <div class="container text-center">
         <h2 class="neon-glow fw-bold mb-4">Ready to Start Your Tech Journey?</h2>
-        <p class="lead text-light mb-4 cyber-text">Join thousands of students who are already learning with EDU Pro</p>
+        <p class="lead text-light mb-4 cyber-text">Join thousands of students who are already learning with FUTURE BOUND TECH</p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
             {% if user.is_authenticated %}
             <a href="{% url 'dashboard' %}" class="btn btn-custom btn-lg cyber-btn">

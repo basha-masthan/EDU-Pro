@@ -1,47 +1,78 @@
 
-/* Custom styles for course UI improvements */
+/* Professional Theme - Clean and Pleasant Design */
 
-/* General responsive utilities */
-@media (max-width: 768px) {
-    .container-fluid {
-        padding-left: 15px;
-        padding-right: 15px;
-    }
+/* Low Light Professional Background */
+body {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+    background-attachment: fixed;
+    color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
 }
 
-/* Course card styles */
+/* Clean Text Effects */
+.neon-glow {
+    font-weight: bold;
+    color: #00ffff;
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.neon-purple {
+    font-weight: bold;
+    color: #ff00ff;
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}
+
+.neon-pink {
+    font-weight: bold;
+    color: #ff1493;
+    text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);
+}
+
+/* Course card styles - Low Light Professional */
 .course-card {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 15px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
     overflow: hidden;
     margin-bottom: 20px;
+    padding: 0;
 }
 
 .course-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    border-color: rgba(0, 123, 255, 0.5);
+    background: rgba(35, 35, 35, 0.9);
 }
 
 .course-sidebar {
-    background: rgba(255,255,255,0.1);
+    background: rgba(30, 30, 30, 0.8);
     backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 20px;
     margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .course-main {
-    background: rgba(255,255,255,0.95);
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     padding: 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .module-btn {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-    border: none;
+    background: #007bff;
+    border: 1px solid #007bff;
     border-radius: 8px;
     color: white;
     padding: 10px 15px;
@@ -52,84 +83,225 @@
 }
 
 .module-btn:hover {
-    background: linear-gradient(45deg, #ee5a24, #ff6b6b);
-    transform: scale(1.05);
+    background: #0056b3;
+    border-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .course-image {
     border-radius: 10px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
     max-width: 100%;
     height: auto;
+    border: 1px solid rgba(255, 0, 255, 0.3);
 }
 
 .progress-bar-custom {
-    background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+    background: linear-gradient(90deg, #00ffff, #ff00ff, #ff1493);
+    background-size: 300% 300%;
+    animation: progressGlow 2s ease infinite;
     border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+@keyframes progressGlow {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
 }
 
 .btn-custom {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    border: none;
+    background: #28a745;
+    border: 1px solid #28a745;
     border-radius: 25px;
     color: white;
     padding: 12px 30px;
     font-weight: 600;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .btn-custom:hover {
-    background: linear-gradient(45deg, #764ba2, #667eea);
+    background: #218838;
+    border-color: #218838;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
 .btn-danger-custom {
-    background: linear-gradient(45deg, #ff6b6b, #ee5a24);
-    border: none;
+    background: #dc3545;
+    border: 1px solid #dc3545;
     border-radius: 25px;
     color: white;
     padding: 10px 20px;
     font-weight: 600;
     transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .btn-danger-custom:hover {
-    background: linear-gradient(45deg, #ee5a24, #ff6b6b);
-    transform: translateY(-2px);
+    background: #c82333;
+    border-color: #c82333;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
 
-/* Admin table improvements */
+/* Admin table improvements - Low Light Professional */
 .admin-table {
-    background: rgba(255,255,255,0.9);
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 10px;
     overflow: hidden;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
 .admin-table th {
-    background: linear-gradient(45deg, #667eea, #764ba2);
-    color: white;
+    background: rgba(42, 42, 42, 0.9);
+    color: #ffffff;
     font-weight: 600;
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .admin-table td {
-    border: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
     padding: 15px;
+    color: #ffffff;
 }
 
 .admin-table tr:nth-child(even) {
-    background: rgba(102, 126, 234, 0.05);
+    background: rgba(37, 37, 37, 0.8);
 }
 
 .admin-table tr:hover {
-    background: rgba(102, 126, 234, 0.1);
-    transition: background 0.3s ease;
+    background: rgba(51, 51, 51, 0.9);
+    transition: all 0.3s ease;
 }
 
-/* Responsive adjustments */
+/* Clean animations */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.scroll-animate {
+    animation: fadeInUp 0.8s ease-out;
+}
+
+/* Dark heading effect */
+.glitch {
+    position: relative;
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+/* Low light card effects */
+.cyber-card {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px 0;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    transition: all 0.3s ease;
+}
+
+.cyber-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    background: rgba(35, 35, 35, 0.9);
+}
+
+/* Enhanced responsive design */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 1320px;
+    }
+
+    .course-card {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+    }
+
+    .course-card .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+
+    .course-card .card-footer {
+        margin-top: auto;
+        padding: 15px 20px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .course-card {
+        margin-bottom: 20px;
+    }
+
+    .cyber-card {
+        padding: 20px;
+    }
+
+    .hero-section {
+        padding: 40px 0;
+    }
+
+    .glitch {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .course-card {
+        margin-bottom: 25px;
+    }
+
+    .cyber-card {
+        padding: 18px;
+        margin: 15px 0;
+    }
+
+    .hero-section {
+        padding: 30px 0;
+        text-align: center;
+    }
+
+    .hero-section .col-lg-6 {
+        margin-bottom: 30px;
+    }
+
+    .glitch {
+        font-size: 2rem;
+    }
+
+    .btn-custom, .btn-danger-custom {
+        padding: 14px 28px;
+        font-size: 16px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
 @media (max-width: 992px) {
     .course-sidebar {
         margin-bottom: 20px;
@@ -138,64 +310,572 @@
     .course-main {
         padding: 15px;
     }
+
+    .glitch {
+        font-size: 2rem;
+    }
+
+    .btn-custom, .btn-danger-custom {
+        padding: 12px 25px;
+        font-size: 15px;
+    }
 }
 
 @media (max-width: 768px) {
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
     .course-card {
-        margin: 10px;
+        margin: 15px 0;
+        border-radius: 12px;
+    }
+
+    .cyber-card {
+        padding: 16px;
+        margin: 12px 0;
+        border-radius: 12px;
     }
 
     .module-btn {
-        padding: 8px 12px;
-        font-size: 14px;
+        padding: 10px 16px;
+        font-size: 15px;
+        margin-bottom: 8px;
     }
 
-    .btn-custom {
-        padding: 10px 20px;
-        font-size: 14px;
+    .btn-custom, .btn-danger-custom {
+        padding: 12px 24px;
+        font-size: 15px;
+        border-radius: 8px;
+        margin-bottom: 8px;
+    }
+
+    .glitch {
+        font-size: 1.8rem;
+        margin-bottom: 20px;
+    }
+
+    .hero-section {
+        padding: 20px 0;
+    }
+
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+
+    .card-img-top {
+        height: 180px !important;
+        object-fit: cover;
     }
 }
 
-/* Existing styles */
-#icon {
-    margin-top: 3%;
+@media (max-width: 576px) {
+    .course-card {
+        margin: 5px;
+    }
+
+    .module-btn {
+        padding: 6px 10px;
+        font-size: 13px;
+    }
+
+    .btn-custom, .btn-danger-custom {
+        padding: 8px 16px;
+        font-size: 13px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .glitch {
+        font-size: 1.3rem;
+    }
+
+    .cyber-card {
+        padding: 10px;
+        margin: 10px 0;
+    }
+
+    .neural-dots {
+        gap: 6px;
+    }
+
+    .neural-dot {
+        width: 5px;
+        height: 5px;
+    }
+}
+
+/* Dark JavaScript Animations */
+.cyber-js {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark loading dots animation */
+.neural-dots {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.neural-dot {
+    width: 8px;
+    height: 8px;
+    background: #ffffff;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.neural-dot:nth-child(2) { animation-delay: 0.3s; }
+.neural-dot:nth-child(3) { animation-delay: 0.6s; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+/* Dark text effect */
+.cyber-text {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+/* Ensure consistent text colors */
+.text-light {
+    color: #ffffff !important;
+}
+
+.text-cyan {
+    color: #00ffff !important;
+}
+
+.text-white {
+    color: #ffffff !important;
+}
+
+/* Clean button effects */
+.cyber-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.cyber-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Dark subtle pattern background */
+.pattern-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: -2;
+    background: linear-gradient(45deg, #333333 25%, transparent 25%),
+                linear-gradient(-45deg, #333333 25%, transparent 25%),
+                linear-gradient(45deg, transparent 75%, #333333 75%),
+                linear-gradient(-45deg, transparent 75%, #333333 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    opacity: 0.05;
+}
+
+/* Perfect typography scaling */
+@media (max-width: 768px) {
+    body {
+        font-size: 15px;
+        line-height: 1.5;
+    }
+
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.6rem; }
+    h3 { font-size: 1.4rem; }
+    h4 { font-size: 1.2rem; }
+    h5 { font-size: 1.1rem; }
+    h6 { font-size: 1rem; }
+}
+
+@media (max-width: 480px) {
+    body {
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+    h1 { font-size: 1.6rem; }
+    h2 { font-size: 1.4rem; }
+    h3 { font-size: 1.3rem; }
+    h4 { font-size: 1.2rem; }
+    h5 { font-size: 1.1rem; }
+    h6 { font-size: 1rem; }
+}
+
+/* Enhanced card layouts for better content distribution */
+.course-card .card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card .card-body > *:last-child {
+    margin-top: auto;
+}
+
+.course-card .card-title {
+    margin-bottom: 0.75rem;
+    line-height: 1.3;
+}
+
+.course-card .card-text {
+    margin-bottom: 1rem;
+    flex: 1;
+}
+
+/* Improved button spacing and alignment */
+.btn-custom,
+.btn-danger-custom {
+    display: inline-flex;
     align-items: center;
-    margin-left: 10%;
-    color: aliceblue;
-    font-size: 25px;
-}
-
-#para2 {
-    margin-top: 3%;
-    font-size: 20px;
-    font-style: italic;
+    justify-content: center;
     text-align: center;
-    color: aliceblue;
+    white-space: nowrap;
 }
 
-#bg2 {
-    background-image: url("img/log1.jpg");
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center center;
-    background-attachment: fixed;
+/* Better form controls on mobile */
+@media (max-width: 768px) {
+    .form-control,
+    .form-select {
+        font-size: 16px; /* Prevents zoom on iOS */
+        padding: 0.75rem;
+        border-radius: 8px;
+    }
+
+    .btn {
+        min-height: 44px; /* Touch target size */
+    }
 }
 
-#bb {
-    background-color: rgb(45, 45, 60);
-    opacity: 0.7;
-    margin-right: 25%;
-    margin-left: 33%;
-    width: 40vw;
-    height: 75vh;
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 3%;
-    border-radius: 5%;
+/* Enhanced focus states for accessibility */
+.course-card:focus-within,
+.cyber-card:focus-within,
+.btn:focus {
+    outline: 2px solid #00ffff;
+    outline-offset: 2px;
 }
 
-.radiobtn {
-    align-items: center;
-    margin-left: 5%;
-    margin-right: 5%;
+/* Smooth scrolling for better UX */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Loading states */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* Perfect course card styling */
+.course-card {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 35px rgba(0, 123, 255, 0.2);
+    border-color: rgba(0, 123, 255, 0.4);
+    background: rgba(35, 35, 35, 0.98);
+}
+
+.course-image {
+    height: 180px;
+    width: 100%;
+    object-fit: cover;
+    border-radius: 14px 14px 0 0;
+    transition: all 0.3s ease;
+    display: block;
+    background-color: #1a1a1a;
+}
+
+.course-card:hover .course-image {
+    transform: scale(1.05);
+}
+
+/* Enhanced card content */
+.course-card .card-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card .card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    line-height: 1.3;
+    color: #ffffff;
+}
+
+.course-card .card-text {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 15px;
+    flex: 1;
+    color: #e0e0e0;
+}
+
+/* Perfect button styling */
+.course-card .card-footer {
+    padding: 15px 20px 20px;
+    background: transparent;
+    border: none;
+}
+
+.course-card .btn {
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.course-card .btn-custom {
+    background: linear-gradient(135deg, #00ffff, #0080ff);
+    border: none;
+    color: #000;
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
+.course-card .btn-custom:hover {
+    background: linear-gradient(135deg, #00cccc, #0066cc);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(0, 255, 255, 0.4);
+}
+
+.course-card .btn-success {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.course-card .btn-success:hover {
+    background: linear-gradient(135deg, #218838, #1aa085);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* Better image loading and visibility */
+.card-img-top {
+    transition: opacity 0.3s ease;
+    background-color: #1a1a1a;
+}
+
+.card-img-top.loaded {
+    opacity: 1;
+}
+
+.card-img-top:not(.loaded) {
+    opacity: 1; /* Show images immediately */
+}
+
+/* Ensure images are visible */
+img.card-img-top {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* Responsive course cards */
+@media (max-width: 768px) {
+    .course-card {
+        margin-bottom: 20px;
+    }
+
+    .course-image {
+        height: 160px;
+    }
+
+    .course-card .card-body {
+        padding: 16px;
+    }
+
+    .course-card .card-title {
+        font-size: 1rem;
+    }
+
+    .course-card .btn {
+        font-size: 0.8rem;
+        padding: 8px 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .course-image {
+        height: 140px;
+    }
+
+    .course-card .card-body {
+        padding: 14px;
+    }
+
+    .course-card .card-footer {
+        padding: 12px 14px 16px;
+    }
+}
+
+/* Additional responsive improvements */
+@media (max-width: 480px) {
+    .hero-section {
+        padding: 20px 0;
+        min-height: auto;
+    }
+
+    .glitch {
+        font-size: 1.1rem;
+    }
+
+    .neon-glow {
+        font-size: 1.2rem;
+    }
+
+    .btn-custom, .btn-danger-custom {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    .cyber-card {
+        padding: 8px;
+        margin: 8px 0;
+    }
+
+    .course-image {
+        height: 150px;
+        object-fit: cover;
+    }
+}
+
+/* Perfect mobile experience */
+@media (max-width: 360px) {
+    .container {
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .course-card {
+        margin: 8px 0;
+        border-radius: 8px;
+    }
+
+    .cyber-card {
+        padding: 12px;
+        margin: 6px 0;
+        border-radius: 8px;
+    }
+
+    .btn-custom, .btn-danger-custom {
+        padding: 8px 16px;
+        font-size: 13px;
+        border-radius: 6px;
+    }
+
+    .glitch {
+        font-size: 1rem;
+        letter-spacing: 1px;
+    }
+
+    .navbar-brand {
+        font-size: 1rem;
+    }
+
+    .card-img-top {
+        height: 140px !important;
+    }
+}
+
+/* Ultra-wide screen optimization */
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1480px;
+    }
+
+    .course-card {
+        margin-bottom: 30px;
+    }
+
+    .cyber-card {
+        padding: 25px;
+        margin: 25px 0;
+    }
+}
+
+/* Touch-friendly interactions */
+@media (hover: none) and (pointer: coarse) {
+    .course-card:hover {
+        transform: none;
+    }
+
+    .cyber-card:hover {
+        transform: none;
+    }
+
+    .btn-custom:hover,
+    .btn-danger-custom:hover,
+    .cyber-btn:hover {
+        transform: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .course-card,
+    .cyber-card {
+        border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .neon-glow,
+    .neon-purple,
+    .neon-pink {
+        text-shadow: 0 0 15px currentColor;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .course-card,
+    .cyber-card,
+    .btn-custom,
+    .btn-danger-custom,
+    .cyber-btn {
+        transition: none;
+    }
+
+    .progress-bar-custom {
+        animation: none;
+    }
+
+    .neural-dot {
+        animation: none;
+    }
+
+    .scroll-animate {
+        animation: none;
+    }
 }

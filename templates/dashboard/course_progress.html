@@ -75,7 +75,7 @@
                                 <div class="accordion-body p-0">
                                     <div class="list-group list-group-flush">
                                         {% for lesson in module.lessons.all %}
-                                        {% with progress_records|dictsort:"lesson.id"|get:forloop.parentloop.counter0 as lesson_progress %}
+                                        {% with progress_records|slice:forloop.counter0|first as lesson_progress %}
                                         <div class="list-group-item border-0 px-4 py-3">
                                             <div class="d-flex align-items-center">
                                                 <div class="flex-shrink-0 me-3">
@@ -114,6 +114,13 @@
                                                         {% else %}
                                                         Start
                                                         {% endif %}
+                                                    </a>
+                                                    {% endif %}
+                                                    {% if enrollment.status == 'completed' and lesson_progress and lesson_progress.is_completed %}
+                                                    <a href="{% url 'lesson_view' enrollment.id lesson.id %}"
+                                                       class="btn btn-outline-secondary btn-sm ms-1"
+                                                       title="Review lesson">
+                                                        <i class="bi bi-eye"></i>
                                                     </a>
                                                     {% endif %}
                                                 </div>

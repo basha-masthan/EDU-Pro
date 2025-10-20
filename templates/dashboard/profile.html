@@ -1,0 +1,297 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}My Profile - EDU Pro{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Profile Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="d-flex align-items-center justify-content-between">
+                <div>
+                    <h1 class="neon-glow mb-2">My Profile</h1>
+                    <p class="text-light cyber-text">Manage your account information and preferences</p>
+                </div>
+                <a href="{% url 'dashboard' %}" class="btn btn-outline-primary cyber-btn">
+                    <i class="bi bi-arrow-left me-2"></i>Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Form -->
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="cyber-card p-4">
+                <h4 class="neon-glow mb-4">Edit Profile Information</h4>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+
+                    <!-- Profile Picture -->
+                    <div class="mb-4 text-center">
+                        <div class="mb-3">
+                            {% if user.userprofile.profile_image %}
+                                <img src="{{ user.userprofile.profile_image.url }}" alt="Profile Picture"
+                                     class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #00ffff;">
+                            {% else %}
+                                <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center"
+                                     style="width: 120px; height: 120px; border: 3px solid #00ffff;">
+                                    <i class="bi bi-person display-4 text-light"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-3">
+                            <label for="{{ form.profile_image.id_for_label }}" class="form-label text-light">Change Profile Picture</label>
+                            {{ form.profile_image }}
+                            <div class="form-text text-cyan">Upload a new profile picture (optional)</div>
+                        </div>
+                    </div>
+
+                    <!-- Personal Information -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.first_name.id_for_label }}" class="form-label text-light">First Name</label>
+                            {{ form.first_name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.last_name.id_for_label }}" class="form-label text-light">Last Name</label>
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.username.id_for_label }}" class="form-label text-light">Username</label>
+                        {{ form.username }}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.email.id_for_label }}" class="form-label text-light">Email Address</label>
+                        {{ form.email }}
+                    </div>
+
+                    <!-- Profile Information -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.phone.id_for_label }}" class="form-label text-light">Phone Number</label>
+                            {{ form.phone }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.college.id_for_label }}" class="form-label text-light">College/University</label>
+                            {{ form.college }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.education.id_for_label }}" class="form-label text-light">Education Level</label>
+                            {{ form.education }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ form.state.id_for_label }}" class="form-label text-light">State</label>
+                            {{ form.state }}
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="d-flex gap-3 mt-4">
+                        <button type="submit" class="btn btn-custom cyber-btn">
+                            <i class="bi bi-save me-2"></i>Save Changes
+                        </button>
+                        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="bi bi-x-circle me-2"></i>Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Profile Summary Sidebar -->
+        <div class="col-lg-4">
+            <!-- Account Summary -->
+            <div class="cyber-card p-4 mb-4">
+                <h5 class="neon-glow mb-3">Account Summary</h5>
+                <div class="mb-3">
+                    <small class="text-cyan d-block">Member Since</small>
+                    <span class="text-light">{{ user.date_joined|date:"F j, Y" }}</span>
+                </div>
+                <div class="mb-3">
+                    <small class="text-cyan d-block">Last Login</small>
+                    <span class="text-light">
+                        {% if user.last_login %}
+                            {{ user.last_login|date:"F j, Y \a\t g:i A" }}
+                        {% else %}
+                            Never
+                        {% endif %}
+                    </span>
+                </div>
+                <div class="mb-3">
+                    <small class="text-cyan d-block">Account Status</small>
+                    {% if user.is_active %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-secondary">Inactive</span>
+                    {% endif %}
+                </div>
+                {% if user.is_superuser %}
+                <div class="mb-0">
+                    <small class="text-cyan d-block">Account Type</small>
+                    <span class="badge bg-danger">Administrator</span>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="cyber-card p-4">
+                <h5 class="neon-glow mb-3">Quick Actions</h5>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-speedometer2 me-2"></i>My Dashboard
+                    </a>
+                    <a href="{% url 'course_list' %}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-book me-2"></i>Browse Courses
+                    </a>
+                    <button class="btn btn-outline-warning btn-sm" onclick="changePassword()">
+                        <i class="bi bi-key me-2"></i>Change Password
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.cyber-card {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    color: #00ffff;
+}
+
+.cyber-text {
+    color: #e0e0e0;
+}
+
+.form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #00ffff;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 255, 0.25);
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.form-select {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-radius: 8px;
+}
+
+.form-select:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #00ffff;
+    color: #ffffff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 255, 255, 0.25);
+}
+
+.btn-custom {
+    background: linear-gradient(135deg, #00ffff, #0080ff);
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background: linear-gradient(135deg, #0080ff, #004080);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
+.btn-outline-primary {
+    border-color: #00ffff;
+    color: #00ffff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #00ffff;
+    border-color: #00ffff;
+    color: #000000;
+}
+
+.btn-outline-secondary {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+}
+
+.btn-outline-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline-warning {
+    border-color: #ffc107;
+    color: #ffc107;
+}
+
+.btn-outline-warning:hover {
+    background-color: #ffc107;
+    border-color: #ffc107;
+    color: #000000;
+}
+
+.text-light {
+    color: #ffffff !important;
+}
+
+.text-cyan {
+    color: #00ffff !important;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, #28a745, #1e7e34) !important;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, #dc3545, #bd2130) !important;
+}
+
+.bg-secondary {
+    background: linear-gradient(135deg, #6c757d, #545b62) !important;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function changePassword() {
+    // This would typically open a modal or redirect to a password change page
+    alert('Password change functionality would be implemented here.');
+}
+</script>
+{% endblock %}

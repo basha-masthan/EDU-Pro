@@ -254,6 +254,7 @@ class Enrollment(models.Model):
         return f"{self.user.username} - {self.course.title}"
 
     def update_progress(self):
+        """Update enrollment progress with precise calculation to prevent bulk completion"""
         total_lessons = self.course.get_total_lessons()
         if total_lessons == 0:
             self.progress_percentage = 100.00
@@ -262,12 +263,18 @@ class Enrollment(models.Model):
                 enrollment=self,
                 is_completed=True
             ).count()
-            self.progress_percentage = (completed_lessons / total_lessons) * 100
+            # Use higher precision to prevent rounding errors that could cause bulk completion
+            progress = (completed_lessons / total_lessons) * 100
+            self.progress_percentage = round(progress, 6)  # Use 6 decimal places for precision
         self.save()
 
-        if self.progress_percentage == 100.00 and self.status != 'completed':
+        # Update status based on progress - only mark as completed when truly 100%
+        if self.progress_percentage >= 100.00 and self.status != 'completed':
             self.status = 'completed'
             self.completion_date = timezone.now()
+            self.save()
+        elif self.progress_percentage > 0 and self.status == 'enrolled':
+            self.status = 'in_progress'
             self.save()
 
 

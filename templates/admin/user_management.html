@@ -1,0 +1,638 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Management - EDU Pro{% endblock %}
+
+{% block content %}
+<div class="admin-user-management" style="background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%); min-height: 100vh; color: #ffffff;">
+    <div class="container-fluid py-4" style="color: #ffffff;">
+        <!-- Header -->
+        <div class="row mb-4">
+            <div class="col">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="neon-glow mb-2" style="color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">User Management</h1>
+                        <p class="cyber-text" style="color: #e0e0e0;">Manage users, profiles, and enrollment statistics</p>
+                    </div>
+                    <div class="btn-group">
+                        <a href="{% url 'admin_course_management' %}" class="btn btn-outline-primary cyber-btn" style="border-color: #00ffff; color: #00ffff;">
+                            <i class="bi bi-arrow-left me-2"></i>Back to Courses
+                        </a>
+                        <button class="btn btn-custom cyber-btn" data-bs-toggle="modal" data-bs-target="#addUserModal" style="background: linear-gradient(135deg, #00ffff, #0080ff); border: none;">
+                            <i class="bi bi-person-plus me-2"></i>Add New User
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="cyber-card p-4 text-center" style="background: rgba(30, 30, 30, 0.95); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <h3 class="display-4 fw-bold neon-glow" style="background: linear-gradient(135deg, #00ffff, #ff00ff, #ffff00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">{{ total_users }}</h3>
+                <p class="mb-0" style="color: #e0e0e0;">Total Users</p>
+                <small class="neon-purple" style="color: #ff00ff; text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);">👥 Registered Users</small>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="cyber-card p-4 text-center" style="background: rgba(30, 30, 30, 0.95); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <h3 class="display-4 fw-bold neon-pink" style="color: #ff1493; text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);">{{ active_users }}</h3>
+                <p class="mb-0" style="color: #e0e0e0;">Active Users</p>
+                <small class="neon-glow" style="color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">✅ Active Accounts</small>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="cyber-card p-4 text-center" style="background: rgba(30, 30, 30, 0.95); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <h3 class="display-4 fw-bold neon-purple" style="color: #ff00ff; text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);">{{ admin_users }}</h3>
+                <p class="mb-0" style="color: #e0e0e0;">Admin Users</p>
+                <small class="neon-pink" style="color: #ff1493; text-shadow: 0 0 10px rgba(255, 20, 147, 0.5);">👑 Administrators</small>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="cyber-card p-4 text-center" style="background: rgba(30, 30, 30, 0.95); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <h3 class="display-4 fw-bold neon-glow" style="background: linear-gradient(135deg, #00ffff, #ff00ff, #ffff00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;">{{ total_users|add:"-1" }}</h3>
+                <p class="mb-0" style="color: #e0e0e0;">Regular Users</p>
+                <small class="neon-purple" style="color: #ff00ff; text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);">🎓 Students</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Users List -->
+    <div class="row">
+        <div class="col">
+            <div class="cyber-card" style="background: rgba(30, 30, 30, 0.95); border: 1px solid rgba(255, 255, 255, 0.15);">
+                <div class="card-header border-bottom border-secondary py-3" style="background: rgba(42, 42, 42, 0.9); border-bottom: 1px solid rgba(255, 255, 255, 0.2);">
+                    <h5 class="mb-0 neon-glow" style="color: #00ffff; text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);">All Users</h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if users %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0" style="background-color: #000000; color: #ffffff;">
+                            <thead style="background-color: #1a1a1a; border-bottom: 2px solid #333;">
+                                <tr>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">User</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Contact</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Education</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Enrollments</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Status</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Joined</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: #000000;">
+                                {% for user in users %}
+                                <tr style="background-color: #000000; border-bottom: 1px solid #333;" class="{% if not user.is_active %}table-secondary{% endif %}">
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        <div class="d-flex align-items-center">
+                                            {% if user.userprofile.profile_image %}
+                                            <img src="{{ user.userprofile.profile_image.url }}" alt="{{ user.get_full_name }}"
+                                                 class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                                            {% else %}
+                                            <div class="bg-secondary rounded-circle me-3 d-flex align-items-center justify-content-center"
+                                                 style="width: 40px; height: 40px;">
+                                                <i class="bi bi-person" style="color: #ffffff;"></i>
+                                            </div>
+                                            {% endif %}
+                                            <div>
+                                                <h6 class="mb-0" style="color: #ffffff;">{{ user.get_full_name|default:user.username }}</h6>
+                                                <small style="color: #00ffff;">@{{ user.username }}</small>
+                                                {% if user.is_superuser %}
+                                                <br><span class="badge" style="background-color: #dc3545; color: #ffffff;">Admin</span>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        <small style="color: #ffffff;">{{ user.email }}</small>
+                                        {% if user.userprofile.phone %}
+                                        <br><small style="color: #00ffff;">{{ user.userprofile.phone }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        {% if user.userprofile.education %}
+                                        <span class="badge" style="background-color: #17a2b8; color: #ffffff;">{{ user.userprofile.get_education_display }}</span>
+                                        {% else %}
+                                        <small style="color: #666;">-</small>
+                                        {% endif %}
+                                        {% if user.userprofile.college %}
+                                        <br><small style="color: #ffffff;">{{ user.userprofile.college }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        <div class="text-center">
+                                            {% for stat_key, stat_value in user_stats.items %}
+                                            {% if stat_key == user.id %}
+                                            <span class="badge" style="background: linear-gradient(135deg, #007bff, #0056b3); color: #ffffff;">{{ stat_value.total_enrollments|default:0 }}</span>
+                                            {% if stat_value.completed_courses %}
+                                            <br><small style="color: #28a745;">{{ stat_value.completed_courses }} completed</small>
+                                            {% endif %}
+                                            {% if stat_value.in_progress_courses %}
+                                            <br><small style="color: #ffc107;">{{ stat_value.in_progress_courses }} in progress</small>
+                                            {% endif %}
+                                            {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        {% if user.is_active %}
+                                        <span class="badge" style="background-color: #28a745; color: #ffffff;">Active</span>
+                                        {% else %}
+                                        <span class="badge" style="background-color: #6c757d; color: #ffffff;">Inactive</span>
+                                        {% endif %}
+                                        {% if user.last_login %}
+                                        <br><small style="color: #999;">Last login: {{ user.last_login|date:"M d, Y" }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        <small style="color: #ffffff;">{{ user.date_joined|date:"M d, Y" }}</small>
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        <div class="btn-group btn-group-sm">
+                                            <button class="btn btn-outline-info" title="View Profile" onclick="viewUser('{{ user.id }}')">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
+                                            <a href="{% url 'admin_edit_user' user.id %}" class="btn btn-outline-secondary btn-sm" title="Edit User">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            {% if user.is_active %}
+                                            <button class="btn btn-outline-warning" title="Deactivate" onclick="toggleUserStatus('{{ user.id }}', false)">
+                                                <i class="bi bi-person-dash"></i>
+                                            </button>
+                                            {% else %}
+                                            <button class="btn btn-outline-success" title="Activate" onclick="toggleUserStatus('{{ user.id }}', true)">
+                                                <i class="bi bi-person-check"></i>
+                                            </button>
+                                            {% endif %}
+                                            <button class="btn btn-outline-danger" title="Delete User" onclick="deleteUser('{{ user.id }}')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5" style="color: #e0e0e0;">
+                        <i class="bi bi-people display-4 mb-3" style="color: #666;"></i>
+                        <h4 style="color: #e0e0e0;">No users found</h4>
+                        <p style="color: #999;">Users will appear here once they register</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Enhanced admin user management styling */
+.admin-user-management {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%) !important;
+    min-height: 100vh;
+    color: #ffffff !important;
+}
+
+.cyber-card {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.table-responsive {
+    border-radius: 0 0 15px 15px;
+    overflow: hidden;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 255, 255, 0.08) !important;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+.table tbody tr {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+.table tbody td {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+    border: 1px solid #333 !important;
+}
+
+.table-dark th {
+    background: linear-gradient(135deg, #2a2a2a, #3a3a3a) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.85rem;
+}
+
+.table td {
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    vertical-align: middle;
+    color: #e0e0e0;
+    padding: 12px;
+}
+
+.table tbody tr {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Enhanced button styling */
+.btn-group .btn {
+    margin-right: 3px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
+}
+
+/* User avatar styling */
+.user-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid rgba(0, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.user-avatar:hover {
+    border-color: #00ffff;
+    transform: scale(1.1);
+}
+
+/* Badge styling */
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.bg-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, #28a745, #1e7e34) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+    color: #000 !important;
+}
+
+.bg-danger {
+    background: linear-gradient(135deg, #dc3545, #bd2130) !important;
+}
+
+.bg-info {
+    background: linear-gradient(135deg, #17a2b8, #138496) !important;
+}
+
+.bg-secondary {
+    background: linear-gradient(135deg, #6c757d, #545b62) !important;
+}
+
+/* Stats cards enhancement */
+.cyber-card .display-4 {
+    background: linear-gradient(135deg, #00ffff, #ff00ff, #ffff00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+}
+
+/* Responsive enhancements */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+
+    .table td {
+        padding: 8px 4px;
+    }
+
+    .user-avatar {
+        width: 35px;
+        height: 35px;
+    }
+
+    .btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    .btn-group .btn {
+        margin-right: 0;
+        font-size: 0.75rem;
+        padding: 3px 6px;
+    }
+}
+
+@media (max-width: 576px) {
+    .table-dark th {
+        font-size: 0.7rem;
+        padding: 8px 4px;
+    }
+
+    .badge {
+        font-size: 0.65rem;
+        padding: 2px 6px;
+    }
+}
+
+/* Neon glow effects */
+.neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.neon-pink {
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}
+
+.neon-purple {
+    text-shadow: 0 0 10px rgba(255, 0, 255, 0.5);
+}
+
+/* Modal styling for add user */
+.modal-content {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-body .form-control {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.modal-body .form-control:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #00ffff;
+    color: #ffffff;
+}
+
+.modal-body .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+</style>
+{% endblock %}
+
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title neon-glow" id="addUserModalLabel">Add New User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="addUserForm">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="username" class="form-label text-light">Username *</label>
+                                <input type="text" class="form-control" id="username" name="username" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="email" class="form-label text-light">Email *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="first_name" class="form-label text-light">First Name</label>
+                                <input type="text" class="form-control" id="first_name" name="first_name">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="last_name" class="form-label text-light">Last Name</label>
+                                <input type="text" class="form-control" id="last_name" name="last_name">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="phone" class="form-label text-light">Phone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="college" class="form-label text-light">College</label>
+                                <input type="text" class="form-control" id="college" name="college">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="education" class="form-label text-light">Education</label>
+                                <select class="form-control" id="education" name="education">
+                                    <option value="">Select Education</option>
+                                    <option value="undergraduate">Undergraduate</option>
+                                    <option value="graduate">Graduate</option>
+                                    <option value="postgraduate">Postgraduate</option>
+                                    <option value="others">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="state" class="form-label text-light">State</label>
+                                <select class="form-control" id="state" name="state">
+                                    <option value="">Select State</option>
+                                    <option value="andhra_pradesh">Andhra Pradesh</option>
+                                    <option value="telangana">Telangana</option>
+                                    <option value="tamil_nadu">Tamil Nadu</option>
+                                    <option value="karnataka">Karnataka</option>
+                                    <option value="maharashtra">Maharashtra</option>
+                                    <option value="others">Others</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="password1" class="form-label text-light">Password *</label>
+                                <input type="password" class="form-control" id="password1" name="password1" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="password2" class="form-label text-light">Confirm Password *</label>
+                                <input type="password" class="form-control" id="password2" name="password2" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="is_staff" name="is_staff">
+                        <label class="form-check-label text-light" for="is_staff">Is Staff/Admin</label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-custom">Create User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+// User Management Functions
+function viewUser(userId) {
+    // Redirect to user detail page
+    window.location.href = `/admin_dashboard/users/${userId}/`;
+}
+
+function editUser(userId) {
+    // Redirect to user edit page
+    window.location.href = `/admin_dashboard/users/${userId}/edit/`;
+}
+
+function toggleUserStatus(userId, activate) {
+    const action = activate ? 'activate' : 'deactivate';
+    const confirmMsg = activate ?
+        'Are you sure you want to activate this user?' :
+        'Are you sure you want to deactivate this user?';
+
+    if (confirm(confirmMsg)) {
+        fetch(`/admin_dashboard/users/${userId}/toggle/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            },
+            body: JSON.stringify({ activate: activate })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error updating user status');
+            console.error(error);
+        });
+    }
+}
+
+function deleteUser(userId) {
+    if (confirm('Are you sure you want to permanently delete this user? This action cannot be undone.')) {
+        fetch(`/admin_dashboard/users/${userId}/delete/`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error deleting user');
+            console.error(error);
+        });
+    }
+}
+
+// Add New User Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const addUserForm = document.getElementById('addUserForm');
+    if (addUserForm) {
+        addUserForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const userData = Object.fromEntries(formData.entries());
+
+            // Validate passwords match
+            if (userData.password1 !== userData.password2) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            fetch('/admin_dashboard/users/create/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+                },
+                body: JSON.stringify(userData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Close modal and reload page
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('addUserModal'));
+                    modal.hide();
+                    location.reload();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                alert('Error creating user');
+                console.error(error);
+            });
+        });
+    }
+
+    // Enhanced table interactions
+    const tableRows = document.querySelectorAll('.table tbody tr');
+    tableRows.forEach(row => {
+        row.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.01)';
+        });
+
+        row.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+});
+</script>
+{% endblock %}

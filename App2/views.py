@@ -15,6 +15,7 @@ from django.conf import settings
 import random
 import smtplib
 from email.message import EmailMessage
+import json
 
 from .models import *
 from .forms import *
@@ -26,12 +27,15 @@ def register_view(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            # Create user profile with additional details
-            UserProfile.objects.create(
+            # Create user profile with additional details (only if it doesn't exist)
+            UserProfile.objects.get_or_create(
                 user=user,
-                phone=form.cleaned_data['phone'],
-                education=form.cleaned_data['education'],
-                address=form.cleaned_data['college'],  # Using address field for college
+                defaults={
+                    'phone': form.cleaned_data['phone'],
+                    'education': form.cleaned_data['education'],
+                    'college': form.cleaned_data['college'],
+                    'state': form.cleaned_data['state'],
+                }
             )
             login(request, user)
             messages.success(request, 'Registration successful! Welcome to FUTURE BOUND TECH.')
@@ -216,37 +220,87 @@ def lesson_view(request, enrollment_id, lesson_id):
     enrollment = get_object_or_404(Enrollment, id=enrollment_id, user=request.user)
     lesson = get_object_or_404(Lesson, id=lesson_id, module__course=enrollment.course, is_active=True)
 
-    # Mark lesson as completed when accessed
+    # Get or create progress record for this lesson only
     progress, created = Progress.objects.get_or_create(
         enrollment=enrollment,
         lesson=lesson,
         defaults={'is_completed': False}
     )
 
-    if request.method == 'POST' and 'mark_complete' in request.POST:
-        progress.is_completed = True
-        progress.completed_at = timezone.now()
-        progress.save()
-        enrollment.update_progress()
-        messages.success(request, f'Lesson "{lesson.title}" marked as completed!')
-
-        # Redirect to next lesson or course progress
-        next_lesson = Lesson.objects.filter(
-            module=lesson.module,
-            order__gt=lesson.order,
-            is_active=True
-        ).first()
-
-        if next_lesson:
-            return redirect('lesson_view', enrollment_id=enrollment_id, lesson_id=next_lesson.id)
+    # For completed courses, allow access to all lessons for review
+    # For in-progress courses, check prerequisites
+    can_mark_complete = False
+    if enrollment.status == 'completed':
+        # Allow marking as complete for review purposes, but don't change progress
+        can_mark_complete = not progress.is_completed
+    else:
+        # For in-progress courses, check if this is the first lesson in module or previous are completed
+        if lesson.order == 0:  # First lesson in module
+            can_mark_complete = True
         else:
-            return redirect('course_progress', enrollment_id=enrollment_id)
+            # Check if all previous lessons in this module are completed
+            previous_lessons = Lesson.objects.filter(
+                module=lesson.module,
+                order__lt=lesson.order,
+                is_active=True
+            )
+            if previous_lessons.exists():
+                completed_previous = Progress.objects.filter(
+                    enrollment=enrollment,
+                    lesson__in=previous_lessons,
+                    is_completed=True
+                ).count()
+                can_mark_complete = completed_previous == previous_lessons.count()
+            else:
+                can_mark_complete = True
+
+    if request.method == 'POST' and 'mark_complete' in request.POST:
+        if can_mark_complete:
+            progress.is_completed = True
+            progress.completed_at = timezone.now()
+            progress.save()
+
+            # Only update enrollment progress if course is not already completed
+            if enrollment.status != 'completed':
+                enrollment.update_progress()
+
+            messages.success(request, f'Lesson "{lesson.title}" marked as completed!')
+
+            # Redirect to next lesson or course progress
+            next_lesson = Lesson.objects.filter(
+                module=lesson.module,
+                order__gt=lesson.order,
+                is_active=True
+            ).first()
+
+            if next_lesson:
+                return redirect('lesson_view', enrollment_id=enrollment_id, lesson_id=next_lesson.id)
+            else:
+                return redirect('course_progress', enrollment_id=enrollment_id)
+
+    # Get next lesson in the same module
+    next_lesson = Lesson.objects.filter(
+        module=lesson.module,
+        order__gt=lesson.order,
+        is_active=True
+    ).first()
+
+    # Get previous lesson in the same module
+    previous_lesson = Lesson.objects.filter(
+        module=lesson.module,
+        order__lt=lesson.order,
+        is_active=True
+    ).last()
 
     context = {
         'enrollment': enrollment,
         'lesson': lesson,
         'progress': progress,
         'module': lesson.module,
+        'course': enrollment.course,
+        'next_lesson': next_lesson,
+        'previous_lesson': previous_lesson,
+        'can_mark_complete': can_mark_complete,
     }
     return render(request, 'dashboard/lesson_view.html', context)
 
@@ -269,6 +323,210 @@ def profile_view(request):
 class AdminRequiredMixin(UserPassesTestMixin):
     def test_func(self):
         return self.request.user.is_superuser
+
+
+@login_required
+def admin_user_management(request):
+    """Admin user management page"""
+    if not request.user.is_superuser:
+        messages.error(request, 'Access denied. Admin privileges required.')
+        return redirect('home')
+
+    from django.contrib.auth.models import User
+    users = User.objects.all().order_by('-date_joined')
+    user_profiles = UserProfile.objects.all().select_related('user')
+
+    # Get enrollment stats for each user
+    user_stats = {}
+    for user in users:
+        enrollments = Enrollment.objects.filter(user=user)
+        user_stats[user.id] = {
+            'total_enrollments': enrollments.count(),
+            'completed_courses': enrollments.filter(status='completed').count(),
+            'in_progress_courses': enrollments.filter(status='in_progress').count(),
+        }
+
+    context = {
+        'users': users,
+        'user_profiles': user_profiles,
+        'user_stats': user_stats,
+        'total_users': users.count(),
+        'active_users': users.filter(is_active=True).count(),
+        'admin_users': users.filter(is_superuser=True).count(),
+    }
+    return render(request, 'admin/user_management.html', context)
+
+
+@login_required
+def admin_create_user(request):
+    """Create new user via AJAX"""
+    if not request.user.is_superuser:
+        return JsonResponse({'success': False, 'message': 'Access denied'})
+
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            from django.contrib.auth.models import User
+
+            # Check if user already exists
+            if User.objects.filter(username=data['username']).exists():
+                return JsonResponse({'success': False, 'message': 'Username already exists'})
+
+            if User.objects.filter(email=data['email']).exists():
+                return JsonResponse({'success': False, 'message': 'Email already exists'})
+
+            # Create user
+            user = User.objects.create_user(
+                username=data['username'],
+                email=data['email'],
+                password=data['password1'],
+                first_name=data.get('first_name', ''),
+                last_name=data.get('last_name', ''),
+                is_staff=data.get('is_staff', False),
+                is_superuser=data.get('is_staff', False)
+            )
+
+            # Create user profile
+            UserProfile.objects.create(
+                user=user,
+                phone=data.get('phone', ''),
+                college=data.get('college', ''),
+                education=data.get('education', ''),
+                state=data.get('state', '')
+            )
+
+            return JsonResponse({'success': True, 'message': 'User created successfully'})
+
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+
+    return JsonResponse({'success': False, 'message': 'Invalid request method'})
+
+
+@login_required
+def admin_toggle_user_status(request, user_id):
+    """Toggle user active status"""
+    if not request.user.is_superuser:
+        return JsonResponse({'success': False, 'message': 'Access denied'})
+
+    try:
+        from django.contrib.auth.models import User
+        user = User.objects.get(id=user_id)
+
+        # Prevent admin from deactivating themselves
+        if user == request.user:
+            return JsonResponse({'success': False, 'message': 'Cannot deactivate your own account'})
+
+        data = json.loads(request.body)
+        user.is_active = data.get('activate', True)
+        user.save()
+
+        action = 'activated' if user.is_active else 'deactivated'
+        return JsonResponse({'success': True, 'message': f'User {action} successfully'})
+
+    except User.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'User not found'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
+
+
+@login_required
+def admin_edit_user(request, user_id):
+    """Edit user details"""
+    if not request.user.is_superuser:
+        messages.error(request, 'Access denied. Admin privileges required.')
+        return redirect('home')
+
+    from django.contrib.auth.models import User
+    user = get_object_or_404(User, id=user_id)
+
+    if request.method == 'POST':
+        # Update user basic info
+        user.first_name = request.POST.get('first_name', '')
+        user.last_name = request.POST.get('last_name', '')
+        user.email = request.POST.get('email', '')
+        user.is_staff = request.POST.get('is_staff') == 'on'
+        user.is_superuser = request.POST.get('is_superuser') == 'on'
+        user.save()
+
+        # Update or create user profile
+        profile, created = UserProfile.objects.get_or_create(
+            user=user,
+            defaults={
+                'phone': request.POST.get('phone', ''),
+                'college': request.POST.get('college', ''),
+                'education': request.POST.get('education', ''),
+                'state': request.POST.get('state', ''),
+            }
+        )
+
+        if not created:
+            profile.phone = request.POST.get('phone', '')
+            profile.college = request.POST.get('college', '')
+            profile.education = request.POST.get('education', '')
+            profile.state = request.POST.get('state', '')
+            profile.save()
+
+        messages.success(request, f'User {user.username} updated successfully!')
+        return redirect('admin_user_management')
+
+    context = {
+        'user': user,
+        'profile': getattr(user, 'userprofile', None),
+    }
+    return render(request, 'admin/user_edit.html', context)
+
+
+@login_required
+def admin_user_enrollments(request, user_id):
+    """Manage user enrollments - view and remove enrollments"""
+    if not request.user.is_superuser:
+        messages.error(request, 'Access denied. Admin privileges required.')
+        return redirect('home')
+
+    from django.contrib.auth.models import User
+    user = get_object_or_404(User, id=user_id)
+    enrollments = Enrollment.objects.filter(user=user).select_related('course')
+
+    if request.method == 'POST' and 'remove_enrollment' in request.POST:
+        enrollment_id = request.POST.get('enrollment_id')
+        try:
+            enrollment = Enrollment.objects.get(id=enrollment_id, user=user)
+            course_title = enrollment.course.title
+            enrollment.delete()
+            messages.success(request, f'Removed enrollment for "{course_title}" from {user.username}')
+            return redirect('admin_user_enrollments', user_id=user_id)
+        except Enrollment.DoesNotExist:
+            messages.error(request, 'Enrollment not found')
+
+    context = {
+        'user': user,
+        'enrollments': enrollments,
+    }
+    return render(request, 'admin/user_enrollments.html', context)
+
+
+@login_required
+def admin_delete_user(request, user_id):
+    """Delete user"""
+    if not request.user.is_superuser:
+        return JsonResponse({'success': False, 'message': 'Access denied'})
+
+    try:
+        from django.contrib.auth.models import User
+        user = User.objects.get(id=user_id)
+
+        # Prevent admin from deleting themselves
+        if user == request.user:
+            return JsonResponse({'success': False, 'message': 'Cannot delete your own account'})
+
+        user.delete()
+        return JsonResponse({'success': True, 'message': 'User deleted successfully'})
+
+    except User.DoesNotExist:
+        return JsonResponse({'success': False, 'message': 'User not found'})
+    except Exception as e:
+        return JsonResponse({'success': False, 'message': str(e)})
 
 
 def admin_course_management(request):
@@ -527,18 +785,89 @@ def mark_lesson_complete(request, enrollment_id, lesson_id):
         progress, created = Progress.objects.get_or_create(
             enrollment=enrollment,
             lesson=lesson,
-            defaults={'is_completed': True, 'completed_at': timezone.now()}
+            defaults={'is_completed': False}
         )
 
-        if not progress.is_completed:
+        # Check if lesson can be marked complete (same logic as lesson_view)
+        can_mark_complete = False
+        if enrollment.status == 'completed':
+            # Allow marking as complete for review purposes
+            can_mark_complete = not progress.is_completed
+        else:
+            # For in-progress courses, check prerequisites
+            if lesson.order == 0:  # First lesson in module
+                can_mark_complete = True
+            else:
+                # Check if all previous lessons in this module are completed
+                previous_lessons = Lesson.objects.filter(
+                    module=lesson.module,
+                    order__lt=lesson.order,
+                    is_active=True
+                )
+                if previous_lessons.exists():
+                    completed_previous = Progress.objects.filter(
+                        enrollment=enrollment,
+                        lesson__in=previous_lessons,
+                        is_completed=True
+                    ).count()
+                    can_mark_complete = completed_previous == previous_lessons.count()
+                else:
+                    can_mark_complete = True
+
+        if not progress.is_completed and can_mark_complete:
             progress.is_completed = True
             progress.completed_at = timezone.now()
             progress.save()
-            enrollment.update_progress()
+
+            # Only update enrollment progress if course is not already completed
+            if enrollment.status != 'completed':
+                # Update progress with precise calculation to prevent bulk completion
+                total_lessons = enrollment.course.get_total_lessons()
+                completed_lessons = Progress.objects.filter(
+                    enrollment=enrollment,
+                    is_completed=True
+                ).count()
+
+                # Calculate progress with high precision to avoid rounding errors
+                if total_lessons > 0:
+                    progress_percentage = round((completed_lessons / total_lessons) * 100, 6)
+                else:
+                    progress_percentage = 100.00
+
+                enrollment.progress_percentage = progress_percentage
+                enrollment.save()
+
+                # Only mark as completed when exactly 100% (prevent bulk completion)
+                if progress_percentage >= 100.00 and enrollment.status != 'completed':
+                    enrollment.status = 'completed'
+                    enrollment.completion_date = timezone.now()
+                    enrollment.save()
+                elif progress_percentage > 0 and enrollment.status == 'enrolled':
+                    enrollment.status = 'in_progress'
+                    enrollment.save()
+
+                print(f"DEBUG: Lesson {lesson.id} marked complete for enrollment {enrollment.id}")
+                print(f"DEBUG: Total lessons: {total_lessons}")
+                print(f"DEBUG: Completed lessons: {completed_lessons}")
+                print(f"DEBUG: Progress percentage: {progress_percentage}")
+
+        # Get next lesson URL
+        next_lesson = Lesson.objects.filter(
+            module=lesson.module,
+            order__gt=lesson.order,
+            is_active=True
+        ).first()
+
+        next_lesson_url = None
+        if next_lesson:
+            next_lesson_url = f'/dashboard/enrollment/{enrollment_id}/lesson/{next_lesson.id}/'
+        else:
+            next_lesson_url = f'/dashboard/enrollment/{enrollment_id}/'
 
         return JsonResponse({
             'success': True,
-            'progress_percentage': enrollment.progress_percentage
+            'progress_percentage': float(enrollment.progress_percentage),
+            'next_lesson_url': next_lesson_url
         })
 
     except (Enrollment.DoesNotExist, Lesson.DoesNotExist):

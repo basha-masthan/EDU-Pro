@@ -1,85 +1,237 @@
 
+{% extends 'base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset ="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About Us</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
-    <style>
-        /* styles.css */
-body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-}
 
-.navbar {
-    background-color: #333;
-    color: #fff;
-}
+{% block title %}About Us - FUTURE BOUND TECH{% endblock %}
 
-.navbar-brand {
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.nav-link {
-    color: #fff;
-}
-
-.nav-link:hover {
-    color: #ccc;
-}
-
-.about-section {
-    background-color: #fff;
-    padding: 20px;
-    border: 1px solid #ddd;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.about-section img {
-    width: 100
-    </style>
-</head>
-<body>
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="/">EDU Pro Solutions</a>
-        </div>
-    </nav>
-
-    <!-- ABOUT SECTION -->
-    <div class="container mt-5">
-        <div class="row">
-            <div class="col-sm-2">
-                <img src="{% static "img/about_img.png" %}" alt="Your Image" class="img-fluid">
-            </div>
-            <div class="col-sm-8">
-                <h2>About Us</h2>
-                <p>We are a team of passionate programmers dedicated to providing high-quality courses in programming languages such as Python, Java, and more. Our mission is to empower individuals with the skills they need to succeed in the tech industry.</p>
-                <p>Our story began with a simple idea: to make learning programming accessible to everyone. We believe that everyone deserves the opportunity to learn and grow, regardless of their background or experience level. With this vision in mind, we created a platform that offers engaging, interactive, and easy-to-follow courses that cater to different learning styles and needs.</p>
-                <h3>Our Values</h3>
-                <ul>
-                    <li><strong>Quality</strong>: We strive to provide high-quality courses that meet the highest standards of excellence.</li>
-                    <li><strong>Accessibility</strong>: We believe that learning should be accessible to everyone, regardless of their background or experience level.</li>
-                    <li><strong>Innovation</strong>: We continuously innovate and improve our courses to ensure that they remain relevant and effective.</li>
-                    <li><strong>Community</strong>: We foster a community of learners who support and encourage each other to achieve their goals.</li>
-                </ul>
-                <h3>Our Goals</h3>
-                <ul>
-                    <li><strong>Empower 10,000 learners</strong>: We aim to empower 10,000 learners with the skills they need to succeed in the tech industry within the next 2 years.</li>
-                    <li><strong>Expand our course offerings</strong>: We plan to expand our course offerings to include more programming languages and topics, ensuring that our learners have access to a wide range of skills and knowledge.</li>
-                    <li><strong>Build a community of learners</strong>: We aim to build a community of learners who support and encourage each other to achieve their goals.</li>
-                </ul>
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <div class="cyber-card p-5 mb-4">
+                <h1 class="neon-glow display-4 mb-4">About FUTURE BOUND TECH</h1>
+                <p class="text-light lead mb-0">Empowering the next generation of tech innovators through cutting-edge education and real-world skills.</p>
             </div>
         </div>
     </div>
 
+    <!-- Main About Section -->
+    <div class="row mb-5">
+        <div class="col-lg-6 mb-4">
+            <div class="cyber-card p-4 h-100">
+                <div class="text-center mb-4">
+                    <img src="{% static 'img/about_img.png' %}" alt="FUTURE BOUND TECH Team" class="img-fluid rounded-circle shadow-lg" style="max-width: 200px; border: 3px solid #00ffff;">
+                </div>
+                <h3 class="neon-glow text-center mb-4">Our Mission</h3>
+                <p class="text-light mb-4">
+                    We are a team of passionate programmers and educators dedicated to providing high-quality courses in programming languages, web development, data science, and emerging technologies. Our mission is to empower individuals with the skills they need to succeed in the rapidly evolving tech industry.
+                </p>
+                <p class="text-light">
+                    Our story began with a simple idea: to make learning programming accessible to everyone. We believe that everyone deserves the opportunity to learn and grow, regardless of their background or experience level. With this vision in mind, we created a platform that offers engaging, interactive, and easy-to-follow courses that cater to different learning styles and needs.
+                </p>
+            </div>
+        </div>
 
+        <div class="col-lg-6">
+            <div class="cyber-card p-4 h-100">
+                <h3 class="neon-glow mb-4">Why Choose Us?</h3>
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="text-center mb-3">
+                            <i class="bi bi-award-fill display-4 text-cyan mb-3"></i>
+                            <h5 class="text-light">Expert Instructors</h5>
+                            <p class="text-light small">Learn from industry professionals with years of experience</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-center mb-3">
+                            <i class="bi bi-laptop-fill display-4 text-cyan mb-3"></i>
+                            <h5 class="text-light">Hands-on Learning</h5>
+                            <p class="text-light small">Practical projects and real-world applications</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-center mb-3">
+                            <i class="bi bi-clock-fill display-4 text-cyan mb-3"></i>
+                            <h5 class="text-light">Flexible Schedule</h5>
+                            <p class="text-light small">Learn at your own pace, anytime, anywhere</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="text-center mb-3">
+                            <i class="bi bi-trophy-fill display-4 text-cyan mb-3"></i>
+                            <h5 class="text-light">Certification</h5>
+                            <p class="text-light small">Earn recognized certificates upon completion</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+    <!-- Values Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="cyber-card p-4">
+                <h3 class="neon-glow text-center mb-5">Our Core Values</h3>
+                <div class="row g-4">
+                    <div class="col-md-3 text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-star-fill display-4 text-cyan"></i>
+                        </div>
+                        <h5 class="text-light mb-3">Quality</h5>
+                        <p class="text-light">We strive to provide high-quality courses that meet the highest standards of excellence and industry relevance.</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-universal-access-circle display-4 text-cyan"></i>
+                        </div>
+                        <h5 class="text-light mb-3">Accessibility</h5>
+                        <p class="text-light">We believe that learning should be accessible to everyone, regardless of their background or experience level.</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-lightbulb-fill display-4 text-cyan"></i>
+                        </div>
+                        <h5 class="text-light mb-3">Innovation</h5>
+                        <p class="text-light">We continuously innovate and improve our courses to ensure they remain relevant and effective.</p>
+                    </div>
+                    <div class="col-md-3 text-center">
+                        <div class="mb-3">
+                            <i class="bi bi-people-fill display-4 text-cyan"></i>
+                        </div>
+                        <h5 class="text-light mb-3">Community</h5>
+                        <p class="text-light">We foster a community of learners who support and encourage each other to achieve their goals.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Goals Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="cyber-card p-4">
+                <h3 class="neon-glow text-center mb-5">Our Goals</h3>
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="text-center h-100">
+                            <div class="mb-4">
+                                <i class="bi bi-graph-up-arrow display-4 text-cyan"></i>
+                            </div>
+                            <h5 class="text-light mb-3">Empower 10,000+ Learners</h5>
+                            <p class="text-light">We aim to empower 10,000 learners with the skills they need to succeed in the tech industry within the next 2 years.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-center h-100">
+                            <div class="mb-4">
+                                <i class="bi bi-book-fill display-4 text-cyan"></i>
+                            </div>
+                            <h5 class="text-light mb-3">Expand Course Offerings</h5>
+                            <p class="text-light">We plan to expand our course offerings to include more programming languages, frameworks, and emerging technologies.</p>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="text-center h-100">
+                            <div class="mb-4">
+                                <i class="bi bi-chat-dots-fill display-4 text-cyan"></i>
+                            </div>
+                            <h5 class="text-light mb-3">Build Learning Community</h5>
+                            <p class="text-light">We aim to build a vibrant community of learners who support and encourage each other to achieve their goals.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Call to Action -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <div class="cyber-card p-4">
+                <h3 class="neon-glow mb-4">Ready to Start Your Tech Journey?</h3>
+                <p class="text-light mb-4">Join thousands of learners who are already transforming their careers with FUTURE BOUND TECH.</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <a href="{% url 'course_list' %}" class="btn btn-custom cyber-btn btn-lg">
+                        <i class="bi bi-search me-2"></i>Browse Courses
+                    </a>
+                    {% if not user.is_authenticated %}
+                    <a href="{% url 'register' %}" class="btn btn-outline-light btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Join Now
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.cyber-card {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    color: #00ffff;
+}
+
+.text-light {
+    color: #ffffff !important;
+}
+
+.text-cyan {
+    color: #00ffff !important;
+}
+
+.btn-custom {
+    background: linear-gradient(135deg, #00ffff, #0080ff);
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background: linear-gradient(135deg, #0080ff, #004080);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
+.btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.display-4 {
+    font-size: 3.5rem;
+}
+
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2.5rem;
+    }
+
+    .lead {
+        font-size: 1.1rem;
+    }
+
+    .cyber-card {
+        padding: 2rem 1rem;
+    }
+}
+</style>
+{% endblock %}

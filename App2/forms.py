@@ -8,23 +8,43 @@ from crispy_bootstrap5.bootstrap5 import BS5Accordion
 
 
 class CustomUserCreationForm(UserCreationForm):
-    email = forms.EmailField(required=True)
-    first_name = forms.CharField(max_length=30, required=True, label="Full Name")
-    last_name = forms.CharField(max_length=30, required=False)  # We'll combine first and last for full name
-    phone = forms.CharField(max_length=15, required=True, label="Mobile Number")
-    college = forms.CharField(max_length=100, required=True, label="College of Graduation")
+    email = forms.EmailField(required=True, widget=forms.EmailInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Enter your email address'
+    }))
+    first_name = forms.CharField(max_length=30, required=True, label="Full Name", widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Enter your full name'
+    }))
+    last_name = forms.CharField(max_length=30, required=False, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Enter last name (optional)'
+    }))
+    phone = forms.CharField(max_length=15, required=True, label="Mobile Number", widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Enter your mobile number',
+        'pattern': r'^\+?1?\d{9,15}$',
+        'title': 'Phone number must be entered in the format: +999999999. Up to 15 digits allowed.'
+    }))
+    college = forms.CharField(max_length=100, required=True, label="College of Graduation", widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'placeholder': 'Enter your college name'
+    }))
     education = forms.ChoiceField(
         choices=[
+            ('', 'Select Education Level'),
             ('undergraduate', 'Undergraduate'),
             ('graduate', 'Graduate'),
             ('postgraduate', 'Postgraduate'),
             ('others', 'Others')
         ],
         required=True,
-        label="Education Level"
+        label="Education Level",
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
     state = forms.ChoiceField(
         choices=[
+            ('', 'Select State'),
             ('andhra_pradesh', 'Andhra Pradesh'),
             ('telangana', 'Telangana'),
             ('tamil_nadu', 'Tamil Nadu'),
@@ -33,40 +53,81 @@ class CustomUserCreationForm(UserCreationForm):
             ('others', 'Others')
         ],
         required=True,
-        label="State"
+        label="State",
+        widget=forms.Select(attrs={'class': 'form-control'})
     )
 
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'password1', 'password2')
+        widgets = {
+            'username': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Choose a username'
+            }),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_method = 'post'
-        self.helper.layout = Layout(
-            Fieldset(
-                'Create Your Account',
-                'username',
-                'email',
-                'first_name',
-                'phone',
-                'college',
-                'education',
-                'state',
-                'password1',
-                'password2',
-            ),
-            ButtonHolder(
-                Submit('submit', 'Register', css_class='btn btn-primary btn-lg w-100')
-            )
-        )
+        # Add Bootstrap classes and placeholders to all fields
+        for field_name, field in self.fields.items():
+            if not isinstance(field.widget, forms.Select):
+                if 'class' not in field.widget.attrs:
+                    field.widget.attrs['class'] = 'form-control'
+            if field_name == 'password1':
+                field.widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder': 'Create a strong password (min 8 characters)'
+                })
+            elif field_name == 'password2':
+                field.widget.attrs.update({
+                    'class': 'form-control',
+                    'placeholder': 'Confirm your password'
+                })
+
+        # Remove Crispy Forms helper to use standard Django forms
+        # self.helper = FormHelper()
+        # self.helper.form_method = 'post'
+        # self.helper.layout = Layout(...)
+
+    def clean_username(self):
+        username = self.cleaned_data['username']
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError("This username is already taken. Please choose a different one.")
+        return username
+
+    def clean_email(self):
+        email = self.cleaned_data['email']
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError("This email is already registered. Please use a different email.")
+        return email
+
+    def clean_phone(self):
+        phone = self.cleaned_data['phone']
+        # Basic phone validation - should start with + or digit, 10-15 digits
+        import re
+        if not re.match(r'^\+?1?\d{9,15}$', phone):
+            raise forms.ValidationError("Please enter a valid phone number.")
+        return phone
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password1 = cleaned_data.get('password1')
+        password2 = cleaned_data.get('password2')
+
+        if password1 and password2 and password1 != password2:
+            raise forms.ValidationError("Passwords do not match.")
+
+        if password1 and len(password1) < 8:
+            raise forms.ValidationError("Password must be at least 8 characters long.")
+
+        return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
         user.first_name = self.cleaned_data['first_name']
-        user.last_name = self.cleaned_data['last_name']
+        user.last_name = self.cleaned_data.get('last_name', '')
         if commit:
             user.save()
             UserProfile.objects.create(

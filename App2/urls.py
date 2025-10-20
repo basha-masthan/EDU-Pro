@@ -30,6 +30,12 @@ urlpatterns = [
 
     # Admin URLs - Enhanced Course Management (Custom Admin Dashboard)
     path('admin_dashboard/', admin_course_management, name='admin_course_management'),
+    path('admin_dashboard/users/', admin_user_management, name='admin_user_management'),
+    path('admin_dashboard/users/create/', admin_create_user, name='admin_create_user'),
+    path('admin_dashboard/users/<int:user_id>/toggle/', admin_toggle_user_status, name='admin_toggle_user_status'),
+    path('admin_dashboard/users/<int:user_id>/edit/', admin_edit_user, name='admin_edit_user'),
+    path('admin_dashboard/users/<int:user_id>/enrollments/', admin_user_enrollments, name='admin_user_enrollments'),
+    path('admin_dashboard/users/<int:user_id>/delete/', admin_delete_user, name='admin_delete_user'),
     path('admin_dashboard/courses/create/', admin_course_create, name='admin_course_create'),
     path('admin_dashboard/courses/<int:course_id>/', admin_course_detail, name='admin_course_detail'),
     path('admin_dashboard/courses/<int:course_id>/edit/', admin_course_edit, name='admin_course_edit'),

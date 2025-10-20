@@ -1,0 +1,627 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ lesson.title }} - EDU Pro{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    {% csrf_token %}
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'dashboard' %}" class="text-cyan">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'course_progress' enrollment.id %}" class="text-cyan">{{ course.title }}</a></li>
+            <li class="breadcrumb-item active text-light">{{ lesson.title }}</li>
+        </ol>
+    </nav>
+
+    <!-- Lesson Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="cyber-card p-4">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h1 class="neon-glow mb-2">{{ lesson.title }}</h1>
+                        <p class="text-light mb-3">{{ lesson.description }}</p>
+                        <div class="d-flex align-items-center gap-3">
+                            {% if lesson.content_type == 'video' %}
+                                <span class="badge bg-primary"><i class="bi bi-play-circle me-1"></i>Video Lesson</span>
+                            {% elif lesson.content_type == 'text' %}
+                                <span class="badge bg-info"><i class="bi bi-file-text me-1"></i>Reading Material</span>
+                            {% elif lesson.content_type == 'quiz' %}
+                                <span class="badge bg-warning"><i class="bi bi-question-circle me-1"></i>Quiz</span>
+                            {% else %}
+                                <span class="badge bg-secondary"><i class="bi bi-file-earmark me-1"></i>{{ lesson.content_type|title }}</span>
+                            {% endif %}
+                            <small class="text-cyan"><i class="bi bi-clock me-1"></i>{{ lesson.duration_minutes }} minutes</small>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        {% if lesson_progress and lesson_progress.is_completed %}
+                            <div class="text-success">
+                                <i class="bi bi-check-circle-fill display-4"></i>
+                                <p class="mb-0 mt-2">Completed</p>
+                                <small class="text-muted">on {{ lesson_progress.completed_at|date:"M d, Y" }}</small>
+                            </div>
+                        {% elif can_mark_complete %}
+                            <button id="markCompleteBtn" class="btn btn-custom cyber-btn btn-lg" onclick="markComplete()">
+                                <i class="bi bi-check-circle me-2"></i>Mark as Complete
+                            </button>
+                        {% else %}
+                            <button class="btn btn-secondary btn-lg" disabled title="Complete previous lessons first">
+                                <i class="bi bi-lock me-2"></i>Complete Previous Lessons First
+                            </button>
+                        {% endif %}
+
+                        <!-- Hidden completed state (shown via JavaScript) -->
+                        <div id="completedState" class="text-success text-center mt-3" style="display: none;">
+                            <i class="bi bi-check-circle-fill display-4"></i>
+                            <p class="mb-0 mt-2 fw-bold">Lesson Completed!</p>
+                            <small class="text-muted">This lesson is permanently marked as complete.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lesson Content -->
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Content Area -->
+            <div class="cyber-card p-4 mb-4">
+                <h4 class="neon-glow mb-4">Lesson Content</h4>
+
+                {% if lesson.content_type == 'video' %}
+                    <!-- Video Content -->
+                    <div class="video-container mb-4">
+                        {% if lesson.video_url %}
+                            <div class="ratio ratio-16x9">
+                                {% if 'youtube.com' in lesson.video_url or 'youtu.be' in lesson.video_url %}
+                                    {% if 'youtube.com/watch?v=' in lesson.video_url %}
+                                        <iframe src="https://www.youtube.com/embed/{{ lesson.video_url|slice:"32:" }}"
+                                                title="{{ lesson.title }}" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                    {% elif 'youtu.be/' in lesson.video_url %}
+                                        <iframe src="https://www.youtube.com/embed/{{ lesson.video_url|slice:"17:" }}"
+                                                title="{{ lesson.title }}" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                    {% else %}
+                                        <iframe src="{{ lesson.video_url }}"
+                                                title="{{ lesson.title }}" frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                    {% endif %}
+                                {% elif 'vimeo.com' in lesson.video_url %}
+                                    {% if 'vimeo.com/' in lesson.video_url %}
+                                        <iframe src="https://player.vimeo.com/video/{{ lesson.video_url|slice:"18:" }}"
+                                                title="{{ lesson.title }}" frameborder="0"
+                                                allow="autoplay; fullscreen; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                    {% else %}
+                                        <iframe src="{{ lesson.video_url }}"
+                                                title="{{ lesson.title }}" frameborder="0"
+                                                allow="autoplay; fullscreen; picture-in-picture"
+                                                allowfullscreen></iframe>
+                                    {% endif %}
+                                {% else %}
+                                    <iframe src="{{ lesson.video_url }}"
+                                            title="{{ lesson.title }}" frameborder="0"
+                                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                            allowfullscreen></iframe>
+                                {% endif %}
+                            </div>
+                            {% if lesson.description %}
+                                <div class="video-description mt-3 p-3" style="background: rgba(255, 255, 255, 0.05); border-radius: 8px; border-left: 4px solid #00ffff;">
+                                    <h6 class="text-cyan mb-2"><i class="bi bi-info-circle me-2"></i>Video Description</h6>
+                                    <p class="text-light mb-0">{{ lesson.description }}</p>
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="bi bi-play-circle display-1 text-muted mb-3"></i>
+                                <p class="text-light">Video content will be available soon.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                {% elif lesson.content_type == 'text' %}
+                    <!-- Text Content -->
+                    <div class="lesson-text">
+                        {% if lesson.content %}
+                            <div class="text-light">{{ lesson.content|safe }}</div>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="bi bi-file-text display-1 text-muted mb-3"></i>
+                                <p class="text-light">Reading material will be available soon.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                {% elif lesson.content_type == 'quiz' %}
+                    <!-- Quiz Content -->
+                    <div class="quiz-container">
+                        {% if lesson.quiz_questions.exists %}
+                            <form id="quizForm">
+                                {% csrf_token %}
+                                {% for question in lesson.quiz_questions.all %}
+                                    <div class="quiz-question mb-4 p-3 border rounded" style="background: rgba(255, 255, 255, 0.05); border-color: rgba(255, 255, 255, 0.1);">
+                                        <h5 class="text-light mb-3">{{ forloop.counter }}. {{ question.question_text }}</h5>
+                                        <div class="quiz-options">
+                                            {% for option in question.get_options %}
+                                                <div class="form-check mb-2">
+                                                    <input class="form-check-input" type="radio"
+                                                           name="question_{{ question.id }}"
+                                                           id="option_{{ question.id }}_{{ forloop.counter }}"
+                                                           value="{{ option }}">
+                                                    <label class="form-check-label text-light" for="option_{{ question.id }}_{{ forloop.counter }}">
+                                                        {{ option }}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-custom cyber-btn btn-lg">
+                                        <i class="bi bi-send me-2"></i>Submit Quiz
+                                    </button>
+                                </div>
+                            </form>
+                        {% else %}
+                            <div class="text-center py-5">
+                                <i class="bi bi-question-circle display-1 text-muted mb-3"></i>
+                                <p class="text-light">Quiz questions will be available soon.</p>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                {% else %}
+                    <!-- Other Content Types -->
+                    <div class="text-center py-5">
+                        <i class="bi bi-file-earmark display-1 text-muted mb-3"></i>
+                        <p class="text-light">Content will be available soon.</p>
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- Navigation -->
+            <div class="cyber-card p-4">
+                <h5 class="neon-glow mb-3">Lesson Navigation</h5>
+                <div class="row">
+                    <div class="col-md-6">
+                        {% if previous_lesson %}
+                            <a href="{% url 'lesson_view' enrollment.id previous_lesson.id %}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-arrow-left me-2"></i>Previous Lesson
+                                <br><small class="text-cyan">{{ previous_lesson.title }}</small>
+                            </a>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {% if next_lesson %}
+                            <a href="{% url 'lesson_view' enrollment.id next_lesson.id %}" class="btn btn-custom w-100 cyber-btn">
+                                <i class="bi bi-arrow-right me-2"></i>Next Lesson
+                                <br><small class="text-white">{{ next_lesson.title }}</small>
+                            </a>
+                        {% else %}
+                            <a href="{% url 'course_progress' enrollment.id %}" class="btn btn-success w-100">
+                                <i class="bi bi-trophy me-2"></i>Back to Course
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="col-lg-4">
+            <!-- Lesson Info -->
+            <div class="cyber-card p-4 mb-4">
+                <h5 class="neon-glow mb-3">Lesson Information</h5>
+                <div class="mb-3">
+                    <small class="text-cyan d-block">Module</small>
+                    <span class="text-light">{{ lesson.module.title }}</span>
+                </div>
+                <div class="mb-3">
+                    <small class="text-cyan d-block">Duration</small>
+                    <span class="text-light">{{ lesson.duration_minutes }} minutes</span>
+                </div>
+                <div class="mb-3">
+                    <small class="text-cyan d-block">Content Type</small>
+                    <span class="text-light">{{ lesson.content_type|title }}</span>
+                </div>
+                <div class="mb-0">
+                    <small class="text-cyan d-block">Progress</small>
+                    {% if lesson_progress and lesson_progress.is_completed %}
+                        <span class="badge bg-success">Completed</span>
+                    {% else %}
+                        <span class="badge bg-warning">In Progress</span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Course Progress -->
+            <div class="cyber-card p-4 mb-4">
+                <h5 class="neon-glow mb-3">Course Progress</h5>
+                <div class="progress mb-3 cyber-progress-container">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated cyber-progress" role="progressbar"
+                         data-width="{{ enrollment.progress_percentage }}"
+                         aria-valuenow="{{ enrollment.progress_percentage }}"
+                         aria-valuemin="0" aria-valuemax="100">
+                    </div>
+                </div>
+                <p class="text-center text-light mb-0">{{ enrollment.progress_percentage }}% Complete</p>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="cyber-card p-4">
+                <h5 class="neon-glow mb-3">Quick Actions</h5>
+                <div class="d-grid gap-2">
+                    <a href="{% url 'course_progress' enrollment.id %}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-list me-2"></i>Course Overview
+                    </a>
+                    <a href="{% url 'course_detail' course.pk %}" class="btn btn-outline-success btn-sm">
+                        <i class="bi bi-info-circle me-2"></i>Course Details
+                    </a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">
+                        <i class="bi bi-house me-2"></i>Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.cyber-card {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    color: #00ffff;
+}
+
+.cyber-text {
+    color: #e0e0e0;
+}
+
+.text-light {
+    color: #ffffff !important;
+}
+
+.text-cyan {
+    color: #00ffff !important;
+}
+
+.btn-custom {
+    background: linear-gradient(135deg, #00ffff, #0080ff);
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-custom:hover {
+    background: linear-gradient(135deg, #0080ff, #004080);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 255, 255, 0.3);
+}
+
+.btn-outline-primary {
+    border-color: #00ffff;
+    color: #00ffff;
+}
+
+.btn-outline-primary:hover {
+    background-color: #00ffff;
+    border-color: #00ffff;
+    color: #000000;
+}
+
+.btn-outline-secondary {
+    border-color: rgba(255, 255, 255, 0.3);
+    color: #ffffff;
+}
+
+.btn-outline-secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    border-color: #28a745;
+    color: #ffffff;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.bg-primary {
+    background: linear-gradient(135deg, #007bff, #0056b3) !important;
+}
+
+.bg-info {
+    background: linear-gradient(135deg, #17a2b8, #138496) !important;
+}
+
+.bg-warning {
+    background: linear-gradient(135deg, #ffc107, #e0a800) !important;
+    color: #000 !important;
+}
+
+.bg-success {
+    background: linear-gradient(135deg, #28a745, #1e7e34) !important;
+}
+
+.bg-secondary {
+    background: linear-gradient(135deg, #6c757d, #545b62) !important;
+}
+
+.progress {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+}
+
+.cyber-progress-container {
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #00ffff, #ff00ff) !important;
+}
+
+.cyber-progress {
+    background: linear-gradient(90deg, #00ffff, #ff00ff) !important;
+}
+
+.quiz-question {
+    transition: all 0.3s ease;
+}
+
+.quiz-question:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(0, 255, 255, 0.3) !important;
+}
+
+.form-check-input {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.form-check-input:checked {
+    background-color: #00ffff;
+    border-color: #00ffff;
+}
+
+.form-check-label {
+    cursor: pointer;
+}
+
+.breadcrumb {
+    background: rgba(30, 30, 30, 0.5);
+    border-radius: 8px;
+    padding: 8px 16px;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #666;
+}
+
+.video-container {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.lesson-text {
+    line-height: 1.7;
+}
+
+.lesson-text h1, .lesson-text h2, .lesson-text h3,
+.lesson-text h4, .lesson-text h5, .lesson-text h6 {
+    color: #00ffff;
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.lesson-text p {
+    margin-bottom: 1rem;
+}
+
+.lesson-text ul, .lesson-text ol {
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+}
+
+.lesson-text li {
+    margin-bottom: 0.5rem;
+}
+
+.lesson-text code {
+    background: rgba(0, 255, 255, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+}
+
+.lesson-text pre {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    border-radius: 8px;
+    overflow-x: auto;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.lesson-text blockquote {
+    border-left: 4px solid #00ffff;
+    padding-left: 1rem;
+    margin: 1rem 0;
+    font-style: italic;
+    color: #e0e0e0;
+}
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Set progress bar width dynamically
+    const progressBar = document.querySelector('.cyber-progress');
+    const progressText = document.querySelector('.text-center.text-light.mb-0');
+
+    console.log('Page loaded, initializing progress bar...');
+    console.log('Progress bar element:', progressBar);
+    console.log('Progress text element:', progressText);
+
+    if (progressBar && progressBar.dataset.width) {
+        const initialWidth = progressBar.dataset.width;
+        console.log('Setting initial progress to:', initialWidth + '%');
+        progressBar.style.width = initialWidth + '%';
+        progressBar.setAttribute('aria-valuenow', initialWidth);
+
+        if (progressText) {
+            progressText.textContent = parseFloat(initialWidth).toFixed(2) + '% Complete';
+        }
+    } else {
+        console.log('Progress bar or dataset.width not found!');
+    }
+});
+
+function updateProgressDisplay(percentage) {
+    const progressBar = document.querySelector('.cyber-progress');
+    const progressText = document.querySelector('.text-center.text-light.mb-0');
+
+    console.log('updateProgressDisplay called with:', percentage);
+    console.log('Progress bar element:', progressBar);
+    console.log('Progress text element:', progressText);
+
+    if (progressBar && percentage !== undefined && percentage !== null) {
+        // Ensure percentage is a number
+        const percentValue = typeof percentage === 'number' ? percentage : parseFloat(percentage);
+
+        if (!isNaN(percentValue)) {
+            console.log('Setting progress bar width to:', percentValue + '%');
+            progressBar.style.width = percentValue + '%';
+            progressBar.setAttribute('aria-valuenow', percentValue);
+
+            if (progressText) {
+                progressText.textContent = percentValue.toFixed(2) + '% Complete';
+                console.log('Updated progress text to:', percentValue.toFixed(2) + '% Complete');
+            }
+        } else {
+            console.error('Invalid percentage value:', percentage);
+        }
+    } else {
+        console.error('Progress bar not found or invalid percentage:', percentage);
+    }
+}
+
+function markComplete() {
+    if (confirm('Are you sure you want to mark this lesson as complete?')) {
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]');
+        if (!csrfToken) {
+            alert('CSRF token not found. Please refresh the page.');
+            return;
+        }
+
+        fetch(`/api/mark-lesson-complete/{{ enrollment.id }}/{{ lesson.id }}/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken.value,
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Show completed state and hide button
+                document.getElementById('markCompleteBtn').style.display = 'none';
+                document.getElementById('completedState').style.display = 'block';
+
+                // Update progress bar immediately
+                updateProgressDisplay(data.progress_percentage);
+
+                // Debug logging
+                console.log('Lesson marked complete!');
+                console.log('New progress percentage:', data.progress_percentage);
+                console.log('Next lesson URL:', data.next_lesson_url);
+
+                // Redirect to next lesson after a short delay
+                setTimeout(function() {
+                    if (data.next_lesson_url) {
+                        window.location.href = data.next_lesson_url;
+                    } else {
+                        window.location.href = "{% url 'course_progress' enrollment.id %}";
+                    }
+                }, 2000);
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('Error updating lesson progress');
+            console.error(error);
+        });
+    }
+}
+
+// Quiz submission
+document.getElementById('quizForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const answers = {};
+
+    for (let [key, value] of formData.entries()) {
+        if (key !== 'csrfmiddlewaretoken') {
+            const questionId = key.split('_')[1];
+            answers[questionId] = value;
+        }
+    }
+
+    fetch(`/api/submit-quiz/{{ lesson.id }}/`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+        body: JSON.stringify({ answers: answers })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(`Quiz submitted! Score: ${data.score}/${data.total}`);
+            location.reload();
+        } else {
+            alert('Error: ' + data.message);
+        }
+    })
+    .catch(error => {
+        alert('Error submitting quiz');
+        console.error(error);
+    });
+});
+</script>
+{% endblock %}

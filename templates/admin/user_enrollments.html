@@ -1,0 +1,201 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}User Enrollments - Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'admin_course_management' %}" class="text-cyan">Admin Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_user_management' %}" class="text-cyan">User Management</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'admin_edit_user' user.id %}" class="text-cyan">{{ user.username }}</a></li>
+            <li class="breadcrumb-item active text-light">Enrollments</li>
+        </ol>
+    </nav>
+
+    <!-- Header -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="cyber-card p-4">
+                <h1 class="neon-glow mb-2">User Enrollments: {{ user.get_full_name|default:user.username }}</h1>
+                <p class="text-light">Manage course enrollments for this user</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enrollments List -->
+    <div class="row">
+        <div class="col">
+            <div class="cyber-card">
+                <div class="card-header border-bottom border-secondary py-3">
+                    <h5 class="mb-0 neon-glow">Course Enrollments</h5>
+                </div>
+                <div class="card-body p-0">
+                    {% if enrollments %}
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead style="background-color: #1a1a1a; border-bottom: 2px solid #333;">
+                                <tr>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Course</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Progress</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Status</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Enrolled Date</th>
+                                    <th style="border: 1px solid #333; color: #ffffff; background-color: #1a1a1a;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody style="background-color: #000000;">
+                                {% for enrollment in enrollments %}
+                                <tr style="background-color: #000000; border-bottom: 1px solid #333;">
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        <div class="d-flex align-items-center">
+                                            {% if enrollment.course.thumbnail %}
+                                            <img src="{{ enrollment.course.thumbnail.url }}" alt="{{ enrollment.course.title }}"
+                                                 class="rounded me-3" style="width: 50px; height: 50px; object-fit: cover;">
+                                            {% endif %}
+                                            <div>
+                                                <h6 class="mb-0 text-light">{{ enrollment.course.title }}</h6>
+                                                <small class="text-cyan">{{ enrollment.course.instructor }}</small>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        <div class="progress mb-2" style="height: 8px; background-color: rgba(255,255,255,0.1);">
+                                            <div class="progress-bar cyber-progress"
+                                                 style="width: {{ enrollment.progress_percentage }}%; background: linear-gradient(90deg, #00ffff, #ff00ff);">
+                                            </div>
+                                        </div>
+                                        <small class="text-light">{{ enrollment.progress_percentage }}% Complete</small>
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        {% if enrollment.status == 'completed' %}
+                                            <span class="badge bg-success">Completed</span>
+                                        {% elif enrollment.status == 'in_progress' %}
+                                            <span class="badge bg-warning">In Progress</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ enrollment.get_status_display }}</span>
+                                        {% endif %}
+                                        {% if enrollment.completion_date %}
+                                        <br><small class="text-muted">Completed: {{ enrollment.completion_date|date:"M d, Y" }}</small>
+                                        {% endif %}
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        <small class="text-light">{{ enrollment.enrollment_date|date:"M d, Y" }}</small>
+                                    </td>
+                                    <td style="border: 1px solid #333; background-color: #000000; color: #ffffff;">
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="{% url 'course_progress' enrollment.id %}" class="btn btn-outline-info" title="View Progress">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <form method="post" class="d-inline" onsubmit="return confirm('Are you sure you want to remove this enrollment? This will delete all progress data.');">
+                                                {% csrf_token %}
+                                                <input type="hidden" name="enrollment_id" value="{{ enrollment.id }}">
+                                                <button type="submit" name="remove_enrollment" class="btn btn-outline-danger" title="Remove Enrollment">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5">
+                        <i class="bi bi-book display-4 mb-3 text-muted"></i>
+                        <h4 class="text-light">No Enrollments</h4>
+                        <p class="text-muted">This user is not enrolled in any courses</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="row mt-4">
+        <div class="col text-center">
+            <a href="{% url 'admin_edit_user' user.id %}" class="btn btn-outline-secondary">
+                <i class="bi bi-arrow-left me-2"></i>Back to User Edit
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.cyber-card {
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+.neon-glow {
+    text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    color: #00ffff;
+}
+
+.cyber-progress {
+    background: linear-gradient(90deg, #00ffff, #ff00ff) !important;
+}
+
+.table-responsive {
+    border-radius: 0 0 15px 15px;
+    overflow: hidden;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 255, 255, 0.08) !important;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+.table td {
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    vertical-align: middle;
+    color: #e0e0e0;
+    padding: 12px;
+}
+
+.btn-group .btn {
+    margin-right: 3px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    transition: all 0.2s ease;
+}
+
+.btn-group .btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.btn-group .btn:last-child {
+    margin-right: 0;
+}
+
+.badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.text-light {
+    color: #ffffff !important;
+}
+
+.text-cyan {
+    color: #00ffff !important;
+}
+
+.text-muted {
+    color: #999 !important;
+}
+</style>
+{% endblock %}
