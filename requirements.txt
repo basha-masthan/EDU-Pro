@@ -6,3 +6,4 @@ django-crispy-forms==2.4
 crispy-bootstrap5==2025.6
 Pillow==10.2.0
 dj-database-url==2.2.0
+python-dotenv==1.0.0
