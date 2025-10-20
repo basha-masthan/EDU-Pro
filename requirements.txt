@@ -5,3 +5,4 @@ psycopg2-binary==2.9.11
 django-crispy-forms==2.4
 crispy-bootstrap5==2025.6
 Pillow==10.2.0
+dj-database-url==2.2.0
